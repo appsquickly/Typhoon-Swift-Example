@@ -21,12 +21,12 @@ to (Ha!). Now, proceed to the exercises below.
 
 ### Exercises
 
-1. Study the <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly//CoreComponents.swift">core components</a>, 
-<a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/ApplicationAssembly.swift">view controllers</a> and <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/ThemeAssembly.swift">themes</a>. 
+1. Study the <a href="https://github.com/typhoon-framework/Typhoon-Swift-Example/blob/master/PocketForecast/Assembly/CoreComponents.swift">core components</a>, 
+<a href="https://github.com/typhoon-framework/Typhoon-Swift-Example/blob/master/PocketForecast/Assembly/ApplicationAssembly.swift">view controllers</a> and <a href="https://github.com/typhoon-framework/Typhoon-Swift-Example/blob/master/PocketForecast/Assembly/ThemeAssembly.swift">themes</a>. 
 Notice how the framework allows you to group related components together. Notice how dependency injection allows for 
 centralized configuration, at the same time as using aggressive memory management. (With default prototype-scope, components will go away 
 whenever they're not being used). 
-1. Study the <a href="https://github.com/typhoon-framework/Typhoon-example/tree/master/PocketForecastTests/Integration">test cases</a>.
+1. Study the <a href="https://github.com/typhoon-framework/Typhoon-Swift-Example/tree/master/PocketForecastTests/Integration">test cases</a>.
 Imagine that you needed to use one service URL for integration tests and another for production. How would you do it?
 1. Imagine that you decided to save the list of cities that the user wants to get reports for to iCloud, instead of 
 locally on the device. Notice how you'd only need to change one line of code to supply your new implementation in 
@@ -43,7 +43,6 @@ place of the old one. And you'd be able to reuse the existing test cases.
 
 ***Thanks @hongcheng for the excellent <a href="https://github.com/honcheng/PaperFold-for-iOS">Paperfold</a> animation, and @michaeljbishop for the <a href="https://github.com/michaeljbishop/NGAParallaxMotion">parallax effect</a>. ***
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/0e47e2f2028b2badfc88e13f95914938 "githalytics.com")](http://githalytics.com/jasperblues/Typhoon)
 
 
 
