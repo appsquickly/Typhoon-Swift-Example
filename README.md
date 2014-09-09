@@ -21,8 +21,8 @@ to (Ha!). Now, proceed to the exercises below.
 
 ### Exercises
 
-1. Study the <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/Blocks/PFCoreComponents.m">core components</a>, 
-<a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/Blocks/PFAssembly.m">view controllers</a> and <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/Blocks/PFThemeProvider.m">theme provider</a>. 
+1. Study the <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly//CoreComponents.swift">core components</a>, 
+<a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/ApplicationAssembly.swift">view controllers</a> and <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/ThemeAssembly.swift">themes</a>. 
 Notice how the framework allows you to group related components together. Notice how dependency injection allows for 
 centralized configuration, at the same time as using aggressive memory management. (With default prototype-scope, components will go away 
 whenever they're not being used). 
