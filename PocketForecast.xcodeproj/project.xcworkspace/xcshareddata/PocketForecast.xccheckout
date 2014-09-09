@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>AE5D2B7F-4B05-433F-9310-B6BA66DEE17D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PocketForecast</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3173F77E-05DE-4D6E-97B2-B189459B4AB3</key>
+		<string>ssh://github.com/jasperblues/Typhoon-example.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PocketForecast.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0891B689-812A-419A-8C86-53B6B7FB00E4</key>
+		<string>../../External/Typhoon/Vendor/OCLogTemplate</string>
+		<key>3173F77E-05DE-4D6E-97B2-B189459B4AB3</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/jasperblues/Typhoon-example.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3173F77E-05DE-4D6E-97B2-B189459B4AB3</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0891B689-812A-419A-8C86-53B6B7FB00E4</string>
+			<key>IDESourceControlWCCName</key>
+			<string>OCLogTemplate</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3173F77E-05DE-4D6E-97B2-B189459B4AB3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Typhoon-example</string>
+		</dict>
+	</array>
+</dict>
+</plist>
