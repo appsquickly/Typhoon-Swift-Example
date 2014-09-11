@@ -11,7 +11,6 @@
 
 import Foundation
 
-@objc(ThemeAssembly)
 public class ThemeAssembly : TyphoonAssembly {
     
 

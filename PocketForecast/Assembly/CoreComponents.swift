@@ -10,7 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-@objc(CoreComponents)
 public class CoreComponents: TyphoonAssembly {
     
     public dynamic func weatherClient() -> AnyObject {

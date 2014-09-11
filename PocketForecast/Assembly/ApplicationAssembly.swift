@@ -9,7 +9,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-@objc(ApplicationAssembly)
 public class ApplicationAssembly: TyphoonAssembly {
     
     var coreComponents : CoreComponents!

@@ -10,6 +10,8 @@
 	<string>PocketForecast</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>67B732563E4098273055BF252E7025CB12DA3131</key>
+		<string>github.com:typhoon-framework/Typhoon-Swift-Example.git</string>
 		<key>E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509</key>
 		<string>https://github.com/typhoon-framework/Typhoon-example.git</string>
 	</dict>
@@ -17,15 +19,17 @@
 	<string>PocketForecast.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509</key>
+		<key>67B732563E4098273055BF252E7025CB12DA3131</key>
 		<string>..</string>
+		<key>E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509</key>
+		<string>../../Typhoon-example</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/typhoon-framework/Typhoon-example.git</string>
+	<string>github.com:typhoon-framework/Typhoon-Swift-Example.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509</string>
+	<string>67B732563E4098273055BF252E7025CB12DA3131</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Typhoon-example</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>67B732563E4098273055BF252E7025CB12DA3131</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Typhoon-Swift-Example</string>
 		</dict>
 	</array>
 </dict>

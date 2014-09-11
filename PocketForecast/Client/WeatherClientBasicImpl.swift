@@ -29,6 +29,7 @@ public class WeatherClientBasicImpl : NSObject, PFWeatherClient {
     
     public func loadWeatherReportFor(city: String!, onSuccess successBlock: ((WeatherReport!) -> Void)!, onError errorBlock: ((String!) -> Void)!) {
         
+                
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
             let url = self.queryURL(city)
             let data = NSData(contentsOfURL: url)

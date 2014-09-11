@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rootViewController?.showCitiesListController()
         }
         
+                
         return true
     }
     

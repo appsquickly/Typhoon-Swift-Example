@@ -215,10 +215,31 @@ NSSet *TyphoonAutoWiredProperties(Class clazz, NSSet *properties) {
 
 
 NSString *TyphoonTypeStringFor(id classOrProtocol) {
-    if (class_isMetaClass(object_getClass(classOrProtocol))) {
+    if (IsClass(classOrProtocol)) {
         return NSStringFromClass(classOrProtocol);
     }
     else {
         return [NSString stringWithFormat:@"id<%@>", NSStringFromProtocol(classOrProtocol)];
     }
 }
+
+Class TyphoonClassFromString(NSString *className)
+{
+    Class clazz = NSClassFromString(className);
+    if (!clazz) {
+        NSString *defaultModuleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+        clazz = NSClassFromString([defaultModuleName stringByAppendingFormat:@".%@",className]);
+    }
+    return clazz;
+}
+
+BOOL IsClass(id classOrProtocol)
+{
+    return class_isMetaClass(object_getClass(classOrProtocol));
+}
+
+BOOL IsProtocol(id classOrProtocol)
+{
+    return object_getClass(classOrProtocol) == object_getClass(@protocol(NSObject));
+}
+
