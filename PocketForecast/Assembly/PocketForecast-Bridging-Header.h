@@ -3,7 +3,7 @@
 //
 
 #import "Typhoon.h"
-#import "UIColor+CKUITools.h"
+#import "UIColor+Hex.h"
 #import "PFWeatherReportDaoFileSystemImpl.h"
 #import "PFCityDaoUserDefaultsImpl.h"
 #import "PFRootViewController.h"

@@ -6,12 +6,6 @@
 // project.
 
 
-// CKUITools
-#define COCOAPODS_POD_AVAILABLE_CKUITools
-#define COCOAPODS_VERSION_MAJOR_CKUITools 0
-#define COCOAPODS_VERSION_MINOR_CKUITools 5
-#define COCOAPODS_VERSION_PATCH_CKUITools 3
-
 // NGAParallaxMotion
 #define COCOAPODS_POD_AVAILABLE_NGAParallaxMotion
 #define COCOAPODS_VERSION_MAJOR_NGAParallaxMotion 1
