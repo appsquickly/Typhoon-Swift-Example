@@ -1,4 +1,5 @@
 PODS:
+  - CKUITools (0.5.4)
   - Expecta (0.2.4)
   - NGAParallaxMotion (1.0.2)
   - NSURL+QueryDictionary (1.0.3)
@@ -15,6 +16,7 @@ PODS:
   - Typhoon/no-arc (HEAD based on 2.2.1)
 
 DEPENDENCIES:
+  - CKUITools
   - Expecta (~> 0.2.1)
   - NGAParallaxMotion
   - NSURL+QueryDictionary
@@ -31,6 +33,7 @@ EXTERNAL SOURCES:
     :tag: 1.2-no-gesture-recognizers
 
 SPEC CHECKSUMS:
+  CKUITools: b7e352ba583531b8946f22319aef43ce5e258f33
   Expecta: 112bcafa2304ee0f3c5e586505f24555a47b25d5
   NGAParallaxMotion: f25d6b7e4eefe1c94211dbf402cd3563e56d46f3
   NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e

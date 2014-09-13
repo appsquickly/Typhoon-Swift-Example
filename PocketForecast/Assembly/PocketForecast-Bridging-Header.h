@@ -3,7 +3,6 @@
 //
 
 #import "Typhoon.h"
-#import "UIColor+Hex.h"
 #import "PFRootViewController.h"
 #import "PFCitiesListViewController.h"
 #import "PFWeatherReportViewController.h"
@@ -14,3 +13,4 @@
 #import "RXMLElement.h"
 #import "PFCityDao.h"
 #import "PFWeatherReportDao.h"
+#import "UIColor+CKUITools.h"
