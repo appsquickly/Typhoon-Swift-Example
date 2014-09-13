@@ -11,6 +11,7 @@
 		6B2E1D9F18962CFB00BA4EE0 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */; };
 		6B2E1DA018962D0100BA4EE0 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */; };
 		6B49B31F19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B31E19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift */; };
+		6B49B32119C4428300D1A3B8 /* Configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B49B32019C4428300D1A3B8 /* Configuration.plist */; };
 		6B4E0FCB19BD802C009D705E /* WeatherReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4E0FCA19BD802C009D705E /* WeatherReport.swift */; };
 		6B6EEA8C19BAA3C100B3AABB /* ThemeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */; };
 		6B6EEA8E19BAD3A400B3AABB /* CoreComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EEA8D19BAD3A400B3AABB /* CoreComponents.swift */; };
@@ -87,7 +88,6 @@
 		BA798D97A97B46BA3A44A899 /* icon_windy.png in Resources */ = {isa = PBXBuildFile; fileRef = BA79841E09AFC834B5DB666E /* icon_windy.png */; };
 		BA798DC0E482FA6C6807D438 /* icon_partly_cloudy.png in Resources */ = {isa = PBXBuildFile; fileRef = BA7980D610AB0AE04C4A3E99 /* icon_partly_cloudy.png */; };
 		BA798E5E4CB73163221DEBC0 /* cell_fade.png in Resources */ = {isa = PBXBuildFile; fileRef = BA798CD5EC96425F648C2CCF /* cell_fade.png */; };
-		BA798E69EBE0DC68032B347D /* Configuration.properties in Resources */ = {isa = PBXBuildFile; fileRef = BA798954410F86A5232E1ED2 /* Configuration.properties */; };
 		BA798E82EF7D56A91CE6649A /* temperature_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = BA798AA1DEFB3C8006C73FBB /* temperature_circle.png */; };
 		BA798E904AE89A193853B7A6 /* PFWeatherReportDaoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BA798A7A3F225459AF1D5154 /* PFWeatherReportDaoTests.m */; };
 		BA798ECACCD085CA806FF5F9 /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7986D704BB7E9852180E56 /* UIView+Position.m */; };
@@ -111,6 +111,7 @@
 		609097971E734E02BFBD9A9C /* libPods-PocketForecastTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PocketForecastTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		6B49B31E19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RXMLElement+WeatherReport.swift"; sourceTree = "<group>"; };
+		6B49B32019C4428300D1A3B8 /* Configuration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
 		6B4E0FCA19BD802C009D705E /* WeatherReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherReport.swift; sourceTree = "<group>"; };
 		6B6EEA8A19BAA3C000B3AABB /* PocketForecast-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PocketForecast-Bridging-Header.h"; path = "Assembly/PocketForecast-Bridging-Header.h"; sourceTree = "<group>"; };
 		6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeAssembly.swift; sourceTree = "<group>"; };
@@ -188,7 +189,6 @@
 		BA7988F4AB80D4FD96C0E415 /* icon_stormy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_stormy.png; sourceTree = "<group>"; };
 		BA79890A042F3EF38A97A758 /* temperature_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "temperature_circle@2x.png"; sourceTree = "<group>"; };
 		BA798945DD532BA1BD7FE30A /* PFWeatherReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFWeatherReportViewController.m; sourceTree = "<group>"; };
-		BA798954410F86A5232E1ED2 /* Configuration.properties */ = {isa = PBXFileReference; lastKnownFileType = file.properties; path = Configuration.properties; sourceTree = "<group>"; };
 		BA79897FC3B43616499A71DA /* UIView+Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Position.h"; sourceTree = "<group>"; };
 		BA7989A03B709D5789A1ACE2 /* icon_windy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_windy@2x.png"; sourceTree = "<group>"; };
 		BA7989A335B2EAA9251101D3 /* PFProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFProgressHUD.h; sourceTree = "<group>"; };
@@ -385,10 +385,10 @@
 		BA7981AECCB463AE5C18DCD2 /* Assembly */ = {
 			isa = PBXGroup;
 			children = (
-				BA798954410F86A5232E1ED2 /* Configuration.properties */,
 				6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */,
 				6B6EEA8D19BAD3A400B3AABB /* CoreComponents.swift */,
 				6B6EEA8F19BAE36A00B3AABB /* ApplicationAssembly.swift */,
+				6B49B32019C4428300D1A3B8 /* Configuration.plist */,
 			);
 			path = Assembly;
 			sourceTree = "<group>";
@@ -704,7 +704,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BE9745E15AF01A3004472E2 /* InfoPlist.strings in Resources */,
-				BA798E69EBE0DC68032B347D /* Configuration.properties in Resources */,
 				BA798CC56BF649127B173D19 /* AddCity.xib in Resources */,
 				BA79879F1CEE83F038081C53 /* CitiesList.xib in Resources */,
 				BA798F7C02D6F939EC3FA0B6 /* icon_cloudy.png in Resources */,
@@ -728,6 +727,7 @@
 				BA798E5E4CB73163221DEBC0 /* cell_fade.png in Resources */,
 				6B9FABC016FEA9D800BABD3D /* Default.png in Resources */,
 				6B9FABC216FEA9D800BABD3D /* Default@2x.png in Resources */,
+				6B49B32119C4428300D1A3B8 /* Configuration.plist in Resources */,
 				6B9FABC516FEB04500BABD3D /* Icon@2x.png in Resources */,
 				BA798932263C88CAE1030072 /* Default-568h@2x.png in Resources */,
 				BA7982AB92D80DBF0BC2E1B8 /* loader-bg.png in Resources */,

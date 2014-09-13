@@ -25,9 +25,8 @@ public class ApplicationAssembly: TyphoonAssembly {
 
     
     public dynamic func config() -> AnyObject {
-
-        return TyphoonDefinition.configDefinitionWithResource(
-            TyphoonBundleResource.withName("Configuration.properties"))
+        
+        return TyphoonDefinition.configDefinitionWithName("Configuration.plist")
     }
 
     public dynamic func rootViewController() -> AnyObject {

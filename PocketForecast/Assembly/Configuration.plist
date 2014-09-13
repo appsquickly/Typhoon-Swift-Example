@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>service.url</key>
+	<string>NSURL(http://api.worldweatheronline.com/free/v1/weather.ashx)</string>
+	<key>api.key</key>
+	<string>9n6qqqccspqjgwns5jvaamms</string>
+	<key>days.to.retrieve</key>
+	<string>5</string>
+</dict>
+</plist>
