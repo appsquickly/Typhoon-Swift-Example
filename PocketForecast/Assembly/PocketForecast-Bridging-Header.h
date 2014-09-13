@@ -5,7 +5,6 @@
 #import "Typhoon.h"
 #import "UIColor+Hex.h"
 #import "PFWeatherReportDaoFileSystemImpl.h"
-#import "PFCityDaoUserDefaultsImpl.h"
 #import "PFRootViewController.h"
 #import "PFCitiesListViewController.h"
 #import "PFWeatherReportViewController.h"
@@ -14,3 +13,4 @@
 #import "PFTemperatureUnits.h"
 #import "NSURL+QueryDictionary.h"
 #import "RXMLElement.h"
+#import "PFCityDao.h"

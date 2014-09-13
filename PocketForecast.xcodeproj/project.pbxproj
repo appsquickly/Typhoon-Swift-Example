@@ -12,6 +12,7 @@
 		6B2E1DA018962D0100BA4EE0 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */; };
 		6B49B31F19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B31E19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift */; };
 		6B49B32119C4428300D1A3B8 /* Configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B49B32019C4428300D1A3B8 /* Configuration.plist */; };
+		6B49B32419C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B32319C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift */; };
 		6B4E0FCB19BD802C009D705E /* WeatherReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4E0FCA19BD802C009D705E /* WeatherReport.swift */; };
 		6B6EEA8C19BAA3C100B3AABB /* ThemeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */; };
 		6B6EEA8E19BAD3A400B3AABB /* CoreComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EEA8D19BAD3A400B3AABB /* CoreComponents.swift */; };
@@ -32,7 +33,6 @@
 		6BDE263619BDA54F003DEB1D /* ThemeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDE263519BDA54F003DEB1D /* ThemeFactory.swift */; };
 		6BDE263819BE8235003DEB1D /* WeatherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDE263719BE8235003DEB1D /* WeatherClient.swift */; };
 		6BDE263A19BE858E003DEB1D /* WeatherClientBasicImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDE263919BE858E003DEB1D /* WeatherClientBasicImpl.swift */; };
-		6BE9230A15B29E56002EF310 /* PFCityDaoUserDefaultsImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE9230615B29E56002EF310 /* PFCityDaoUserDefaultsImpl.m */; };
 		6BE9230B15B29E56002EF310 /* PFWeatherReportDaoFileSystemImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE9230915B29E56002EF310 /* PFWeatherReportDaoFileSystemImpl.m */; };
 		6BE9745415AF01A3004472E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE9745315AF01A3004472E2 /* UIKit.framework */; };
 		6BE9745615AF01A3004472E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE9745515AF01A3004472E2 /* Foundation.framework */; };
@@ -112,6 +112,7 @@
 		6B2E1D9E18962CFB00BA4EE0 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		6B49B31E19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RXMLElement+WeatherReport.swift"; sourceTree = "<group>"; };
 		6B49B32019C4428300D1A3B8 /* Configuration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
+		6B49B32319C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityDaoUserDefaultsImpl.swift; sourceTree = "<group>"; };
 		6B4E0FCA19BD802C009D705E /* WeatherReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherReport.swift; sourceTree = "<group>"; };
 		6B6EEA8A19BAA3C000B3AABB /* PocketForecast-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PocketForecast-Bridging-Header.h"; path = "Assembly/PocketForecast-Bridging-Header.h"; sourceTree = "<group>"; };
 		6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeAssembly.swift; sourceTree = "<group>"; };
@@ -136,8 +137,6 @@
 		6BDE263719BE8235003DEB1D /* WeatherClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherClient.swift; sourceTree = "<group>"; };
 		6BDE263919BE858E003DEB1D /* WeatherClientBasicImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherClientBasicImpl.swift; sourceTree = "<group>"; };
 		6BE9230415B29E56002EF310 /* PFCityDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFCityDao.h; sourceTree = "<group>"; };
-		6BE9230515B29E56002EF310 /* PFCityDaoUserDefaultsImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFCityDaoUserDefaultsImpl.h; sourceTree = "<group>"; };
-		6BE9230615B29E56002EF310 /* PFCityDaoUserDefaultsImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFCityDaoUserDefaultsImpl.m; sourceTree = "<group>"; };
 		6BE9230715B29E56002EF310 /* PFWeatherReportDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFWeatherReportDao.h; sourceTree = "<group>"; };
 		6BE9230815B29E56002EF310 /* PFWeatherReportDaoFileSystemImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFWeatherReportDaoFileSystemImpl.h; sourceTree = "<group>"; };
 		6BE9230915B29E56002EF310 /* PFWeatherReportDaoFileSystemImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFWeatherReportDaoFileSystemImpl.m; sourceTree = "<group>"; };
@@ -281,11 +280,10 @@
 			isa = PBXGroup;
 			children = (
 				6BE9230415B29E56002EF310 /* PFCityDao.h */,
-				6BE9230515B29E56002EF310 /* PFCityDaoUserDefaultsImpl.h */,
-				6BE9230615B29E56002EF310 /* PFCityDaoUserDefaultsImpl.m */,
 				6BE9230715B29E56002EF310 /* PFWeatherReportDao.h */,
 				6BE9230815B29E56002EF310 /* PFWeatherReportDaoFileSystemImpl.h */,
 				6BE9230915B29E56002EF310 /* PFWeatherReportDaoFileSystemImpl.m */,
+				6B49B32319C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift */,
 			);
 			path = Dao;
 			sourceTree = "<group>";
@@ -836,7 +834,7 @@
 				6B6EEA8E19BAD3A400B3AABB /* CoreComponents.swift in Sources */,
 				6BDE263819BE8235003DEB1D /* WeatherClient.swift in Sources */,
 				6B6EEABD19BBC69800B3AABB /* AppDelegate.swift in Sources */,
-				6BE9230A15B29E56002EF310 /* PFCityDaoUserDefaultsImpl.m in Sources */,
+				6B49B32419C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift in Sources */,
 				6BE9230B15B29E56002EF310 /* PFWeatherReportDaoFileSystemImpl.m in Sources */,
 				BA798B05BFE968110CD32813 /* UIFont+ApplicationFonts.m in Sources */,
 				6BDE263A19BE858E003DEB1D /* WeatherClientBasicImpl.swift in Sources */,
@@ -1057,10 +1055,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/External\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1095,10 +1090,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/External\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

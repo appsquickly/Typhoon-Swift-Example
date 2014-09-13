@@ -28,7 +28,16 @@ public class CoreComponents: TyphoonAssembly {
     }
     
     public dynamic func cityDao() -> AnyObject {
-        return TyphoonDefinition.withClass(PFCityDaoUserDefaultsImpl.self)
+        
+        return TyphoonDefinition.withClass(CityDaoUserDefaultsImpl.self) {
+            (definition) in
+            
+            definition.useInitializer("initWithDefaults:") {
+                (initializer) in
+                
+                initializer.injectParameterWith(NSUserDefaults.standardUserDefaults())
+            }
+        }        
     }
 
     
