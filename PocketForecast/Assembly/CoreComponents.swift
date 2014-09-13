@@ -19,9 +19,7 @@ public class CoreComponents: TyphoonAssembly {
             definition.injectProperty("serviceUrl", with:TyphoonConfig("service.url"))
             definition.injectProperty("apiKey", with:TyphoonConfig("api.key"))
             definition.injectProperty("weatherReportDao", with:self.weatherReportDao())
-            
-            // TODO: Test injection with Swift primitive structures and other “value-types"
-            //definition.injectProperty("daysToRetrieve", with:TyphoonConfig("days.to.retrieve"))
+            definition.injectProperty("daysToRetrieve", with:TyphoonConfig("days.to.retrieve"))
         }
     }
     

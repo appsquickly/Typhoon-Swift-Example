@@ -15,9 +15,7 @@ public class WeatherClientBasicImpl : NSObject, PFWeatherClient {
     
     var weatherReportDao : PFWeatherReportDao?
     var serviceUrl : NSURL?
-    
-    //TODO: Investigate why this can't be injected
-    var daysToRetrieve : NSInteger = 5
+    var daysToRetrieve : NSNumber?
     
     var apiKey : String? {
         willSet(newValue) {
@@ -57,7 +55,7 @@ public class WeatherClientBasicImpl : NSObject, PFWeatherClient {
         let url : NSURL = serviceUrl.uq_URLByAppendingQueryDictionary([
             "q" : city,
             "format" : "xml",
-            "num_of_days" : String(daysToRetrieve),
+            "num_of_days" : daysToRetrieve!.stringValue,
             "key" : apiKey!
             ])
         

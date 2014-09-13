@@ -7,6 +7,6 @@
 	<key>api.key</key>
 	<string>9n6qqqccspqjgwns5jvaamms</string>
 	<key>days.to.retrieve</key>
-	<string>5</string>
+	<string>NSNumber(5)</string>
 </dict>
 </plist>
