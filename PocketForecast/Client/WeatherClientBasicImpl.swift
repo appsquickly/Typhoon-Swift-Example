@@ -21,9 +21,7 @@ public class WeatherClientBasicImpl : NSObject, PFWeatherClient {
     
     var apiKey : String? {
         willSet(newValue) {
-            if (newValue == "$$YOUR_API_KEY_HERE$$") {
-                NSException(name: NSInternalInconsistencyException, reason: "Please get an API key from: http://free.worldweatheronline.com, and then edit 'Configuration.properties'", userInfo: nil).raise()
-            }
+            assert(newValue != "$$YOUR_API_KEY_HERE$$", "Please get an API key from: http://free.worldweatheronline.com, and then edit 'Configuration.properties'")
         }
     }
     

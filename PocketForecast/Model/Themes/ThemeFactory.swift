@@ -18,9 +18,7 @@ public class ThemeFactory : NSObject {
     
     init(themes : Array<Theme>) {
         self.themes = themes
-        if (themes.count == 0) {
-            NSException(name: NSInternalInconsistencyException, reason: "ThemeFactory requires at least one theme in collection", userInfo: nil).raise()
-        }
+        assert(themes.count > 0, "ThemeFactory requires at least one theme in collection")
     }
     
     public func sequentialTheme() -> Theme {

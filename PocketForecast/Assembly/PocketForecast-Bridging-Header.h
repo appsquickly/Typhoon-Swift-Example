@@ -12,5 +12,5 @@
 #import "PFAddCityViewController.h"
 #import "UIFont+ApplicationFonts.h"
 #import "PFTemperatureUnits.h"
-#import "RXMLElement+PFWeatherReport.h"
 #import "NSURL+QueryDictionary.h"
+#import "RXMLElement.h"
