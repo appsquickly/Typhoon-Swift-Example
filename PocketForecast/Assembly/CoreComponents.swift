@@ -24,7 +24,7 @@ public class CoreComponents: TyphoonAssembly {
     }
     
     public dynamic func weatherReportDao() -> AnyObject {
-        return TyphoonDefinition.withClass(PFWeatherReportDaoFileSystemImpl.self)
+        return TyphoonDefinition.withClass(WeatherReportDaoFileSystemImpl.self)
     }
     
     public dynamic func cityDao() -> AnyObject {
