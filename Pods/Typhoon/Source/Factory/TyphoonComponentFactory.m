@@ -25,8 +25,6 @@
 #import "TyphoonWeakComponentsPool.h"
 #import "TyphoonFactoryAutoInjectionPostProcessor.h"
 
-typedef id(^TyphoonInstanceBuildBlock)(TyphoonDefinition *definition);
-
 @interface TyphoonDefinition (TyphoonComponentFactory)
 
 @property(nonatomic, strong) NSString *key;
@@ -279,8 +277,8 @@ static TyphoonComponentFactory *defaultFactory;
 
 - (void)instantiateEagerSingletons
 {
-    [_registry enumerateObjectsUsingBlock:^(id definition, NSUInteger idx, BOOL *stop) {
-        if (([definition scope] == TyphoonScopeSingleton) && ![definition isLazy]) {
+    [_registry enumerateObjectsUsingBlock:^(TyphoonDefinition *definition, NSUInteger idx, BOOL *stop) {
+        if (definition.scope == TyphoonScopeSingleton) {
             [self sharedInstanceForDefinition:definition args:nil fromPool:_singletons];
         }
     }];
@@ -334,6 +332,7 @@ static TyphoonComponentFactory *defaultFactory;
         id instance = nil;
         switch (definition.scope) {
             case TyphoonScopeSingleton:
+            case TyphoonScopeLazySingleton:
                 instance = [self sharedInstanceForDefinition:definition args:args fromPool:_singletons];
                 break;
             case TyphoonScopeWeakSingleton:

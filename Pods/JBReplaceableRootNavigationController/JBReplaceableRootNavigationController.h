@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//  TYPHOON FRAMEWORK
+//  JASPER BLUES
 //  Copyright 2013, Jasper Blues & Contributors
 //  All Rights Reserved.
 //
@@ -10,16 +10,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+
 #import <Foundation/Foundation.h>
 
 
-@interface PFProgressHUD : UIView
+@interface JBReplaceableRootNavigationController : UINavigationController
+{
+    UIViewController *_fakeRootViewController;
+}
 
-+ (instancetype)present;
-
-+ (void)dismiss;
-
-- (void)withLabelText:(NSString*)text;
-
+- (void)setRootViewController:(UIViewController *)rootViewController animated:(BOOL)animated;
 
 @end

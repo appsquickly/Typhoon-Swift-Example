@@ -1,6 +1,11 @@
 PODS:
   - CKUITools (0.5.4)
   - Expecta (0.2.4)
+  - FXBlurView (1.6.2)
+  - ICLoader (1.0.0):
+    - CKUITools
+    - FXBlurView
+  - JBReplaceableRootNavigationController (1.0.0)
   - NGAParallaxMotion (1.0.2)
   - NSURL+QueryDictionary (1.0.3)
   - OCHamcrest (4.0.1)
@@ -18,6 +23,8 @@ PODS:
 DEPENDENCIES:
   - CKUITools
   - Expecta (~> 0.2.1)
+  - ICLoader
+  - JBReplaceableRootNavigationController
   - NGAParallaxMotion
   - NSURL+QueryDictionary
   - OCHamcrest
@@ -35,6 +42,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   CKUITools: b7e352ba583531b8946f22319aef43ce5e258f33
   Expecta: 112bcafa2304ee0f3c5e586505f24555a47b25d5
+  FXBlurView: 47496afc9160097fa34af35fc4b310bd85d65dca
+  ICLoader: b514a55fff0ea4824103b40bceea8157a1bfbf53
+  JBReplaceableRootNavigationController: 457418d38ef9a954cf9c2ac027aaeeb312656465
   NGAParallaxMotion: f25d6b7e4eefe1c94211dbf402cd3563e56d46f3
   NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e
   OCHamcrest: b464725bbb48d0f1cd9c6f4ec3cb35fe0c4f2b94

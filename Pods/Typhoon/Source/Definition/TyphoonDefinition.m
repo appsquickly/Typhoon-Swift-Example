@@ -25,6 +25,7 @@
 #import "TyphoonInjectionByReference.h"
 #import "TyphoonInjectionByFactoryReference.h"
 #import "TyphoonInjections.h"
+#import "TyphoonFactoryDefinition.h"
 
 static NSString *TyphoonScopeToString(TyphoonScope scope) {
     switch (scope) {
@@ -43,7 +44,10 @@ static NSString *TyphoonScopeToString(TyphoonScope scope) {
 
 
 @interface TyphoonDefinition () <TyphoonObjectWithCustomInjection>
-
+@property(nonatomic, strong) TyphoonMethod *initializer;
+@property(nonatomic, strong) NSString *key;
+@property(nonatomic, strong) TyphoonRuntimeArguments *currentRuntimeArguments;
+@property(nonatomic, getter = isInitializerGenerated) BOOL initializerGenerated;
 @end
 
 @implementation TyphoonDefinition
@@ -51,22 +55,26 @@ static NSString *TyphoonScopeToString(TyphoonScope scope) {
     BOOL _isScopeSetByUser;
 }
 
+@synthesize key = _key;
+@synthesize initializerGenerated = _initializerGenerated;
+@synthesize currentRuntimeArguments = _currentRuntimeArguments;
+
 /* ====================================================================================================================================== */
 #pragma mark - Class Methods
 
 + (id)withClass:(Class)clazz
 {
-    return [[TyphoonDefinition alloc] initWithClass:clazz key:nil];
+    return [[self alloc] initWithClass:clazz key:nil];
 }
 
 + (id)withClass:(Class)clazz configuration:(TyphoonDefinitionBlock)injections
 {
-    return [TyphoonDefinition withClass:clazz key:nil injections:injections];
+    return [self withClass:clazz key:nil injections:injections];
 }
 
-+ (TyphoonDefinition *)withClass:(Class)clazz key:(NSString *)key injections:(TyphoonDefinitionBlock)properties
++ (id)withClass:(Class)clazz key:(NSString *)key injections:(TyphoonDefinitionBlock)properties
 {
-    TyphoonDefinition *definition = [[TyphoonDefinition alloc] initWithClass:clazz key:key];
+    TyphoonDefinition *definition = [[self alloc] initWithClass:clazz key:key];
 
     if (properties) {
         __weak TyphoonDefinition *weakDefinition = definition;
@@ -80,12 +88,12 @@ static NSString *TyphoonScopeToString(TyphoonScope scope) {
 
 + (id)withFactory:(id)factory selector:(SEL)selector
 {
-    return [TyphoonDefinition withFactory:factory selector:selector parameters:nil];
+    return [self withFactory:factory selector:selector parameters:nil];
 }
 
 + (id)withFactory:(id)factory selector:(SEL)selector parameters:(void (^)(TyphoonMethod *method))parametersBlock
 {
-    return [TyphoonDefinition withClass:[NSObject class] configuration:^(TyphoonDefinition *definition) {
+    return [TyphoonFactoryDefinition withConfiguration:^(TyphoonFactoryDefinition *definition) {
         [definition setFactory:factory];
         [definition setScope:TyphoonScopePrototype];
         [definition useInitializer:selector parameters:parametersBlock];
@@ -140,11 +148,6 @@ static NSString *TyphoonScopeToString(TyphoonScope scope) {
     [self useInitializer:selector parameters:nil];
 }
 
-- (void)setInitializer:(TyphoonMethod *)initializer
-{
-    _initializer = initializer;
-}
-
 /* ====================================================================================================================================== */
 #pragma mark - Making injections
 
@@ -160,6 +163,11 @@ static NSString *TyphoonScopeToString(TyphoonScope scope) {
 
 /* ====================================================================================================================================== */
 #pragma mark - Overridden Methods
+
+- (void)setInitializer:(TyphoonMethod *)initializer
+{
+    _initializer = initializer;
+}
 
 - (TyphoonMethod *)initializer
 {
@@ -239,11 +247,6 @@ static NSString *TyphoonScopeToString(TyphoonScope scope) {
 
 - (void)validateScope
 {
-    if (self.lazy && self.scope != TyphoonScopeSingleton) {
-        [NSException raise:NSInvalidArgumentException
-            format:@"The lazy attribute is only applicable to singleton scoped definitions, but is set for definition: %@ ", self];
-    }
-
     if ((self.scope != TyphoonScopePrototype && self.scope != TyphoonScopeObjectGraph) && [self hasRuntimeArgumentInjections]) {
         [NSException raise:NSInvalidArgumentException
             format:@"The runtime arguments injections are only applicable to prototype and object-graph scoped definitions, but is set for definition: %@ ",

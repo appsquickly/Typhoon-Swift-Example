@@ -1,5 +1,5 @@
 #include "Pods-PocketForecastTests-TPWeakProxy.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/TPWeakProxy" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CKUITools" "${PODS_ROOT}/Headers/Expecta" "${PODS_ROOT}/Headers/NGAParallaxMotion" "${PODS_ROOT}/Headers/NSURL+QueryDictionary" "${PODS_ROOT}/Headers/OCHamcrest" "${PODS_ROOT}/Headers/OCLogTemplate" "${PODS_ROOT}/Headers/OCMockito" "${PODS_ROOT}/Headers/PaperFold" "${PODS_ROOT}/Headers/RaptureXML" "${PODS_ROOT}/Headers/TPWeakProxy" "${PODS_ROOT}/Headers/Typhoon"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/TPWeakProxy" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CKUITools" "${PODS_ROOT}/Headers/Expecta" "${PODS_ROOT}/Headers/FXBlurView" "${PODS_ROOT}/Headers/ICLoader" "${PODS_ROOT}/Headers/JBReplaceableRootNavigationController" "${PODS_ROOT}/Headers/NGAParallaxMotion" "${PODS_ROOT}/Headers/NSURL+QueryDictionary" "${PODS_ROOT}/Headers/OCHamcrest" "${PODS_ROOT}/Headers/OCLogTemplate" "${PODS_ROOT}/Headers/OCMockito" "${PODS_ROOT}/Headers/PaperFold" "${PODS_ROOT}/Headers/RaptureXML" "${PODS_ROOT}/Headers/TPWeakProxy" "${PODS_ROOT}/Headers/Typhoon"
 OTHER_LDFLAGS = -ObjC
 PODS_ROOT = ${SRCROOT}

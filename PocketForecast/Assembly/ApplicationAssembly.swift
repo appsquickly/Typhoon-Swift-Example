@@ -39,7 +39,7 @@ public class ApplicationAssembly: TyphoonAssembly {
                 initializer.injectParameterWith(self.weatherReportController())
                 initializer.injectParameterWith(self)
             }
-            definition.scope = TyphoonScopeSingleton
+            definition.scope = TyphoonScope.Singleton
         }
     }
     

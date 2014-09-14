@@ -12,6 +12,24 @@
 #define COCOAPODS_VERSION_MINOR_CKUITools 5
 #define COCOAPODS_VERSION_PATCH_CKUITools 4
 
+// FXBlurView
+#define COCOAPODS_POD_AVAILABLE_FXBlurView
+#define COCOAPODS_VERSION_MAJOR_FXBlurView 1
+#define COCOAPODS_VERSION_MINOR_FXBlurView 6
+#define COCOAPODS_VERSION_PATCH_FXBlurView 2
+
+// ICLoader
+#define COCOAPODS_POD_AVAILABLE_ICLoader
+#define COCOAPODS_VERSION_MAJOR_ICLoader 1
+#define COCOAPODS_VERSION_MINOR_ICLoader 0
+#define COCOAPODS_VERSION_PATCH_ICLoader 0
+
+// JBReplaceableRootNavigationController
+#define COCOAPODS_POD_AVAILABLE_JBReplaceableRootNavigationController
+#define COCOAPODS_VERSION_MAJOR_JBReplaceableRootNavigationController 1
+#define COCOAPODS_VERSION_MINOR_JBReplaceableRootNavigationController 0
+#define COCOAPODS_VERSION_PATCH_JBReplaceableRootNavigationController 0
+
 // NGAParallaxMotion
 #define COCOAPODS_POD_AVAILABLE_NGAParallaxMotion
 #define COCOAPODS_VERSION_MAJOR_NGAParallaxMotion 1

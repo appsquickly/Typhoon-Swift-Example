@@ -40,7 +40,7 @@ public class ThemeAssembly : TyphoonAssembly {
                     self.sunsetTheme()
                     ])
             }
-            definition.scope = TyphoonScopeSingleton
+            definition.scope = TyphoonScope.Singleton
         }
     }
 

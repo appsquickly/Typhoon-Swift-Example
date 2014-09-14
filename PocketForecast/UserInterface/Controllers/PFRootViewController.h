@@ -13,9 +13,9 @@
 #import <UIKit/UIKit.h>
 #import "PaperFoldView.h"
 
-@class PFProgressHUD;
-@class PFAssembly;
 @class ApplicationAssembly;
+@class TyphoonComponentFactory;
+@class JBReplaceableRootNavigationController;
 
 
 typedef enum
@@ -26,37 +26,36 @@ typedef enum
 
 @interface PFRootViewController : UIViewController <PaperFoldViewDelegate>
 {
-    UINavigationController* _navigator;
-    UIView* _mainContentViewContainer;
-    UIView* _slideOnMainContentViewContainer;
+    JBReplaceableRootNavigationController *_navigator;
+    UIView *_mainContentViewContainer;
+    UIView *_slideOnMainContentViewContainer;
     PFSideViewState _sideViewState;
-    NSInteger _progressHudRetainCount;
-
-    UIViewController* _citiesListController;
-    UIViewController* _addCitiesController;
-    ApplicationAssembly *_assembly;
+    
+    UIViewController *_citiesListController;
+    UIViewController *_addCitiesController;
+    
 }
 
-@property(nonatomic, strong, readonly) PFProgressHUD* progressHUD;
+@property(nonatomic, strong, readonly) ApplicationAssembly *assembly;
 
 /**
-* Creates a root view controller instance, with the initial main content view controller, and side view controller.
-*/
-- (instancetype)initWithMainContentViewController:(UIViewController*)mainContentViewController assembly:(ApplicationAssembly*)assembly;
+ * Creates a root view controller instance, with the initial main content view controller, and side view controller.
+ */
+- (instancetype)initWithMainContentViewController:(UIViewController *)mainContentViewController assembly:(ApplicationAssembly*)assembly;
 
 /**
-* Sets main content view, with an animated transition.
-*/
-- (void)pushViewController:(UIViewController*)viewController;
+ * Sets main content view, with an animated transition.
+ */
+- (void)pushViewController:(UIViewController *)viewController;
 
-- (void)pushViewController:(UIViewController*)viewController replaceRoot:(BOOL)replaceRoot;
+- (void)pushViewController:(UIViewController *)viewController replaceRoot:(BOOL)replaceRoot;
 
 - (void)popViewControllerAnimated:(BOOL)animated;
 
 /**
-* Shows the cities list menu. We could have injected this component, however we'll instead load from the TyphoonComponentFactory on-demand,
-* and release the prototype-scoped instance when done. .
-*/
+ * Shows the cities list menu. We could have injected this component, however we'll instead load from the TyphoonComponentFactory on-demand,
+ * and release the prototype-scoped instance when done. .
+ */
 - (void)showCitiesListController;
 
 - (void)dismissCitiesListController;
@@ -66,10 +65,6 @@ typedef enum
 - (void)dismissAddCitiesController;
 
 - (void)toggleSideViewController;
-
-- (void)showProgressHUD;
-
-- (void)dismissProgressHUD;
 
 
 @end
