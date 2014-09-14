@@ -19,6 +19,7 @@
 		6B49B32C19C598CE00D1A3B8 /* CitiesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B32B19C598CE00D1A3B8 /* CitiesListViewController.swift */; };
 		6B49B32E19C5C7A100D1A3B8 /* CityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B32D19C5C7A100D1A3B8 /* CityTableViewCell.swift */; };
 		6B49B33019C5CA4800D1A3B8 /* UIFont+ApplicationFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B32F19C5CA4800D1A3B8 /* UIFont+ApplicationFonts.swift */; };
+		6B49B33219C6529C00D1A3B8 /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B33119C6529C00D1A3B8 /* ForecastTableViewCell.swift */; };
 		6B4E0FCB19BD802C009D705E /* WeatherReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4E0FCA19BD802C009D705E /* WeatherReport.swift */; };
 		6B6EEA8C19BAA3C100B3AABB /* ThemeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */; };
 		6B6EEA8E19BAD3A400B3AABB /* CoreComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EEA8D19BAD3A400B3AABB /* CoreComponents.swift */; };
@@ -56,7 +57,6 @@
 		BA7983A84F71D0AA1FFDB2E1 /* bg5.png in Resources */ = {isa = PBXBuildFile; fileRef = BA7985380591D97A53DD10EA /* bg5.png */; };
 		BA79843316D1C6911788F18D /* SampleForecast.xml in Resources */ = {isa = PBXBuildFile; fileRef = BA79864F0BCEE619CF0905DE /* SampleForecast.xml */; };
 		BA7984496F8871AEBA128A25 /* bg5-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA7981A0F0B7E0735109ABD3 /* bg5-568h@2x.png */; };
-		BA798479CEF2F6CFA15C8587 /* PFForecastTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BA798EE55B711367BC250ADC /* PFForecastTableViewCell.m */; };
 		BA798499E35DC29B45B47A1C /* bg4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA79820A0DFD6D50563F87BC /* bg4@2x.png */; };
 		BA7984CF7CDF6DC46EAFB736 /* VarelaRound-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA7983F2134358A4E02D50EA /* VarelaRound-Regular.otf */; };
 		BA7985AA12F02833B47C9953 /* bg4-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA7983C21E1C454CE757BCD6 /* bg4-568h@2x.png */; };
@@ -112,6 +112,7 @@
 		6B49B32B19C598CE00D1A3B8 /* CitiesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitiesListViewController.swift; sourceTree = "<group>"; };
 		6B49B32D19C5C7A100D1A3B8 /* CityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityTableViewCell.swift; sourceTree = "<group>"; };
 		6B49B32F19C5CA4800D1A3B8 /* UIFont+ApplicationFonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+ApplicationFonts.swift"; sourceTree = "<group>"; };
+		6B49B33119C6529C00D1A3B8 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
 		6B4E0FCA19BD802C009D705E /* WeatherReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherReport.swift; sourceTree = "<group>"; };
 		6B6EEA8A19BAA3C000B3AABB /* PocketForecast-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PocketForecast-Bridging-Header.h"; path = "Assembly/PocketForecast-Bridging-Header.h"; sourceTree = "<group>"; };
 		6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeAssembly.swift; sourceTree = "<group>"; };
@@ -185,7 +186,6 @@
 		BA798C0B6B4D900FA67C84E5 /* PFThemeable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFThemeable.h; sourceTree = "<group>"; };
 		BA798C2EBA35DCFC44E9F6CD /* AddCity.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddCity.xib; sourceTree = "<group>"; };
 		BA798C8773496CD7E3A95CA6 /* bg4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg4.png; sourceTree = "<group>"; };
-		BA798CAD4A4D871788DC4EB6 /* PFForecastTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFForecastTableViewCell.h; sourceTree = "<group>"; };
 		BA798CC8FA97B066BD5DD319 /* PFWeatherReportView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFWeatherReportView.h; sourceTree = "<group>"; };
 		BA798CD5EC96425F648C2CCF /* cell_fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell_fade.png; sourceTree = "<group>"; };
 		BA798D1B491EAE11E8515805 /* bg5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg5@2x.png"; sourceTree = "<group>"; };
@@ -193,7 +193,6 @@
 		BA798DB9D6A187392B3C07C1 /* icon_cloudy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_cloudy@2x.png"; sourceTree = "<group>"; };
 		BA798E6B7BCCED2C5A113449 /* icon_cloudy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cloudy.png; sourceTree = "<group>"; };
 		BA798E9E3746332B48394016 /* Questrial-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file.otf; path = "Questrial-Regular.otf"; sourceTree = "<group>"; };
-		BA798EE55B711367BC250ADC /* PFForecastTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFForecastTableViewCell.m; sourceTree = "<group>"; };
 		BA798F27FD489318A1210076 /* PFWeatherReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFWeatherReportViewController.h; sourceTree = "<group>"; };
 		BA798FABE8F822F7C4C37589 /* icon_partly_cloudy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_partly_cloudy@2x.png"; sourceTree = "<group>"; };
 		BBD56735007547068B4E01EE /* Pods-PocketForecast.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketForecast.xcconfig"; path = "Pods/Pods-PocketForecast.xcconfig"; sourceTree = "<group>"; };
@@ -490,8 +489,7 @@
 			children = (
 				BA798312A8E6D9B8F302DCCB /* PFWeatherReportView.m */,
 				BA798CC8FA97B066BD5DD319 /* PFWeatherReportView.h */,
-				BA798EE55B711367BC250ADC /* PFForecastTableViewCell.m */,
-				BA798CAD4A4D871788DC4EB6 /* PFForecastTableViewCell.h */,
+				6B49B33119C6529C00D1A3B8 /* ForecastTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -779,6 +777,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B49B33219C6529C00D1A3B8 /* ForecastTableViewCell.swift in Sources */,
 				6BDE263619BDA54F003DEB1D /* ThemeFactory.swift in Sources */,
 				6B4E0FCB19BD802C009D705E /* WeatherReport.swift in Sources */,
 				6B6EEA8E19BAD3A400B3AABB /* CoreComponents.swift in Sources */,
@@ -793,7 +792,6 @@
 				BA7981261B5929B6EA923BD4 /* PFWeatherReportViewController.m in Sources */,
 				6BDE263419BD9A59003DEB1D /* Theme.swift in Sources */,
 				BA7983310436F7ED629C7F11 /* PFWeatherReportView.m in Sources */,
-				BA798479CEF2F6CFA15C8587 /* PFForecastTableViewCell.m in Sources */,
 				BA798EFDC1DE7FD4BABFFF0C /* PFRootViewController.m in Sources */,
 				6B6EEA9019BAE36A00B3AABB /* ApplicationAssembly.swift in Sources */,
 				6B49B32819C50A7200D1A3B8 /* AddCityViewController.swift in Sources */,

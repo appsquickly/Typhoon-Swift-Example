@@ -11,7 +11,6 @@
 
 
 #import "PFWeatherReportView.h"
-#import "PFForecastTableViewCell.h"
 #import "UIView+Position.h"
 #import "NGAParallaxMotion.h"
 #import "PocketForecast-Swift.h"
@@ -130,10 +129,10 @@
         forecastConditions = [[_weatherReport forecast] objectAtIndex:indexPath.row];
     }
     static NSString *reuseIdentifier = @"weatherForecast";
-    PFForecastTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    ForecastTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil)
     {
-        cell = [[PFForecastTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+        cell = [[ForecastTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     }
 
     [cell.dayLabel setText:forecastConditions.longDayOfTheWeek];
