@@ -45,7 +45,7 @@ public class ApplicationAssembly: TyphoonAssembly {
     
     public dynamic func citiesListController() -> AnyObject {
         
-        return TyphoonDefinition.withClass(PFCitiesListViewController.self) {
+        return TyphoonDefinition.withClass(CitiesListViewController.self) {
             (definition) in
             
             definition.useInitializer("initWithCityDao:theme:") {

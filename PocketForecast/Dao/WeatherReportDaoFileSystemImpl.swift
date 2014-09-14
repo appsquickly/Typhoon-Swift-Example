@@ -29,7 +29,7 @@ public class WeatherReportDaoFileSystemImpl : NSObject, PFWeatherReportDao {
     private func filePathFor(cityName : String) -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
         let documentsDirectory = paths[0] as String
-        let weatherReportKey = String(format: "weatherReport$$%@", cityName)
+        let weatherReportKey = String(format: "weatherReport~>$%@", cityName)
         let filePath = documentsDirectory.stringByAppendingString(weatherReportKey)
         return filePath
     }

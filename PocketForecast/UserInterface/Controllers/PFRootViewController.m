@@ -12,7 +12,6 @@
 
 #import "CKUITools.h"
 #import "PFRootViewController.h"
-#import "PFCitiesListViewController.h"
 #import "PocketForecast-Swift.h"
 #import "JBReplaceableRootNavigationController.h"
 

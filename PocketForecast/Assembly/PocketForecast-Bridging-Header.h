@@ -4,7 +4,6 @@
 
 #import "Typhoon.h"
 #import "PFRootViewController.h"
-#import "PFCitiesListViewController.h"
 #import "PFWeatherReportViewController.h"
 #import "UIFont+ApplicationFonts.h"
 #import "PFTemperatureUnits.h"
@@ -14,3 +13,4 @@
 #import "PFWeatherReportDao.h"
 #import "UIColor+CKUITools.h"
 #import "ICLoader.h"
+#import "PFCityLabelTableViewCell.h"
