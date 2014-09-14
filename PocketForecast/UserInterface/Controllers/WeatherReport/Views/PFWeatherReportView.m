@@ -11,7 +11,6 @@
 
 
 #import "PFWeatherReportView.h"
-#import "UIFont+ApplicationFonts.h"
 #import "PFForecastTableViewCell.h"
 #import "UIView+Position.h"
 #import "NGAParallaxMotion.h"

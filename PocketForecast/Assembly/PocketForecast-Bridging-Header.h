@@ -5,7 +5,6 @@
 #import "Typhoon.h"
 #import "PFRootViewController.h"
 #import "PFWeatherReportViewController.h"
-#import "UIFont+ApplicationFonts.h"
 #import "PFTemperatureUnits.h"
 #import "NSURL+QueryDictionary.h"
 #import "RXMLElement.h"

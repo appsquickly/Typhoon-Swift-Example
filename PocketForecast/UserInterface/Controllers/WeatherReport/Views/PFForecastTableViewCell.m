@@ -10,7 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #import "PFForecastTableViewCell.h"
-#import "UIFont+ApplicationFonts.h"
 #import "PocketForecast-Swift.h"
 
 
