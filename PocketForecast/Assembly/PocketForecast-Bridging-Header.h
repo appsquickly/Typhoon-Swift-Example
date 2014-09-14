@@ -13,4 +13,3 @@
 #import "PFWeatherReportDao.h"
 #import "UIColor+CKUITools.h"
 #import "ICLoader.h"
-#import "PFCityLabelTableViewCell.h"

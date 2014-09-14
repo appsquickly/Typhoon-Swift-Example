@@ -80,9 +80,9 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let reuseId = "Cities"
-        var cell : PFCityLabelTableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseId) as? PFCityLabelTableViewCell
+        var cell : CityTableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseId) as? CityTableViewCell
         if (cell == nil) {
-            cell = PFCityLabelTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reuseId)
+            cell = CityTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reuseId)
         }
         cell!.selectionStyle = UITableViewCellSelectionStyle.Gray
         cell!.cityLabel.backgroundColor = UIColor.clearColor()
