@@ -6,7 +6,6 @@
 #import "PFRootViewController.h"
 #import "PFCitiesListViewController.h"
 #import "PFWeatherReportViewController.h"
-#import "PFAddCityViewController.h"
 #import "UIFont+ApplicationFonts.h"
 #import "PFTemperatureUnits.h"
 #import "NSURL+QueryDictionary.h"

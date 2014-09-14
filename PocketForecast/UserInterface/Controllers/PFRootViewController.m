@@ -15,7 +15,7 @@
 #import "PFProgressHUD.h"
 #import "TyphoonComponentFactory.h"
 #import "PFCitiesListViewController.h"
-#import "PFAddCityViewController.h"
+#import "PocketForecast-Swift.h"
 
 #define SIDE_CONTROLLER_WIDTH 245.0
 
@@ -24,12 +24,13 @@
 /* ====================================================================================================================================== */
 #pragma mark - Initialization & Destruction
 
-- (instancetype)initWithMainContentViewController:(UIViewController*)mainContentViewController
+- (instancetype)initWithMainContentViewController:(UIViewController*)mainContentViewController assembly:(ApplicationAssembly*)assembly
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
         _sideViewState = PFSideViewStateHidden;
+        _assembly = assembly;
         if (mainContentViewController)
         {
             [self pushViewController:mainContentViewController replaceRoot:YES];
@@ -38,26 +39,10 @@
     return self;
 }
 
-- (id)init
-{
-    return [self initWithMainContentViewController:nil];
-}
-
 - (void)typhoonWillInject
 {
     if (self.view)
     {} //Eager load view
-}
-
-/**
-* Since we have a PFAssembly interface (from the block-style assembly) we'll place that interface as a facade in front of the
-* TyphoonComponentFactory. . . we could also use the TyphoonComponentFactory interface directly, eg:
- *
- *      TyphoonComponentFactory* factory = theFactory;
-*/
-- (void)typhoonSetFactory:(id)theFactory
-{
-    _factory = theFactory;
 }
 
 
@@ -110,7 +95,7 @@
         _sideViewState = PFSideViewStateShowing;
 
         _citiesListController =
-            [[UINavigationController alloc] initWithRootViewController:[_factory componentForType:[PFCitiesListViewController class]]];
+            [[UINavigationController alloc] initWithRootViewController:[_assembly citiesListController]];
 
         [_citiesListController.view setFrame:CGRectMake(0, 0,
             _mainContentViewContainer.width - (_mainContentViewContainer.width - SIDE_CONTROLLER_WIDTH), _mainContentViewContainer.height)];
@@ -204,7 +189,7 @@
     {
         [_navigator.topViewController.view setUserInteractionEnabled:NO];
         _addCitiesController =
-            [[UINavigationController alloc] initWithRootViewController:[_factory componentForType:[PFAddCityViewController class]]];
+            [[UINavigationController alloc] initWithRootViewController:[_assembly addCityViewController]];
 
         [_addCitiesController.view setFrame:CGRectMake(0, self.view.height, SIDE_CONTROLLER_WIDTH, self.view.height)];
         [self.view addSubview:_addCitiesController.view];

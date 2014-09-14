@@ -15,7 +15,7 @@
 
 @class PFProgressHUD;
 @class PFAssembly;
-@class TyphoonComponentFactory;
+@class ApplicationAssembly;
 
 
 typedef enum
@@ -34,8 +34,7 @@ typedef enum
 
     UIViewController* _citiesListController;
     UIViewController* _addCitiesController;
-
-    TyphoonComponentFactory* _factory;
+    ApplicationAssembly *_assembly;
 }
 
 @property(nonatomic, strong, readonly) PFProgressHUD* progressHUD;
@@ -43,7 +42,7 @@ typedef enum
 /**
 * Creates a root view controller instance, with the initial main content view controller, and side view controller.
 */
-- (instancetype)initWithMainContentViewController:(UIViewController*)mainContentViewController;
+- (instancetype)initWithMainContentViewController:(UIViewController*)mainContentViewController assembly:(ApplicationAssembly*)assembly;
 
 /**
 * Sets main content view, with an animated transition.

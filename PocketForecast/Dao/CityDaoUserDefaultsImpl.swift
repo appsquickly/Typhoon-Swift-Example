@@ -91,12 +91,5 @@ public class CityDaoUserDefaultsImpl : NSObject, PFCityDao {
         return self.defaults.objectForKey(self.currentCityKey) as? String
     }
 
-//    
-//    
-//    - (NSString*)loadSelectedCity
-//    {
-//    return [_defaults objectForKey:pfCurrentCityKey];
-//    }
-
     
 }

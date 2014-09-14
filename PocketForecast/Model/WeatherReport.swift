@@ -13,10 +13,23 @@ import Foundation
 
 public class WeatherReport : NSObject, NSCoding {
     
-    private(set) var city : String
-    private(set) var date : NSDate
-    private(set) var currentConditions : CurrentConditions
-    private(set) var forecast : Array<ForecastConditions>
+    public private(set) var city : String
+    public private(set) var date : NSDate
+    public private(set) var currentConditions : CurrentConditions
+    public private(set) var forecast : Array<ForecastConditions>
+    
+    public var cityDisplayName : String {
+        var displayName : String
+        let components : Array<String> = self.city.componentsSeparatedByString(",")
+        if (components.count > 1) {
+            displayName = components[0]
+        }
+        else {
+            displayName = self.city.capitalizedString
+        }
+        
+        return displayName
+    }
     
     
     public init(city : String, date : NSDate, currentConditions : CurrentConditions,
@@ -33,21 +46,6 @@ public class WeatherReport : NSObject, NSCoding {
         self.date = coder.decodeObjectForKey("date") as NSDate
         self.currentConditions = coder.decodeObjectForKey("currentConditions") as CurrentConditions
         self.forecast = coder.decodeObjectForKey("forecast") as Array<ForecastConditions>
-    }
-    
-    public func cityDisplayName() -> String {
-        
-        var displayName : String
-        
-        let components : Array<String> = self.city.componentsSeparatedByString(",")
-        if (components.count > 1) {
-            displayName = components[0]
-        }
-        else {
-            displayName = self.city.capitalizedString
-        }
-        
-        return displayName
     }
     
     public func reportDateAsString() -> String {

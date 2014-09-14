@@ -22,11 +22,11 @@ public class WeatherReportDaoFileSystemImpl : NSObject, PFWeatherReportDao {
     
     public func saveReport(weatherReport: WeatherReport!) {
         
-        NSKeyedArchiver.archiveRootObject(weatherReport, toFile: self.filePathFor(weatherReport.cityDisplayName()))
+        NSKeyedArchiver.archiveRootObject(weatherReport, toFile: self.filePathFor(weatherReport.cityDisplayName))
     }
 
     
-    public func filePathFor(cityName : String) -> String {
+    private func filePathFor(cityName : String) -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
         let documentsDirectory = paths[0] as String
         let weatherReportKey = String(format: "weatherReport$$%@", cityName)

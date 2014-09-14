@@ -33,10 +33,11 @@ public class ApplicationAssembly: TyphoonAssembly {
         return TyphoonDefinition.withClass(PFRootViewController.self) {
             (definition) in
             
-            definition.useInitializer("initWithMainContentViewController:") {
+            definition.useInitializer("initWithMainContentViewController:assembly:") {
                 (initializer) in
                 
                 initializer.injectParameterWith(self.weatherReportController())
+                initializer.injectParameterWith(self)
             }
             definition.scope = TyphoonScopeSingleton
         }
@@ -79,7 +80,7 @@ public class ApplicationAssembly: TyphoonAssembly {
 
     public dynamic func addCityViewController() -> AnyObject {
 
-        return TyphoonDefinition.withClass(PFAddCityViewController.self) {
+        return TyphoonDefinition.withClass(AddCityViewController.self) {
             (definition) in
             
             definition.useInitializer("initWithNibName:bundle:") {
