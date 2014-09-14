@@ -3,8 +3,6 @@ Typhoon-example
 
 An example application built with <a href ="http://www.typhoonframework.org">Typhoon</a>.
 
-**If you have the Objective-C version installed, be sure to delete it from the device before installing the Swift version**
-
 ###Features: 
 
 * Returns weather reports from a remote cloud service
