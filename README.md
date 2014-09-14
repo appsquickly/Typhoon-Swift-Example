@@ -15,7 +15,7 @@ An example application built with <a href ="http://www.typhoonframework.org">Typ
 
 * Clone this repository, open the Xcode project in your favorite IDE, and run it. It'll say you need an API key.
 * Get an API key from http://developer.worldweatheronline.com. 
-* Using your API key, set the <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/Configuration.properties">application configuration</a>.
+* Using your API key, set the <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/Configuration.plist">application configuration</a>.
 * Run the App in the simulator or on your device. Look up the weather in your town, and put a jacket on, if you need 
 to (Ha!). Now, proceed to the exercises below. 
 
