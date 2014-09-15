@@ -12,3 +12,5 @@
 #import "PFWeatherReportDao.h"
 #import "UIColor+CKUITools.h"
 #import "ICLoader.h"
+#import "NGAParallaxMotion.h"
+#import "CKUITools.h"

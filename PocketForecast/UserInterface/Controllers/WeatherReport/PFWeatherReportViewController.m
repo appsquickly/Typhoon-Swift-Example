@@ -16,7 +16,6 @@
 #import "PFWeatherReportDao.h"
 #import "PFCityDao.h"
 #import "Typhoon.h"
-#import "PFWeatherReportView.h"
 #import "PFRootViewController.h"
 #import "PocketForecast-Swift.h"
 
@@ -47,7 +46,7 @@
 
 - (void)loadView
 {
-    PFWeatherReportView *view = [[PFWeatherReportView alloc] initWithFrame:CGRectZero];
+    WeatherReportView *view = [[WeatherReportView alloc] initWithFrame:CGRectZero];
     [view setTheme:_theme];
     self.view = view;
 }
@@ -65,7 +64,7 @@
     _weatherReport = [_weatherReportDao getReportForCityName:_cityName];
     if (_weatherReport)
     {
-        [(PFWeatherReportView *) self.view setWeatherReport:_weatherReport];
+        [self.view setWeatherReport:_weatherReport];
     }
     else if (_cityName)
     {
@@ -88,7 +87,7 @@
             [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
         [refreshButton setTintColor:[UIColor whiteColor]];
 
-        [((PFWeatherReportView *) self.view).toolbar setItems:@[
+        [self.view.toolbar setItems:@[
             cityListButton,
             space,
             refreshButton
@@ -108,7 +107,7 @@
 
 - (void)refreshData
 {
-    __weak PFWeatherReportView *view = (PFWeatherReportView *) self.view;
+    __weak WeatherReportView *view = self.view;
     [ICLoader present];
     [_weatherClient loadWeatherReportFor:_cityName onSuccess:^(WeatherReport *report)
     {

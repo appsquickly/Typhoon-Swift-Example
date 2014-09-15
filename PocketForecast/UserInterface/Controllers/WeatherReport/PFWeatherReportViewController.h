@@ -16,6 +16,7 @@
 #import "PFWeatherClient.h"
 #import "PFWeatherReportViewDelegate.h"
 
+
 @class WeatherReport;
 @protocol PFWeatherReportDao;
 @protocol PFCityDao;
@@ -23,6 +24,7 @@
 @class TyphoonComponentFactory;
 @class ApplicationAssembly;
 @class PFRootViewController;
+@class WeatherReportView;
 
 
 @interface PFWeatherReportViewController : UIViewController <PFWeatherReportViewDelegate>
@@ -31,6 +33,8 @@
     WeatherReport *_weatherReport;
     NSString *_cityName;
 }
+
+@property(nonatomic, strong) WeatherReportView *view;
 
 #pragma mark - Injected w/ initializer
 
