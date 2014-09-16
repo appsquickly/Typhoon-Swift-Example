@@ -62,7 +62,7 @@ public class ApplicationAssembly: TyphoonAssembly {
     
     public dynamic func weatherReportController() -> AnyObject {
         
-        return TyphoonDefinition.withClass(PFWeatherReportViewController.self) {
+        return TyphoonDefinition.withClass(WeatherReportViewController.self) {
             (definition) in
             
             definition.useInitializer("initWithWeatherClient:weatherReportDao:cityDao:theme:assembly:") {

@@ -4,7 +4,6 @@
 
 #import "Typhoon.h"
 #import "PFRootViewController.h"
-#import "PFWeatherReportViewController.h"
 #import "PFTemperatureUnits.h"
 #import "NSURL+QueryDictionary.h"
 #import "RXMLElement.h"
@@ -14,3 +13,4 @@
 #import "ICLoader.h"
 #import "NGAParallaxMotion.h"
 #import "CKUITools.h"
+#import "PFWeatherClient.h"
