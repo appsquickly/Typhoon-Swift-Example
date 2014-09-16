@@ -18,7 +18,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate {
     var cityDao : PFCityDao!
     var weatherClient : PFWeatherClient!
     var theme : Theme!
-    var rootViewController : PFRootViewController!
+    var rootViewController : RootViewController!
     
     //Interface Builder injected properties
     

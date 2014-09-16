@@ -16,16 +16,26 @@ private enum SideViewState {
     case Showing
 }
 
-public class RootViewController : UIViewController {
+public class RootViewController : UIViewController, PaperFoldViewDelegate {
 
+    let SIDE_CONTROLLER_WIDTH : CGFloat = 245.0
     
     private var navigator : JBReplaceableRootNavigationController!
     private var mainContentViewContainer : UIView!
     private var sideViewState : SideViewState!
     private var assembly : ApplicationAssembly!
+    
+    private var paperFoldView : PaperFoldView {
+        get {
+            return self.view as PaperFoldView
+        }
+        set {
+            self.view = newValue
+        }
+    }
 
-    private var citiesListController : UIViewController
-    private var addCitiesController : UIViewController
+    private var citiesListController : UIViewController?
+    private var addCitiesController : UIViewController?
     
     
     //-------------------------------------------------------------------------------------------
@@ -55,148 +65,156 @@ public class RootViewController : UIViewController {
     
     public func pushViewController(controller : UIViewController, replaceRoot : Bool) {
         
-        let lockQueue = dispatch_queue_create("com.test.LockQueue", nil)
+        let lockQueue = dispatch_queue_create("pf.root.lockQueue", nil)
         dispatch_sync(lockQueue) {
             
             if (self.navigator == nil) {
                 self.makeNavigationControllerWithRoot(controller)
-
             }
-            
-            
-
-            
+            else if (replaceRoot) {
+                self.navigator.setRootViewController(controller, animated: true)
+            }
+            else {
+                self.navigator.pushViewController(controller, animated: true)
+            }
         }
+    }
 
+    public func popViewControllerAnimated(animated : Bool) {
+        
+        let lockQueue = dispatch_queue_create("pf.root.lockQueue", nil)
+        dispatch_sync(lockQueue) {
+            self.navigator.popViewControllerAnimated(animated)
+            return
+        }
+    }
+    
+    public func showCitiesListController() {
+        if (self.sideViewState != SideViewState.Showing) {
+            self.sideViewState = SideViewState.Showing
+            self.citiesListController = UINavigationController(rootViewController: self.assembly.citiesListController() as UIViewController)
+            
+            self.citiesListController!.view.frame = CGRectMake(0, 0, SIDE_CONTROLLER_WIDTH, self.mainContentViewContainer.frame.size.height)
+            
+            self.paperFoldView.delegate = self
+            self.paperFoldView.setLeftFoldContentView(citiesListController!.view, foldCount: 5, pullFactor: 0.9)
+            self.paperFoldView.setPaperFoldState(PaperFoldStateLeftUnfolded)
+            self.mainContentViewContainer.setNeedsDisplay()
+        }
+    }
+    
+    public func dismissCitiesListController() {
+        if (self.sideViewState != SideViewState.Hidden) {
+            self.sideViewState = SideViewState.Hidden
+            self.paperFoldView.setPaperFoldState(PaperFoldStateDefault)
+            self.navigator!.topViewController.viewWillAppear(true)
+        }
+    }
+
+    public func toggleSideViewController() {
+        if (self.sideViewState == SideViewState.Hidden) {
+            self.showCitiesListController()
+        }
+        else if (self.sideViewState == SideViewState.Showing) {
+            self.dismissCitiesListController()
+        }
+    }
+    
+    public func showAddCitiesController() {
+        if (self.addCitiesController == nil) {
+            self.navigator.topViewController.view.userInteractionEnabled = false
+            
+            self.addCitiesController = UINavigationController(rootViewController: self.assembly.addCityViewController() as UIViewController)            
+            
+            self.addCitiesController!.view.frame = CGRectMake(0, self.view.frame.origin.y + self.view.frame.size.height, SIDE_CONTROLLER_WIDTH, self.view.frame.size.height)
+            self.view.addSubview(self.addCitiesController!.view)
+            
+            UIView.transitionWithView(self.view, duration: 0.25, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                
+                self.addCitiesController!.view.frame = CGRectMake(0, 0, self.SIDE_CONTROLLER_WIDTH, self.view.frame.size.height)
+                
+            }, completion: nil)
+        }
+    }
+    
+    public func dismissAddCitiesController() {
+        if (self.addCitiesController != nil) {
+            self.citiesListController?.viewWillAppear(true)
+            UIView.transitionWithView(self.view, duration: 0.25, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                
+                self.addCitiesController!.view.frame = CGRectMake(0, self.view.frame.size.height, self.SIDE_CONTROLLER_WIDTH, self.view.frame.size.height)
+                
+            }, completion: {
+                (completed) in
+                
+                self.addCitiesController!.view.removeFromSuperview()
+                self.addCitiesController = nil
+                self.citiesListController?.viewDidAppear(true)
+                self.navigator.topViewController.view.userInteractionEnabled = true
+            })
+        }
+    }
+    
+    //-------------------------------------------------------------------------------------------
+    // MARK: - PaperFoldViewDelegate
+    //-------------------------------------------------------------------------------------------
+
+    public func paperFoldView(paperFoldView: AnyObject!, didFoldAutomatically automated: Bool, toState state: Int) {
+        
+        //TODO: Why does Swift think this is a SideViewState
+        if (state == 0) {
+            self.navigator.topViewController.viewDidAppear(true)
+            
+
+            let dummyView = UIView(frame: CGRectMake(1,1,1,1))
+            self.paperFoldView.setLeftFoldContentView(dummyView, foldCount: 0, pullFactor: 0)
+            self.citiesListController = nil
+        }
         
     }
 
-    
+    //-------------------------------------------------------------------------------------------
+    // MARK: - Overridden Methods
+    //-------------------------------------------------------------------------------------------
 
-    
-    - (void)pushViewController:(UIViewController *)viewController replaceRoot:(BOOL)replaceRoot
-    {
-    @synchronized (self)
-    {
-    if (!_navigator)
-    {
-    [self makeNavigationControllerWithRoot:viewController];
-    }
-    else if (replaceRoot)
-    {
-    [_navigator setRootViewController:viewController animated:YES];
-    }
-    else
-    {
-    [_navigator pushViewController:viewController animated:YES];
-    }
-    }
+    public override func loadView() {
+        let screen = UIScreen.mainScreen().bounds
+        self.paperFoldView = PaperFoldView(frame: CGRectMake(0, 0, screen.size.width, screen.size.height))
+        self.paperFoldView.timerStepDuration = 0.02
+        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        
+        self.mainContentViewContainer = UIView(frame: self.paperFoldView.bounds)
+        self.mainContentViewContainer.backgroundColor = UIColor.blackColor()
+        self.paperFoldView.setCenterContentView(self.mainContentViewContainer)
     }
     
-    - (void)popViewControllerAnimated:(BOOL)animated
-    {
-    @synchronized (self)
-    {
-    [_navigator popViewControllerAnimated:animated];
-    }
+    public override func viewWillLayoutSubviews() {
+        self.mainContentViewContainer.frame = self.view.bounds
     }
     
-    - (void)showCitiesListController
-    {
-    if (_sideViewState != PFSideViewStateShowing)
-    {
-    _sideViewState = PFSideViewStateShowing;
-    
-    _citiesListController =
-    [[UINavigationController alloc] initWithRootViewController:[_assembly citiesListController]];
-    
-    [_citiesListController.view setFrame:CGRectMake(0, 0,
-    _mainContentViewContainer.width - (_mainContentViewContainer.width - SIDE_CONTROLLER_WIDTH), _mainContentViewContainer.height)];
-    
-    PaperFoldView *view = (PaperFoldView *) self.view;
-    [view setDelegate:self];
-    [view setLeftFoldContentView:_citiesListController.view foldCount:5 pullFactor:0.9];
-    [view setEnableLeftFoldDragging:NO];
-    [view setEnableRightFoldDragging:NO];
-    [view setEnableTopFoldDragging:NO];
-    [view setEnableBottomFoldDragging:NO];
-    [view setEnableHorizontalEdgeDragging:NO];
-    [view setPaperFoldState:PaperFoldStateLeftUnfolded];
-    
-    [_mainContentViewContainer setNeedsDisplay];
-    }
+    public override func shouldAutorotate() -> Bool {
+        return self.navigator!.topViewController.shouldAutorotate()
     }
     
-    - (void)dismissCitiesListController
-    {
-    if (_sideViewState != PFSideViewStateHidden)
-    {
-    _sideViewState = PFSideViewStateHidden;
-    PaperFoldView *view = (PaperFoldView *) self.view;
-    [view setPaperFoldState:PaperFoldStateDefault];
-    [_navigator.topViewController viewWillAppear:YES];
-    }
+    public override func willRotateToInterfaceOrientation(orientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+
+        self.navigator!.topViewController.willRotateToInterfaceOrientation(orientation, duration: duration)
     }
     
-    - (void)toggleSideViewController
-    {
-    if (_sideViewState == PFSideViewStateHidden)
-    {
-    [self showCitiesListController];
-    }
-    else if (_sideViewState == PFSideViewStateShowing)
-    {
-    [self dismissCitiesListController];
-    }
-    }
-    
-    
-    - (void)showAddCitiesController
-    {
-    if (!_addCitiesController)
-    {
-    [_navigator.topViewController.view setUserInteractionEnabled:NO];
-    _addCitiesController =
-    [[UINavigationController alloc] initWithRootViewController:[_assembly addCityViewController]];
-    
-    [_addCitiesController.view setFrame:CGRectMake(0, self.view.height, SIDE_CONTROLLER_WIDTH, self.view.height)];
-    [self.view addSubview:_addCitiesController.view];
-    
-    __block CGRect frame = _citiesListController.view.frame;
-    [UIView transitionWithView:self.view duration:0.25 options:UIViewAnimationOptionCurveEaseInOut animations:^
-    {
-    frame.origin.y = 0;
-    _addCitiesController.view.frame = frame;
-    } completion:nil];
-    }
-    }
-    
-    - (void)dismissAddCitiesController
-    {
-    if (_addCitiesController)
-    {
-    [_citiesListController viewWillAppear:YES];
-    __block CGRect frame = _citiesListController.view.frame;
-    [UIView transitionWithView:self.view duration:0.25 options:UIViewAnimationOptionCurveEaseInOut animations:^
-    {
-    frame.origin.y += self.view.height;
-    _addCitiesController.view.frame = frame;
-    } completion:^(BOOL finished)
-    {
-    [_addCitiesController.view removeFromSuperview];
-    _addCitiesController = nil;
-    [_citiesListController viewDidAppear:YES];
-    [_navigator.topViewController.view setUserInteractionEnabled:YES];
-    }];
-    }
+    public override func didRotateFromInterfaceOrientation(orientation: UIInterfaceOrientation) {
+        self.navigator!.topViewController.didRotateFromInterfaceOrientation(orientation)
     }
 
+            
+    
     //-------------------------------------------------------------------------------------------
     // MARK: - Private Methods
     //-------------------------------------------------------------------------------------------
 
     private func makeNavigationControllerWithRoot(root : UIViewController) {
         self.navigator = JBReplaceableRootNavigationController(rootViewController: root)
+        self.navigator.view.frame = self.view.bounds
+        mainContentViewContainer.addSubview(self.navigator.view)
     }
     
     

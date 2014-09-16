@@ -30,7 +30,7 @@ public class ApplicationAssembly: TyphoonAssembly {
     }
 
     public dynamic func rootViewController() -> AnyObject {
-        return TyphoonDefinition.withClass(PFRootViewController.self) {
+        return TyphoonDefinition.withClass(RootViewController.self) {
             (definition) in
             
             definition.useInitializer("initWithMainContentViewController:assembly:") {

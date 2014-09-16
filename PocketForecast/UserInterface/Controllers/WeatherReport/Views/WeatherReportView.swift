@@ -220,7 +220,7 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
         self.lastUpdateLabel.textColor = UIColor(hexRGB: 0xf9f7f4)
         self.lastUpdateLabel.backgroundColor = UIColor.clearColor()
         self.lastUpdateLabel.textAlignment = NSTextAlignment.Center
-        self.addSubview(self.lastUpdateLabel)
+        self.toolbar.addSubview(self.lastUpdateLabel)
     }
     
     private func colorForRow(row : Int) -> UIColor {

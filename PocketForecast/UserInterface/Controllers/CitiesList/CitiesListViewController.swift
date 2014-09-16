@@ -98,7 +98,9 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
         
         let cityName : String = cities!.objectAtIndex(indexPath.row) as String
         cityDao.saveCurrentlySelectedCity(cityName)
-        self.assembly.rootViewController().dismissCitiesListController()
+        
+        let rootViewController = self.assembly.rootViewController() as RootViewController
+        rootViewController.dismissCitiesListController()
     }
     
     public func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -116,7 +118,9 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     }
 
     private dynamic func addCity() {
-        self.assembly.rootViewController().showAddCitiesController()
+        
+        let rootViewController = self.assembly.rootViewController() as RootViewController
+        rootViewController.showAddCitiesController()
     }
     
     private func refreshCitiesList() {

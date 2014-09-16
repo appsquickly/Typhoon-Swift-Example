@@ -3,7 +3,6 @@
 //
 
 #import "Typhoon.h"
-#import "PFRootViewController.h"
 #import "PFTemperatureUnits.h"
 #import "NSURL+QueryDictionary.h"
 #import "RXMLElement.h"
@@ -15,3 +14,5 @@
 #import "CKUITools.h"
 #import "PFWeatherClient.h"
 #import "JBReplaceableRootNavigationController.h"
+#import "PaperFoldConstants.h"
+#import "PaperFoldView.h"

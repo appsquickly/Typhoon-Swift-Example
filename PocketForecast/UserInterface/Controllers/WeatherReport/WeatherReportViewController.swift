@@ -19,7 +19,7 @@ public class WeatherReportViewController: UIViewController {
             return self.view as WeatherReportView
         }
         set {
-            self.view = newValue as UIView
+            self.view = newValue
         }
     }
     
@@ -130,7 +130,8 @@ public class WeatherReportViewController: UIViewController {
     }
     
     private dynamic func presentMenu() {
-        self.assembly.rootViewController().toggleSideViewController()
+        let rootViewController = self.assembly.rootViewController() as RootViewController
+        rootViewController.toggleSideViewController()
     }
 
    
