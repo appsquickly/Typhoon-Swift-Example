@@ -12,7 +12,7 @@
 
 
 #import <XCTest/XCTest.h>
-#import "RXMLElement+PFWeatherReport.h"
+#import "PocketForecast-Swift.h"
 #import "PFWeatherReport.h"
 #import "PFCurrentConditions.h"
 #import "PFForecastConditions.h"
