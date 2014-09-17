@@ -17,7 +17,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     let fahrenheitSegmentIndex = 1
     
     //Typhoon injected properties
-    var cityDao : PFCityDao!
+    var cityDao : CityDao!
     var theme : Theme!
     var assembly : ApplicationAssembly!
     
@@ -28,7 +28,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     
     var cities : NSArray?
     
-    init(cityDao : PFCityDao, theme : Theme) {
+    init(cityDao : CityDao, theme : Theme) {
         super.init(nibName: "CitiesList", bundle: NSBundle.mainBundle())
         self.cityDao = cityDao
         self.theme = theme

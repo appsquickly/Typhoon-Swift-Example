@@ -15,7 +15,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate {
     
     //Typhoon injected properties
     
-    var cityDao : PFCityDao!
+    var cityDao : CityDao!
     var weatherClient : PFWeatherClient!
     var theme : Theme!
     var rootViewController : RootViewController!

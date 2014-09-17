@@ -5,7 +5,6 @@
 #import "Typhoon.h"
 #import "NSURL+QueryDictionary.h"
 #import "RXMLElement.h"
-#import "PFCityDao.h"
 #import "PFWeatherReportDao.h"
 #import "UIColor+CKUITools.h"
 #import "ICLoader.h"

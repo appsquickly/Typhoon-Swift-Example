@@ -16,7 +16,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var cityDao: PFCityDao?
+    var cityDao: CityDao?
     var rootViewController: RootViewController?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = self.rootViewController
         self.window?.makeKeyAndVisible()
         
-        let selectedCity : String! = cityDao?.loadSelectedCity()
+        let selectedCity : String! = cityDao!.loadSelectedCity()
         if (selectedCity == nil) {
             rootViewController?.showCitiesListController()
         }

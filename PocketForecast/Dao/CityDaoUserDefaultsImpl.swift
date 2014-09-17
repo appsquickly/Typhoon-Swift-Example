@@ -11,7 +11,7 @@
 
 import Foundation
 
-public class CityDaoUserDefaultsImpl : NSObject, PFCityDao {
+public class CityDaoUserDefaultsImpl : NSObject, CityDao {
     
     var defaults : NSUserDefaults
     let citiesListKey = "pfWeather.cities"
