@@ -11,8 +11,7 @@
 
 import Foundation
 
-@objc(CityDao)
-public protocol CityDao {
+@objc public protocol CityDao {
     
     /**
     * Returns an array containing the names of all cities to report weather for.

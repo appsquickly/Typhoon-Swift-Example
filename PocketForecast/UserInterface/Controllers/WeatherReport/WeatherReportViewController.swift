@@ -37,7 +37,7 @@ public class WeatherReportViewController: UIViewController {
     // MARK: - Initialization & Destruction
     //-------------------------------------------------------------------------------------------
     
-    public dynamic init(weatherClient : PFWeatherClient, weatherReportDao : PFWeatherReportDao, cityDao : CityDao, theme : Theme, assembly : ApplicationAssembly) {
+    public init(weatherClient : PFWeatherClient, weatherReportDao : PFWeatherReportDao, cityDao : CityDao, theme : Theme, assembly : ApplicationAssembly) {
         
         self.weatherClient = weatherClient
         self.weatherReportDao = weatherReportDao
