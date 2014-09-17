@@ -13,7 +13,7 @@ import Foundation
 
 public class WeatherClientBasicImpl : NSObject, PFWeatherClient {
     
-    var weatherReportDao : PFWeatherReportDao?
+    var weatherReportDao : WeatherReportDao?
     var serviceUrl : NSURL?
     var daysToRetrieve : NSNumber?
     

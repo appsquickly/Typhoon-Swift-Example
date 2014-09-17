@@ -11,7 +11,7 @@
 
 import Foundation
 
-public class WeatherReportDaoFileSystemImpl : NSObject, PFWeatherReportDao {
+public class WeatherReportDaoFileSystemImpl : NSObject, WeatherReportDao {
         
     public func getReportForCityName(cityName: String!) -> WeatherReport? {
         
