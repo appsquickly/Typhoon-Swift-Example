@@ -65,19 +65,28 @@ public class ApplicationAssembly: TyphoonAssembly {
         return TyphoonDefinition.withClass(WeatherReportViewController.self) {
             (definition) in
             
-            definition.useInitializer("initWithWeatherClient:weatherReportDao:cityDao:theme:assembly:") {
+            definition.useInitializer("initWithView:weatherClient:weatherReportDao:cityDao:assembly:") {
                 (initializer) in
                 
+                initializer.injectParameterWith(self.weatherReportView())
                 initializer.injectParameterWith(self.coreComponents.weatherClient())
                 initializer.injectParameterWith(self.coreComponents.weatherReportDao())
                 initializer.injectParameterWith(self.coreComponents.cityDao())
-                initializer.injectParameterWith(self.themeAssembly.currentTheme())
                 initializer.injectParameterWith(self)
 
             }
         };
     }
-
+    
+    public dynamic func weatherReportView() -> AnyObject {
+        
+        return TyphoonDefinition.withClass(WeatherReportView.self) {
+            (definition) in
+            
+            definition.injectProperty("theme", with:self.themeAssembly.currentTheme())
+        }
+    }
+    
     public dynamic func addCityViewController() -> AnyObject {
 
         return TyphoonDefinition.withClass(AddCityViewController.self) {

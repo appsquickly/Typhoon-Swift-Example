@@ -11,7 +11,7 @@
 
 import Foundation
 
-public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSource {
+public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSource, Themeable {
     
     private var backgroundView : UIImageView!
     private var cityNameLabel : UILabel!
@@ -70,6 +70,10 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
         self.initTableView()
         self.initToolbar()
         self.initLastUpdateLabel()
+    }
+    
+    public convenience override init() {
+        self.init(frame: CGRectZero)
     }
 
     public required init(coder aDecoder: NSCoder) {

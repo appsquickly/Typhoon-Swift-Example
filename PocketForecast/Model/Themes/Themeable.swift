@@ -9,12 +9,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
+import Foundation
 
-@class Theme;
-
-@protocol PFThemeable <NSObject>
-
-@property(nonatomic, strong) Theme* theme;
-
-@end
+@objc public protocol Themeable {
+    
+    var theme : Theme! { get set }
+    
+}

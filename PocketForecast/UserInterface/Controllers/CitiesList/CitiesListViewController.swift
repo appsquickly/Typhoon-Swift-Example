@@ -11,15 +11,15 @@
 
 import Foundation
 
-public class CitiesListViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
+public class CitiesListViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, Themeable {
     
     let celciusSegmentIndex = 0
     let fahrenheitSegmentIndex = 1
     
     //Typhoon injected properties
     var cityDao : CityDao!
-    var theme : Theme!
-    var assembly : ApplicationAssembly!
+    public var theme : Theme!
+    private dynamic var assembly : ApplicationAssembly!
     
     
     //Interface Builder injected properties

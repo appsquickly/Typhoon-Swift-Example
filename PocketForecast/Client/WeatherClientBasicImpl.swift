@@ -11,7 +11,7 @@
 
 import Foundation
 
-public class WeatherClientBasicImpl : NSObject, PFWeatherClient {
+public class WeatherClientBasicImpl : NSObject, WeatherClient {
     
     var weatherReportDao : WeatherReportDao?
     var serviceUrl : NSURL?

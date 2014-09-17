@@ -13,6 +13,7 @@
 		6B2E5BE519C87081000F31B4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2E5BE419C87081000F31B4 /* RootViewController.swift */; };
 		6B2E5BE719C908D5000F31B4 /* CityDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2E5BE619C908D5000F31B4 /* CityDao.swift */; };
 		6B2E5BE919C914A6000F31B4 /* WeatherReportDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2E5BE819C914A6000F31B4 /* WeatherReportDao.swift */; };
+		6B2E5BEB19C918E3000F31B4 /* Themeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2E5BEA19C918E3000F31B4 /* Themeable.swift */; };
 		6B49B31F19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B31E19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift */; };
 		6B49B32119C4428300D1A3B8 /* Configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B49B32019C4428300D1A3B8 /* Configuration.plist */; };
 		6B49B32419C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49B32319C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift */; };
@@ -108,6 +109,7 @@
 		6B2E5BE419C87081000F31B4 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		6B2E5BE619C908D5000F31B4 /* CityDao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityDao.swift; sourceTree = "<group>"; };
 		6B2E5BE819C914A6000F31B4 /* WeatherReportDao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherReportDao.swift; sourceTree = "<group>"; };
+		6B2E5BEA19C918E3000F31B4 /* Themeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Themeable.swift; sourceTree = "<group>"; };
 		6B49B31E19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RXMLElement+WeatherReport.swift"; sourceTree = "<group>"; };
 		6B49B32019C4428300D1A3B8 /* Configuration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
 		6B49B32319C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityDaoUserDefaultsImpl.swift; sourceTree = "<group>"; };
@@ -182,12 +184,10 @@
 		BA798AC9E07F264D97ACA770 /* sunset@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sunset@2x.png"; sourceTree = "<group>"; };
 		BA798AD5669A020612B839CA /* bg3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg3.png; sourceTree = "<group>"; };
 		BA798BBF4F91EF53D782E574 /* icon_rainy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_rainy.png; sourceTree = "<group>"; };
-		BA798C0B6B4D900FA67C84E5 /* PFThemeable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFThemeable.h; sourceTree = "<group>"; };
 		BA798C2EBA35DCFC44E9F6CD /* AddCity.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddCity.xib; sourceTree = "<group>"; };
 		BA798C8773496CD7E3A95CA6 /* bg4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg4.png; sourceTree = "<group>"; };
 		BA798CD5EC96425F648C2CCF /* cell_fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell_fade.png; sourceTree = "<group>"; };
 		BA798D1B491EAE11E8515805 /* bg5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg5@2x.png"; sourceTree = "<group>"; };
-		BA798D2A742E3B6ED1BCE83D /* PFWeatherClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFWeatherClient.h; sourceTree = "<group>"; };
 		BA798DB9D6A187392B3C07C1 /* icon_cloudy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_cloudy@2x.png"; sourceTree = "<group>"; };
 		BA798E6B7BCCED2C5A113449 /* icon_cloudy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cloudy.png; sourceTree = "<group>"; };
 		BA798E9E3746332B48394016 /* Questrial-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file.otf; path = "Questrial-Regular.otf"; sourceTree = "<group>"; };
@@ -375,8 +375,8 @@
 			isa = PBXGroup;
 			children = (
 				6BDE263319BD9A59003DEB1D /* Theme.swift */,
-				BA798C0B6B4D900FA67C84E5 /* PFThemeable.h */,
 				6BDE263519BDA54F003DEB1D /* ThemeFactory.swift */,
+				6B2E5BEA19C918E3000F31B4 /* Themeable.swift */,
 			);
 			path = Themes;
 			sourceTree = "<group>";
@@ -509,7 +509,6 @@
 		BA798E7C3679201AEC43BC53 /* Client */ = {
 			isa = PBXGroup;
 			children = (
-				BA798D2A742E3B6ED1BCE83D /* PFWeatherClient.h */,
 				6BDE263719BE8235003DEB1D /* WeatherClient.swift */,
 				6BDE263919BE858E003DEB1D /* WeatherClientBasicImpl.swift */,
 				6B49B31E19C423A300D1A3B8 /* RXMLElement+WeatherReport.swift */,
@@ -782,6 +781,7 @@
 				6B49B32419C44BBC00D1A3B8 /* CityDaoUserDefaultsImpl.swift in Sources */,
 				6B49B32619C46D8300D1A3B8 /* WeatherReportDaoFileSystemImpl.swift in Sources */,
 				6BDE263A19BE858E003DEB1D /* WeatherClientBasicImpl.swift in Sources */,
+				6B2E5BEB19C918E3000F31B4 /* Themeable.swift in Sources */,
 				6B2E5BE919C914A6000F31B4 /* WeatherReportDao.swift in Sources */,
 				6B2E5BE719C908D5000F31B4 /* CityDao.swift in Sources */,
 				6BA5ACB119BC060C0088943D /* CurrentConditions.swift in Sources */,

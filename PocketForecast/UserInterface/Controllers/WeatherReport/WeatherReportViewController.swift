@@ -23,10 +23,9 @@ public class WeatherReportViewController: UIViewController {
         }
     }
     
-    public private(set) var weatherClient : PFWeatherClient
+    public private(set) var weatherClient : WeatherClient
     public private(set) var weatherReportDao : WeatherReportDao
     public private(set) var cityDao : CityDao
-    public private(set) var theme : Theme
     public private(set) var assembly : ApplicationAssembly
     
     private var cityName : String!
@@ -37,15 +36,16 @@ public class WeatherReportViewController: UIViewController {
     // MARK: - Initialization & Destruction
     //-------------------------------------------------------------------------------------------
     
-    public init(weatherClient : PFWeatherClient, weatherReportDao : WeatherReportDao, cityDao : CityDao, theme : Theme, assembly : ApplicationAssembly) {
+    public dynamic init(view: WeatherReportView, weatherClient : WeatherClient, weatherReportDao : WeatherReportDao, cityDao : CityDao, assembly : ApplicationAssembly) {
         
         self.weatherClient = weatherClient
         self.weatherReportDao = weatherReportDao
         self.cityDao = cityDao
-        self.theme = theme
         self.assembly = assembly
             
         super.init(nibName: nil, bundle: nil)
+        
+        self.weatherReportView = view
                     
     }
     
@@ -57,12 +57,6 @@ public class WeatherReportViewController: UIViewController {
     //-------------------------------------------------------------------------------------------
     // MARK: - Overridden Methods
     //-------------------------------------------------------------------------------------------
-
-    public override func loadView() {
-        self.weatherReportView = WeatherReportView(frame: CGRectZero)
-        self.weatherReportView.theme = theme
-    }
-
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)

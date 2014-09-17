@@ -11,12 +11,12 @@
 
 import UIKit
 
-class AddCityViewController: UIViewController, UITextFieldDelegate {
+class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     
     //Typhoon injected properties
     
     var cityDao : CityDao!
-    var weatherClient : PFWeatherClient!
+    var weatherClient : WeatherClient!
     var theme : Theme!
     var rootViewController : RootViewController!
     

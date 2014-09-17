@@ -11,8 +11,11 @@
 
 import Foundation
 
-protocol WeatherClient {
+@objc public protocol WeatherClient {
     
     func loadWeatherReportFor(city: String!, onSuccess successBlock: ((WeatherReport!) -> Void)!, onError errorBlock: ((String!) -> Void)!)
+    
+    
+    
     
 }
