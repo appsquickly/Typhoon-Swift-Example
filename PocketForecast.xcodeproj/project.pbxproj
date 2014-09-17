@@ -128,7 +128,6 @@
 		6BA1400215B16B110071C7A0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		6BA5ACB019BC060C0088943D /* CurrentConditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentConditions.swift; sourceTree = "<group>"; };
 		6BA5ACB419BC61100088943D /* Temperature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temperature.swift; sourceTree = "<group>"; };
-		6BA5ACB719BD76510088943D /* PFTemperatureUnits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFTemperatureUnits.h; sourceTree = "<group>"; };
 		6BBD79C619C682C4003BE707 /* WeatherReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherReportViewController.swift; sourceTree = "<group>"; };
 		6BC1C67B1880DE0100A9B367 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6BD511691880E794009C487A /* PocketForecastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketForecastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -473,7 +472,6 @@
 				6B6EEABE19BBDCA400B3AABB /* ForecastConditions.swift */,
 				6BA5ACB019BC060C0088943D /* CurrentConditions.swift */,
 				6BA5ACB419BC61100088943D /* Temperature.swift */,
-				6BA5ACB719BD76510088943D /* PFTemperatureUnits.h */,
 				6B4E0FCA19BD802C009D705E /* WeatherReport.swift */,
 			);
 			path = Model;

@@ -11,7 +11,10 @@
 
 import Foundation
 
-
+public enum TemperatureUnits : Int {
+    case Celsius
+    case Fahrenheit
+}
 
 
 public class Temperature : NSObject, NSCoding {
@@ -20,12 +23,12 @@ public class Temperature : NSObject, NSCoding {
     private var _shortFormatter : NSNumberFormatter
     private var _longFormatter : NSNumberFormatter
 
-    public class func defaultUnits() -> PFTemperatureUnits {
-        return PFTemperatureUnits
+    public class func defaultUnits() -> TemperatureUnits {
+        return TemperatureUnits
             .fromRaw(NSUserDefaults.standardUserDefaults().integerForKey("pf.default.units"))!
     }
 
-    public class func setDefaultUnits(units : PFTemperatureUnits) {
+    public class func setDefaultUnits(units : TemperatureUnits) {
 
         NSUserDefaults.standardUserDefaults().setInteger(units.toRaw(), forKey: "pf.default.units")
     }
@@ -75,7 +78,7 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public func asShortStringInDefaultUnits() -> String {
-        if (Temperature.defaultUnits() == PFTemperatureUnits.Celsius) {
+        if (Temperature.defaultUnits() == TemperatureUnits.Celsius) {
             return self.asShortStringInCelsius()
         }
         else {
@@ -84,7 +87,7 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public func asLongStringInDefualtUnits() -> String {
-        if (Temperature.defaultUnits() == PFTemperatureUnits.Celsius) {
+        if (Temperature.defaultUnits() == TemperatureUnits.Celsius) {
             return self.asLongStringInCelsius()
         }
         else {

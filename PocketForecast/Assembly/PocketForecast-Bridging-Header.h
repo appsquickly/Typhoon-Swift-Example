@@ -3,7 +3,6 @@
 //
 
 #import "Typhoon.h"
-#import "PFTemperatureUnits.h"
 #import "NSURL+QueryDictionary.h"
 #import "RXMLElement.h"
 #import "PFCityDao.h"

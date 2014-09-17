@@ -45,7 +45,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
             UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addCity")
         self.citiesListTableView.editing = true
         self.temperatureUnitsControl.addTarget(self, action: "saveTemperatureUnitPreference", forControlEvents: UIControlEvents.ValueChanged)
-        if (Temperature.defaultUnits() == PFTemperatureUnits.Celsius) {
+        if (Temperature.defaultUnits() == TemperatureUnits.Celsius) {
             self.temperatureUnitsControl.selectedSegmentIndex = celciusSegmentIndex
         }
         else {
@@ -130,10 +130,10 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     
     private dynamic func saveTemperatureUnitPreference() {
         if (self.temperatureUnitsControl.selectedSegmentIndex == celciusSegmentIndex) {
-            Temperature.setDefaultUnits(PFTemperatureUnits.Celsius)
+            Temperature.setDefaultUnits(TemperatureUnits.Celsius)
         }
         else {
-            Temperature.setDefaultUnits(PFTemperatureUnits.Fahrenheit)
+            Temperature.setDefaultUnits(TemperatureUnits.Fahrenheit)
         }
     }
     
