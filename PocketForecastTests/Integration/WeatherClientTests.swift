@@ -55,13 +55,14 @@ public class WeatherClientTests : XCTestCase {
         
         self.weatherClient.loadWeatherReportFor("Foobarville", onSuccess: nil, onError: {
                 (message) in
-                
+            
                 receivedMessage = message
+                println("Got message: " + message)
         })
         
         
         TyphoonTestUtils.waitForCondition( { () -> Bool in
-            return receivedMessage == "No weather reports for 'Foobarville'"
+            return receivedMessage == "Unable to find any matching weather location to the query submitted!"
         })
 
         
