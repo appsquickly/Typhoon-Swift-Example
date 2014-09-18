@@ -5,3 +5,4 @@
 
 #import "PocketForecast-Bridging-Header.h"
 #import <XCTest/XCTest.h>
+#import "TyphoonTestUtils.h"

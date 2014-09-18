@@ -14,8 +14,7 @@ PODS:
     - OCHamcrest (~> 4.0)
     - TPWeakProxy (~> 1.0)
   - PaperFold (1.2)
-  - RaptureXML (1.0.1)
-  - TPWeakProxy (1.0.0)
+  - TPWeakProxy (1.0.1)
   - Typhoon (HEAD based on 2.2.1):
     - Typhoon/no-arc
   - Typhoon/no-arc (HEAD based on 2.2.1)
@@ -31,7 +30,6 @@ DEPENDENCIES:
   - OCLogTemplate
   - OCMockito
   - PaperFold (from `https://github.com/jasperblues/PaperFold-for-iOS.git`, tag `1.2-no-gesture-recognizers`)
-  - RaptureXML
   - Typhoon (HEAD)
 
 EXTERNAL SOURCES:
@@ -51,8 +49,7 @@ SPEC CHECKSUMS:
   OCLogTemplate: 441259f3660762183dc412d6c30e68a6b6bd6adf
   OCMockito: eca2670b3ce4a457d316b046a36d6f2b980a4da7
   PaperFold: 56c21be56fe6454fa99927b251396471d341c874
-  RaptureXML: b9b0aca9c68c684c189af73dd5e8f8fdeec74600
-  TPWeakProxy: a23251ba7fbe268c93f809cc072ef834f5063798
+  TPWeakProxy: da4177b6ae5eff685642c1cd9698f71ef7060ea5
   Typhoon: 9b807bc020c4945824ee19130bb11fb3ef5eaea8
 
 COCOAPODS: 0.33.1

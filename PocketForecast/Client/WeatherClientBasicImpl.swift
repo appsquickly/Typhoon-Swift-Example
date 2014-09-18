@@ -29,23 +29,24 @@ public class WeatherClientBasicImpl : NSObject, WeatherClient {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
             let url = self.queryURL(city)
             let data = NSData(contentsOfURL: url)
-            let rootElement : RXMLElement = RXMLElement.elementFromXMLData(data) as RXMLElement
-            let errorElement : RXMLElement? = rootElement.child("error")
-            if (errorElement != nil) {
-                
+            
+            let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
+            
+            if let error = dictionary.parseError() {
                 dispatch_async(dispatch_get_main_queue()) {
-                    errorBlock("Unexpected error")
+                    errorBlock(error.rootCause())
+                    return
                 }
             }
             else {
-                let weatherReport : WeatherReport = rootElement.asWeatherReport()
+                let weatherReport : WeatherReport = dictionary.toWeatherReport()
                 self.weatherReportDao!.saveReport(weatherReport)
                 dispatch_async(dispatch_get_main_queue()) {
                     successBlock(weatherReport)
+                    return
                 }
             }
         }
-        
     }
     
     
@@ -54,7 +55,7 @@ public class WeatherClientBasicImpl : NSObject, WeatherClient {
         let serviceUrl : NSURL = self.serviceUrl!
         let url : NSURL = serviceUrl.uq_URLByAppendingQueryDictionary([
             "q" : city,
-            "format" : "xml",
+            "format" : "json",
             "num_of_days" : daysToRetrieve!.stringValue,
             "key" : apiKey!
             ])

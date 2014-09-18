@@ -1,0 +1,157 @@
+{ "data": {
+    "current_condition": [
+        {
+            "cloudcover": "75",
+            "humidity": "83",
+            "observation_time": "04:57 AM",
+            "precipMM": "0.0",
+            "pressure": "1010",
+            "temp_C": "19",
+            "temp_F": "66",
+            "visibility": "16",
+            "weatherCode": "116",
+            "weatherDesc": [
+                {
+                    "value": "Partly Cloudy"
+                }
+            ],
+            "weatherIconUrl": [
+                {
+                    "value": "http:\/\/cdn.worldweatheronline.net\/images\/wsymbols01_png_64\/wsymbol_0004_black_low_cloud.png"
+                }
+            ],
+            "winddir16Point": "W",
+            "winddirDegree": "260",
+            "windspeedKmph": "22",
+            "windspeedMiles": "14"
+        }
+    ],
+    "request": [
+        {
+            "query": "San Francisco, United States Of America",
+            "type": "City"
+        }
+    ],
+    "weather": [
+        {
+            "date": "2014-09-16",
+            "precipMM": "0.0",
+            "tempMaxC": "21",
+            "tempMaxF": "69",
+            "tempMinC": "14",
+            "tempMinF": "58",
+            "weatherCode": "113",
+            "weatherDesc": [
+                {
+                    "value": "Sunny"
+                }
+            ],
+            "weatherIconUrl": [
+                {
+                    "value": "http:\/\/cdn.worldweatheronline.net\/images\/wsymbols01_png_64\/wsymbol_0001_sunny.png"
+                }
+            ],
+            "winddir16Point": "WNW",
+            "winddirDegree": "297",
+            "winddirection": "WNW",
+            "windspeedKmph": "14",
+            "windspeedMiles": "9"
+        },
+        {
+            "date": "2014-09-17",
+            "precipMM": "0.0",
+            "tempMaxC": "19",
+            "tempMaxF": "65",
+            "tempMinC": "16",
+            "tempMinF": "62",
+            "weatherCode": "113",
+            "weatherDesc": [
+                {
+                    "value": "Sunny"
+                }
+            ],
+            "weatherIconUrl": [
+                {
+                    "value": "http:\/\/cdn.worldweatheronline.net\/images\/wsymbols01_png_64\/wsymbol_0001_sunny.png"
+                }
+            ],
+            "winddir16Point": "SW",
+            "winddirDegree": "233",
+            "winddirection": "SW",
+            "windspeedKmph": "16",
+            "windspeedMiles": "10"
+        },
+        {
+            "date": "2014-09-18",
+            "precipMM": "0.9",
+            "tempMaxC": "20",
+            "tempMaxF": "67",
+            "tempMinC": "15",
+            "tempMinF": "60",
+            "weatherCode": "116",
+            "weatherDesc": [
+                {
+                    "value": "Partly Cloudy"
+                }
+            ],
+            "weatherIconUrl": [
+                {
+                    "value": "http:\/\/cdn.worldweatheronline.net\/images\/wsymbols01_png_64\/wsymbol_0002_sunny_intervals.png"
+                }
+            ],
+            "winddir16Point": "S",
+            "winddirDegree": "190",
+            "winddirection": "S",
+            "windspeedKmph": "21",
+            "windspeedMiles": "13"
+        },
+        {
+            "date": "2014-09-19",
+            "precipMM": "0.0",
+            "tempMaxC": "20",
+            "tempMaxF": "67",
+            "tempMinC": "15",
+            "tempMinF": "59",
+            "weatherCode": "113",
+            "weatherDesc": [
+                {
+                    "value": "Sunny"
+                }
+            ],
+            "weatherIconUrl": [
+                {
+                    "value": "http:\/\/cdn.worldweatheronline.net\/images\/wsymbols01_png_64\/wsymbol_0001_sunny.png"
+                }
+            ],
+            "winddir16Point": "W",
+            "winddirDegree": "279",
+            "winddirection": "W",
+            "windspeedKmph": "17",
+            "windspeedMiles": "11"
+        },
+        {
+            "date": "2014-09-20",
+            "precipMM": "0.0",
+            "tempMaxC": "20",
+            "tempMaxF": "67",
+            "tempMinC": "15",
+            "tempMinF": "59",
+            "weatherCode": "113",
+            "weatherDesc": [
+                {
+                    "value": "Sunny"
+                }
+            ],
+            "weatherIconUrl": [
+                {
+                    "value": "http:\/\/cdn.worldweatheronline.net\/images\/wsymbols01_png_64\/wsymbol_0001_sunny.png"
+                }
+            ],
+            "winddir16Point": "SW",
+            "winddirDegree": "226",
+            "winddirection": "SW",
+            "windspeedKmph": "14",
+            "windspeedMiles": "9"
+        }
+    ]
+}}

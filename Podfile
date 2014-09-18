@@ -11,7 +11,6 @@ target :PocketForecast, :exclusive => true do
     pod 'NSURL+QueryDictionary'
     pod 'OCLogTemplate'
     pod 'PaperFold', :git => 'https://github.com/jasperblues/PaperFold-for-iOS.git', :tag => '1.2-no-gesture-recognizers'
-    pod 'RaptureXML'
     
 end
 
