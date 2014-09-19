@@ -17,6 +17,14 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
     let citiesListKey = "pfWeather.cities"
     let currentCityKey = "pfWeather.currentCityKey"
     
+    let defaultCities = [
+        "Manila",
+        "Madrid",
+        "San Francisco",
+        "Phnom Penh",
+        "Omsk"
+    ]
+    
     
     init(defaults : NSUserDefaults) {
         self.defaults = defaults
@@ -26,13 +34,7 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
         
         var cities : NSArray? = self.defaults.arrayForKey(self.citiesListKey)
         if (cities == nil) {
-            cities = [
-                "Manila",
-                "Madrid",
-                "San Francisco",
-                "Phnom Penh",
-                "Omsk"
-            ]
+            cities = defaultCities;
             self.defaults.setObject(cities, forKey:self.citiesListKey)
         }
         return cities!.sortedArrayUsingSelector("caseInsensitiveCompare:")
@@ -41,7 +43,14 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
     public func saveCity(name: String!) {
 
         let trimmedName = name.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        var cities = NSMutableArray(array: self.defaults.arrayForKey(self.citiesListKey)!)
+        
+        var savedCities : Array? = self.defaults.arrayForKey(self.citiesListKey)
+        if (savedCities == nil) {
+            savedCities = defaultCities
+        }
+        
+        var cities = NSMutableArray(array: savedCities!)
+        
         var canAddCity = true
         for city in cities {
             if (city.lowercaseString == trimmedName.lowercaseString) {

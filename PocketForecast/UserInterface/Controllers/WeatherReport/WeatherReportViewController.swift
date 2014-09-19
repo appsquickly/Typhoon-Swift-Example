@@ -28,7 +28,7 @@ public class WeatherReportViewController: UIViewController {
     public private(set) var cityDao : CityDao
     public private(set) var assembly : ApplicationAssembly
     
-    private var cityName : String!
+    private var cityName : String?
     private var weatherReport : WeatherReport?
     
     
@@ -61,17 +61,19 @@ public class WeatherReportViewController: UIViewController {
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController!.navigationBarHidden = true
+
         self.cityName = self.cityDao.loadSelectedCity()
-        self.weatherReport = self.weatherReportDao.getReportForCityName(self.cityName)
-        if (self.weatherReport != nil) {
-            self.weatherReportView.weatherReport = self.weatherReport
-        }
-        else if (self.cityName != nil) {
-            self.refreshData()
+        if (self.cityName != nil) {
+            self.weatherReport = self.weatherReportDao.getReportForCityName(self.cityName)
+            if (self.weatherReport != nil) {
+                self.weatherReportView.weatherReport = self.weatherReport
+            }
+            else if (self.cityName != nil) {
+                self.refreshData()
+            }
         }
     }
-    
- 
+
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         

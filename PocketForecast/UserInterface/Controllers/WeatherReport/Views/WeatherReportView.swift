@@ -26,22 +26,25 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
     
     public var toolbar : UIToolbar!
     
-    public var weatherReport : WeatherReport! {
+    public var weatherReport : WeatherReport? {
         willSet(weatherReport) {
+            
+            if (weatherReport != nil) {
+                self.tableView.hidden = false
+                self.conditionsIcon.hidden = false
+                self.temperatureLabelContainer.hidden = false
+                let indexPaths = [
+                    NSIndexPath(forRow: 0, inSection: 0),
+                    NSIndexPath(forRow: 1, inSection: 0),
+                    NSIndexPath(forRow: 2, inSection: 0)
+                ]
+                self.tableView.reloadData()
+                self.cityNameLabel.text = weatherReport!.cityDisplayName
+                self.temperatureLabel.text = weatherReport!.currentConditions.temperature!.asShortStringInDefaultUnits()
+                self.conditionsDescriptionLabel.text = weatherReport!.currentConditions.longSummary()
+                self.lastUpdateLabel.text = NSString(format: "Updated %@", weatherReport!.reportDateAsString())
 
-            self.tableView.hidden = false
-            self.conditionsIcon.hidden = false
-            self.temperatureLabelContainer.hidden = false
-            let indexPaths = [
-                NSIndexPath(forRow: 0, inSection: 0),
-                NSIndexPath(forRow: 1, inSection: 0),
-                NSIndexPath(forRow: 2, inSection: 0)
-            ]
-            self.tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
-            self.cityNameLabel.text = weatherReport.cityDisplayName
-            self.temperatureLabel.text = weatherReport.currentConditions.temperature!.asShortStringInDefaultUnits()
-            self.conditionsDescriptionLabel.text = weatherReport.currentConditions.longSummary()
-            self.lastUpdateLabel.text = NSString(format: "Updated %@", weatherReport.reportDateAsString())
+            }
         }
     }
     
@@ -123,8 +126,8 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
             cell = ForecastTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reuseIdentifier)
         }
         
-        if (self.weatherReport.forecast.count > indexPath.row) {
-            let forecastConditions : ForecastConditions = self.weatherReport.forecast[indexPath.row]
+        if (self.weatherReport != nil && self.weatherReport!.forecast.count > indexPath.row) {
+            let forecastConditions : ForecastConditions = self.weatherReport!.forecast[indexPath.row]
             cell!.dayLabel.text = forecastConditions.longDayOfTheWeek()
             cell!.descriptionLabel.text = forecastConditions.summary
             cell!.lowTempLabel.text = forecastConditions.low!.asShortStringInDefaultUnits()

@@ -6,7 +6,6 @@ target :PocketForecast, :exclusive => true do
     
     pod 'CKUITools'
     pod 'ICLoader'
-    pod 'JBReplaceableRootNavigationController'
     pod 'NGAParallaxMotion'
     pod 'NSURL+QueryDictionary'
     pod 'OCLogTemplate'

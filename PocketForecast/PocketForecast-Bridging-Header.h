@@ -8,7 +8,6 @@
 #import "ICLoader.h"
 #import "NGAParallaxMotion.h"
 #import "CKUITools.h"
-#import "JBReplaceableRootNavigationController.h"
 #import "PaperFoldConstants.h"
 #import "PaperFoldView.h"
 

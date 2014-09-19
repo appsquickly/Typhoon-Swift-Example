@@ -20,7 +20,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
 
     let SIDE_CONTROLLER_WIDTH : CGFloat = 245.0
     
-    private var navigator : JBReplaceableRootNavigationController!
+    private var navigator : UINavigationController!
     private var mainContentViewContainer : UIView!
     private var sideViewState : SideViewState!
     private var assembly : ApplicationAssembly!
@@ -72,7 +72,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
                 self.makeNavigationControllerWithRoot(controller)
             }
             else if (replaceRoot) {
-                self.navigator.setRootViewController(controller, animated: true)
+                self.navigator.setViewControllers([controller], animated: true)
             }
             else {
                 self.navigator.pushViewController(controller, animated: true)
@@ -212,7 +212,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     //-------------------------------------------------------------------------------------------
 
     private func makeNavigationControllerWithRoot(root : UIViewController) {
-        self.navigator = JBReplaceableRootNavigationController(rootViewController: root)
+        self.navigator = UINavigationController(rootViewController: root)
         self.navigator.view.frame = self.view.bounds
         mainContentViewContainer.addSubview(self.navigator.view)
     }

@@ -24,12 +24,6 @@
 #define COCOAPODS_VERSION_MINOR_ICLoader 0
 #define COCOAPODS_VERSION_PATCH_ICLoader 0
 
-// JBReplaceableRootNavigationController
-#define COCOAPODS_POD_AVAILABLE_JBReplaceableRootNavigationController
-#define COCOAPODS_VERSION_MAJOR_JBReplaceableRootNavigationController 1
-#define COCOAPODS_VERSION_MINOR_JBReplaceableRootNavigationController 0
-#define COCOAPODS_VERSION_PATCH_JBReplaceableRootNavigationController 0
-
 // NGAParallaxMotion
 #define COCOAPODS_POD_AVAILABLE_NGAParallaxMotion
 #define COCOAPODS_VERSION_MAJOR_NGAParallaxMotion 1
