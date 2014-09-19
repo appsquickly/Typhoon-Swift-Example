@@ -11,9 +11,23 @@
 
 public class ApplicationAssembly: TyphoonAssembly {
     
+    //-------------------------------------------------------------------------------------------
+    // MARK: - Bootstrapping
+    //-------------------------------------------------------------------------------------------
+    
+    
+    /*
+     * These are modules - assemblies collaborate to provie components to this one.  At runtime you
+     * can instantiate Typhoon with any assembly tha satisfies the module interface.
+     */
     var coreComponents : CoreComponents!
     var themeAssembly : ThemeAssembly!
-        
+    
+    
+    /* 
+     * This is the definition for our AppDelegate. Typhoon will inject the specified properties 
+     * at application startup. 
+     */
     public dynamic func appDelegate() -> AnyObject {
         return TyphoonDefinition.withClass(AppDelegate.self) {
             (definition) in
@@ -24,11 +38,19 @@ public class ApplicationAssembly: TyphoonAssembly {
     }
 
     
+    /*
+     * A config definition, referencing properties that will be loaded from a plist. 
+     */
     public dynamic func config() -> AnyObject {
         
         return TyphoonDefinition.configDefinitionWithName("Configuration.plist")
     }
 
+    
+    //-------------------------------------------------------------------------------------------
+    // MARK: - Main Assembly
+    //-------------------------------------------------------------------------------------------
+    
     public dynamic func rootViewController() -> AnyObject {
         return TyphoonDefinition.withClass(RootViewController.self) {
             (definition) in
