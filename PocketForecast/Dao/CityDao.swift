@@ -11,6 +11,10 @@
 
 import Foundation
 
+/*
+* City DAO (persistence) protocol.
+* (Currently, injected protocols require the @objc annotation).
+*/
 @objc public protocol CityDao {
     
     /**
