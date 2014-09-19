@@ -19,6 +19,7 @@ private enum SideViewState {
 public class RootViewController : UIViewController, PaperFoldViewDelegate {
 
     let SIDE_CONTROLLER_WIDTH : CGFloat = 245.0
+    let lockQueue = dispatch_queue_create("pf.root.lockQueue", nil)
     
     private var navigator : UINavigationController!
     private var mainContentViewContainer : UIView!
@@ -65,7 +66,6 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     
     public func pushViewController(controller : UIViewController, replaceRoot : Bool) {
         
-        let lockQueue = dispatch_queue_create("pf.root.lockQueue", nil)
         dispatch_sync(lockQueue) {
             
             if (self.navigator == nil) {
