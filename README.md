@@ -1,7 +1,9 @@
-Typhoon-example
+Pocket Forecast (Swift)
 ==========================
 
 An example application built with <a href ="http://www.typhoonframework.org">Typhoon</a>.
+
+* Looking for an Objective-C sample application? We <a href="https://github.com/typhoon-framework/Typhoon-example">have one here</a>. 
 
 ###Features: 
 
