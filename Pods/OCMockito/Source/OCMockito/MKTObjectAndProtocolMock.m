@@ -1,7 +1,7 @@
 //
 //  OCMockito - MKTObjectAndProtocolMock.m
 //  Copyright 2014 Jonathan M. Reid. See LICENSE.txt
-//  
+//
 //  Created by: Kevin Lundberg
 //  Source: https://github.com/jonreid/OCMockito
 //
@@ -11,10 +11,11 @@
 #import <objc/runtime.h>
 
 
+@interface MKTObjectAndProtocolMock ()
+@property (nonatomic, strong, readonly) Class mockedClass;
+@end
+
 @implementation MKTObjectAndProtocolMock
-{
-    Class _mockedClass;
-}
 
 + (instancetype)mockForClass:(Class)aClass protocol:(Protocol *)protocol
 {
@@ -32,17 +33,16 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"mock object of %@ implementing %@ protocol",
-            NSStringFromClass(_mockedClass), NSStringFromProtocol(_mockedProtocol)];
+            NSStringFromClass(self.mockedClass), NSStringFromProtocol(self.mockedProtocol)];
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    NSMethodSignature *signature = [_mockedClass instanceMethodSignatureForSelector:aSelector];
-    
+    NSMethodSignature *signature = [self.mockedClass instanceMethodSignatureForSelector:aSelector];
     if (signature)
         return signature;
-    else
-        return [super methodSignatureForSelector:aSelector];
+
+    return [super methodSignatureForSelector:aSelector];
 }
 
 
@@ -50,7 +50,7 @@
 
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
-    return [_mockedClass instancesRespondToSelector:aSelector] ||
+    return [self.mockedClass instancesRespondToSelector:aSelector] ||
            [super respondsToSelector:aSelector];
 }
 

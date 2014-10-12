@@ -10,7 +10,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#import <FXBlurView/FXBlurView.h>
 #import "ICLoader.h"
 #import <CKUITools/CKUITools.h>
 #import <CKUITools/UIColor+CKUITools.h>
@@ -20,8 +19,7 @@ static NSString *icLoaderLabelFontName;
 
 @interface ICLoader ()
 
-@property(nonatomic, strong) FXBlurView *contentView;
-@property(nonatomic, strong, readonly) UIView *backgroundTintView;
+@property(nonatomic, strong) UIView *backgroundView;
 @property(nonatomic, strong, readonly) UIImageView *logoView;
 @property(nonatomic, strong, readonly) UIView *centerDot;
 @property(nonatomic, strong, readonly) UIView *leftDot;
@@ -44,16 +42,12 @@ static NSString *icLoaderLabelFontName;
         ICLoader *loader = [[ICLoader alloc] initWithWithImageName:icLoaderLogoImageName];
         dispatch_async(dispatch_get_main_queue(), ^
         {
-
-            [loader.contentView setUnderlyingView:controller.view];
-            [loader setAlpha:0];
             [controller.view addSubview:loader];
             [controller.view setUserInteractionEnabled:NO];
 
             [UIView transitionWithView:loader duration:0.33 options:UIViewAnimationOptionTransitionFlipFromBottom animations:^
             {
                 [loader setFrame:controller.view.bounds];
-                [loader setAlpha:1.0];
             } completion:nil];
         });
         return loader;
@@ -117,16 +111,13 @@ static NSString *icLoaderLabelFontName;
     self = [super initWithFrame:CGRectZero];
     if (self)
     {
-        _contentView = [[FXBlurView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
-        [_contentView setBlurEnabled:YES];
-        [_contentView setDynamic:YES];
-        [_contentView setBlurRadius:15];
-        [_contentView setTintColor:[UIColor colorWithHexRGB:0x686868]];
+        _backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
+        [_backgroundView setBackgroundColor:[UIColor colorWithHexRGB:0x666677 alpha:0.8]];
+        [_backgroundView.layer setCornerRadius:45];
+        [_backgroundView setClipsToBounds:YES];
+        [self addSubview:_backgroundView];
 
-        [_contentView.layer setCornerRadius:45];
-        [self addSubview:_contentView];
-
-        [self initBackground:imageName];
+        [self initLogo:imageName];
         [self initDots];
         [self initLabel];
         [self animateToDot:_rightDot];
@@ -142,26 +133,22 @@ static NSString *icLoaderLabelFontName;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [_contentView centerInRect:self.bounds];
+    [_backgroundView centerInRect:self.bounds];
 }
 
 
 /* ====================================================================================================================================== */
 #pragma mark - Private Methods
 
-- (void)initBackground:(NSString *)logoImageName
+- (void)initLogo:(NSString *)logoImageName
 {
-    _backgroundTintView = [[UIView alloc] initWithFrame:_contentView.bounds];
-    [_backgroundTintView setBackgroundColor:[UIColor colorWithHexRGB:0x000000 alpha:0.35]];
-    [_contentView addSubview:_backgroundTintView];
-
     UIImage *image = [UIImage imageNamed:logoImageName];
     _logoView = [[UIImageView alloc] initWithImage:image];
     [_logoView setViewSize:image.size];
     [_logoView centerInRect:CGRectMake(0, 7, 90, 45)];
 
     [_logoView setContentMode:UIViewContentModeScaleAspectFit];
-    [_contentView addSubview:_logoView];
+    [_backgroundView addSubview:_logoView];
 
 }
 
@@ -169,37 +156,37 @@ static NSString *icLoaderLabelFontName;
 {
 
     CGFloat dodWidth = 5;
-    CGFloat centerX = (_contentView.frame.size.width - dodWidth) / 2;
-    CGFloat dotY = ((_contentView.frame.size.height - dodWidth) / 2) + 9;
+    CGFloat centerX = (_backgroundView.frame.size.width - dodWidth) / 2;
+    CGFloat dotY = ((_backgroundView.frame.size.height - dodWidth) / 2) + 9;
 
     _centerDot = [[UIView alloc] initWithFrame:CGRectMake(centerX, dotY, dodWidth, dodWidth)];
     [_centerDot setBackgroundColor:[UIColor whiteColor]];
     [_centerDot.layer setCornerRadius:_centerDot.width / 2];
     [_centerDot.layer setOpacity:1.0];
-    [_contentView addSubview:_centerDot];
+    [_backgroundView addSubview:_centerDot];
 
     _leftDot = [[UIView alloc] initWithFrame:CGRectMake(centerX - 11, dotY, dodWidth, dodWidth)];
     [_leftDot setBackgroundColor:[UIColor whiteColor]];
     [_leftDot.layer setCornerRadius:_leftDot.width / 2];
     [_leftDot.layer setOpacity:0.5];
-    [_contentView addSubview:_leftDot];
+    [_backgroundView addSubview:_leftDot];
 
     _rightDot = [[UIView alloc] initWithFrame:CGRectMake(centerX + 11, dotY, dodWidth, dodWidth)];
     [_rightDot setBackgroundColor:[UIColor whiteColor]];
     [_rightDot.layer setCornerRadius:_rightDot.width / 2];
     [_rightDot.layer setOpacity:0.5];
-    [_contentView addSubview:_rightDot];
+    [_backgroundView addSubview:_rightDot];
 }
 
 - (void)initLabel
 {
-    _label = [[UILabel alloc] initWithFrame:CGRectMake(2 + (_contentView.frame.size.width - 65) / 2, 60, 65, 14)];
+    _label = [[UILabel alloc] initWithFrame:CGRectMake(2 + (_backgroundView.frame.size.width - 65) / 2, 60, 65, 14)];
     [_label setBackgroundColor:[UIColor clearColor]];
     [_label setTextColor:[UIColor whiteColor]];
     [_label setTextAlignment:NSTextAlignmentCenter];
     [_label setFont:icLoaderLabelFontName ? [UIFont fontWithName:icLoaderLabelFontName size:10] : [UIFont systemFontOfSize:10]];
     [_label setText:@"Loading..."];
-    [_contentView addSubview:_label];
+    [_backgroundView addSubview:_label];
 }
 
 
@@ -234,3 +221,4 @@ static NSString *icLoaderLabelFontName;
 
 
 @end
+

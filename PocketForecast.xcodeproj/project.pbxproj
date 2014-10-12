@@ -1023,7 +1023,7 @@
 				INFOPLIST_FILE = "PocketForecast/PocketForecast-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-Objc",
 					"-all_load",
@@ -1036,7 +1036,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2 \"${PROJECT_DIR}/Pods\"/**";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1058,7 +1058,7 @@
 				INFOPLIST_FILE = "PocketForecast/PocketForecast-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-Objc",
 					"-all_load",
@@ -1070,7 +1070,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "PocketForecast/PocketForecast-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2 \"${PROJECT_DIR}/Pods\"/**";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

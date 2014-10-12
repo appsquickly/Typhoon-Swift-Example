@@ -48,7 +48,7 @@ Use the following imports:
 
 Prebuilt binaries are available on GitHub for
 [OCMockito](https://github.com/jonreid/OCMockito/releases/). You will also need
-[OCHamcrest 3.0.1](https://github.com/hamcrest/OCHamcrest/releases/tag/v3.0.1).
+[OCHamcrest 4.0.1](https://github.com/hamcrest/OCHamcrest/releases/tag/v4.0.1).
 The binaries are packaged as frameworks:
 
 * __OCMockitoIOS.framework__ for iOS development
@@ -90,7 +90,6 @@ If you want to build OCMockito yourself, clone the repo, then
 ```sh
 $ git submodule update --init
 $ Frameworks/gethamcrest
-$ Frameworks/getweakproxy
 $ cd Source
 $ ./MakeDistribution.sh
 ```

@@ -14,6 +14,22 @@
 #import <OCHamcrest/HCWrapInMatcher.h>
 
 
+@interface MKTUnspecifiedArgumentPlaceholder : NSObject
+@end
+
+@implementation MKTUnspecifiedArgumentPlaceholder
+
++ (instancetype)sharedPlaceholder
+{
+    static MKTUnspecifiedArgumentPlaceholder *instance = nil;
+    if (!instance)
+        instance = [[[self class] alloc] init];
+    return instance;
+}
+
+@end
+
+
 @implementation MKTInvocationMatcher
 
 - (instancetype)init
@@ -27,7 +43,7 @@
 - (void)setMatcher:(id <HCMatcher>)matcher atIndex:(NSUInteger)index
 {
     if (index < [self.argumentMatchers count])
-        [self.argumentMatchers replaceObjectAtIndex:index withObject:matcher];
+        self.argumentMatchers[index] = matcher;
     else
     {
         [self trueUpArgumentMatchersToCount:index];
@@ -47,7 +63,7 @@
     {
         [self.argumentMatchers addObject:[self placeholderForUnspecifiedMatcher]];
         ++count;
-    } 
+    }
 }
 
 - (void)setExpectedInvocation:(NSInvocation *)expectedInvocation
@@ -65,21 +81,21 @@
     for (NSUInteger index = 0; index < self.numberOfArguments; ++index)
     {
         if (self.argumentMatchers[index] == [self placeholderForUnspecifiedMatcher])
-            [self.argumentMatchers replaceObjectAtIndex:index withObject:[self matcherForArgument:expectedArgs[index]]];
+            self.argumentMatchers[index] = [self matcherForArgument:expectedArgs[index]];
     }
 }
 
 - (id)placeholderForUnspecifiedMatcher
 {
-    return [NSNull null];
+    return [MKTUnspecifiedArgumentPlaceholder sharedPlaceholder];
 }
 
 - (id <HCMatcher>)matcherForArgument:(id)arg
 {
     if (arg == [NSNull null])
         return HC_nilValue();
-    else
-        return HCWrapInMatcher(arg);
+
+    return HCWrapInMatcher(arg);
 }
 
 - (BOOL)matches:(NSInvocation *)actual
