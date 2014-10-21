@@ -28,23 +28,23 @@ extension NSDictionary {
     
     public func toWeatherReport() -> WeatherReport {
         
-        let city = self.valueForKeyPath("data.request.query")[0] as String
-        let currentConditions = (self.valueForKeyPath("data.current_condition")[0] as NSDictionary).toCurrentConditions()
+        let city = self.valueForKeyPath("data.request.query")![0] as String
+        let currentConditions = (self.valueForKeyPath("data.current_condition")![0] as NSDictionary).toCurrentConditions()
         var forecastConditions : Array<ForecastConditions> = []
         for item in self.valueForKeyPath("data.weather") as NSArray {
             forecastConditions.append(item.toForecastConditions())
         }
-        return WeatherReport(city: city, date: NSDate.date(), currentConditions: currentConditions, forecast: forecastConditions)
+        return WeatherReport(city: city, date: NSDate(), currentConditions: currentConditions, forecast: forecastConditions)
     }
     
     public func toCurrentConditions() -> CurrentConditions {
         
-        let summary = self.valueForKeyPath("weatherDesc")[0]["value"] as String
+        let summary = self.valueForKeyPath("weatherDesc")![0]["value"] as String
         let temperature = Temperature(fahrenheitString: self.valueForKeyPath("temp_F") as String)
         let humidity = self.valueForKeyPath("humidity") as String
         let wind = String(format: "Wind: %@ km %@", self.valueForKeyPath("windspeedKmph") as String,
             self.valueForKeyPath("winddir16Point") as String)
-        let imageUri = self.valueForKeyPath("weatherIconUrl")[0]["value"] as String
+        let imageUri = self.valueForKeyPath("weatherIconUrl")![0]["value"] as String
         
         return CurrentConditions(summary: summary, temperature: temperature, humidity: humidity, wind: wind, imageUri: imageUri)
     }
@@ -56,8 +56,8 @@ extension NSDictionary {
         let date = formatter.dateFromString(self.valueForKeyPath("date") as String)!
         let low = Temperature(fahrenheitString: self.valueForKeyPath("tempMinF") as String)
         let high = Temperature(fahrenheitString: self.valueForKeyPath("tempMaxF") as String)
-        let description = self.valueForKeyPath("weatherDesc")[0]["value"] as String
-        let imageUri = self.valueForKeyPath("weatherIconUrl")[0]["value"] as String
+        let description = self.valueForKeyPath("weatherDesc")![0]["value"] as String
+        let imageUri = self.valueForKeyPath("weatherIconUrl")![0]["value"] as String
         
         return ForecastConditions(date: date, low: low, high: high, summary: description, imageUri: imageUri)
     }

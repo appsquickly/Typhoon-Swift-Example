@@ -16,7 +16,7 @@
 #define COCOAPODS_POD_AVAILABLE_ICLoader
 #define COCOAPODS_VERSION_MAJOR_ICLoader 1
 #define COCOAPODS_VERSION_MINOR_ICLoader 0
-#define COCOAPODS_VERSION_PATCH_ICLoader 1
+#define COCOAPODS_VERSION_PATCH_ICLoader 3
 
 // NGAParallaxMotion
 #define COCOAPODS_POD_AVAILABLE_NGAParallaxMotion
@@ -45,12 +45,12 @@
 // Typhoon
 #define COCOAPODS_POD_AVAILABLE_Typhoon
 #define COCOAPODS_VERSION_MAJOR_Typhoon 2
-#define COCOAPODS_VERSION_MINOR_Typhoon 2
-#define COCOAPODS_VERSION_PATCH_Typhoon 1
+#define COCOAPODS_VERSION_MINOR_Typhoon 3
+#define COCOAPODS_VERSION_PATCH_Typhoon 0
 
 // Typhoon/no-arc
 #define COCOAPODS_POD_AVAILABLE_Typhoon_no_arc
 #define COCOAPODS_VERSION_MAJOR_Typhoon_no_arc 2
-#define COCOAPODS_VERSION_MINOR_Typhoon_no_arc 2
-#define COCOAPODS_VERSION_PATCH_Typhoon_no_arc 1
+#define COCOAPODS_VERSION_MINOR_Typhoon_no_arc 3
+#define COCOAPODS_VERSION_PATCH_Typhoon_no_arc 0
 
