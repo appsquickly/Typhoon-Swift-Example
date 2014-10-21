@@ -243,34 +243,41 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
     
     //TODO: Make this proper Swift
     private func uiImageForImageUri(imageUri : NSString?) -> UIImage {
+        var result: UIImage?
         if (imageUri != nil && imageUri!.length > 0) {
             
             if (imageUri!.hasSuffix("sunny.png"))
             {
-                return UIImage(named:"icon_sunny")
+                result = UIImage(named:"icon_sunny")
             }
             else if (imageUri!.hasSuffix("sunny_intervals.png"))
             {
-                return UIImage(named:"icon_cloudy")
+                result =  UIImage(named:"icon_cloudy")
             }
             else if (imageUri!.hasSuffix("partly_cloudy.png"))
             {
-                return UIImage(named:"icon_cloudy")
+                result =  UIImage(named:"icon_cloudy")
             }
             else if (imageUri!.hasSuffix("low_cloud.png"))
             {
-                return UIImage(named:"icon_cloudy")
+                result =  UIImage(named:"icon_cloudy")
             }
             else if (imageUri!.hasSuffix("light_rain_showers.png"))
             {
-                return UIImage(named:"icon_rainy")
+                result =  UIImage(named:"icon_rainy")
             }
             else if (imageUri!.hasSuffix("heavy_rain_showers.png"))
             {
-                return UIImage(named:"icon_rainy")
+                result =  UIImage(named:"icon_rainy")
             }
         }
-        return UIImage(named:"icon_sunny")
+        
+        if result == nil {
+            result = UIImage(named: "icon_sunny")
+        }
+        
+        return result!
+
     }
         
 }

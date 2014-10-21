@@ -24,13 +24,11 @@ public class Temperature : NSObject, NSCoding {
     private var _longFormatter : NSNumberFormatter
 
     public class func defaultUnits() -> TemperatureUnits {
-        return TemperatureUnits
-            .fromRaw(NSUserDefaults.standardUserDefaults().integerForKey("pf.default.units"))!
+        return TemperatureUnits(rawValue: NSUserDefaults.standardUserDefaults().integerForKey("pf.default.units"))!
     }
 
     public class func setDefaultUnits(units : TemperatureUnits) {
-
-        NSUserDefaults.standardUserDefaults().setInteger(units.toRaw(), forKey: "pf.default.units")
+        NSUserDefaults.standardUserDefaults().setInteger(units.rawValue, forKey: "pf.default.units")
     }
     
 
@@ -96,20 +94,20 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public func asShortStringInFahrenheit() -> String {
-        return _shortFormatter.stringFromNumber(self.inFahrenheit()) + "°"
+        return _shortFormatter.stringFromNumber(self.inFahrenheit())! + "°"
     }
     
 
     public func asLongStringInFahrenheit() -> String {
-        return _longFormatter.stringFromNumber(self.inFahrenheit()) + "°"
+        return _longFormatter.stringFromNumber(self.inFahrenheit())! + "°"
     }
     
     public func asShortStringInCelsius() -> String {
-        return _shortFormatter.stringFromNumber(self.inCelcius()) + "°"
+        return _shortFormatter.stringFromNumber(self.inCelcius())! + "°"
     }
     
     public func asLongStringInCelsius() -> String {
-        return _longFormatter.stringFromNumber(self.inCelcius()) + "°"
+        return _longFormatter.stringFromNumber(self.inCelcius())! + "°"
     }
     
     public func description() -> String {
