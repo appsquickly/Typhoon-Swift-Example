@@ -54,10 +54,26 @@ extension NSDictionary {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let date = formatter.dateFromString(self.valueForKeyPath("date") as String)!
-        let low = Temperature(fahrenheitString: self.valueForKeyPath("tempMinF") as String)
-        let high = Temperature(fahrenheitString: self.valueForKeyPath("tempMaxF") as String)
-        let description = self.valueForKeyPath("weatherDesc")![0]["value"] as String
-        let imageUri = self.valueForKeyPath("weatherIconUrl")![0]["value"] as String
+        
+        var low: Temperature?
+        if self.valueForKeyPath("tempMinF") != nil {
+            low = Temperature(fahrenheitString: self.valueForKey("tempMinF") as String)
+        }
+                
+        var high: Temperature?
+        if self.valueForKey("tempMaxF") != nil {
+           high = Temperature(fahrenheitString: self.valueForKey("tempMaxF") as String)
+        }
+        
+        var description = ""
+        if self.valueForKeyPath("weatherDesc") != nil {
+          description = self.valueForKeyPath("weatherDesc")![0]["value"] as String
+        }
+        
+        var imageUri = ""
+        if self.valueForKeyPath("weatherIconUrl") != nil {
+            imageUri = self.valueForKeyPath("weatherIconUrl")![0]["value"] as String
+        }
         
         return ForecastConditions(date: date, low: low, high: high, summary: description, imageUri: imageUri)
     }
