@@ -130,8 +130,15 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
             let forecastConditions : ForecastConditions = self.weatherReport!.forecast[indexPath.row]
             cell!.dayLabel.text = forecastConditions.longDayOfTheWeek()
             cell!.descriptionLabel.text = forecastConditions.summary
-            cell!.lowTempLabel.text = forecastConditions.low!.asShortStringInDefaultUnits()
-            cell!.highTempLabel.text = forecastConditions.high!.asShortStringInDefaultUnits()
+            
+            if forecastConditions.low != nil {
+                cell!.lowTempLabel.text = forecastConditions.low!.asShortStringInDefaultUnits()
+            }
+            
+            if forecastConditions.high != nil {
+                cell!.highTempLabel.text = forecastConditions.high!.asShortStringInDefaultUnits()
+            }
+            
             cell!.conditionsIcon.image = self.uiImageForImageUri(forecastConditions.imageUri)
             cell!.backgroundView?.backgroundColor = self.colorForRow(indexPath.row)
         }

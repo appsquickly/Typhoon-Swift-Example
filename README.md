@@ -3,6 +3,7 @@ Pocket Forecast (Swift)
 
 An example application built with <a href ="http://www.typhoonframework.org">Typhoon</a>.
 
+* Requires Xcode 6.1 (will not build with Xcode 6.0.x). 
 * Looking for an Objective-C sample application? We <a href="https://github.com/typhoon-framework/Typhoon-example">have one here</a>. 
 
 ###Features: 
