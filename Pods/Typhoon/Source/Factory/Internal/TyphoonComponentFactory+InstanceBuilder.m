@@ -32,6 +32,7 @@ TYPHOON_LINK_CATEGORY(TyphoonComponentFactory_InstanceBuilder)
 #import "TyphoonPropertyInjection.h"
 #import "NSObject+TyphoonIntrospectionUtils.h"
 #import "TyphoonFactoryAutoInjectionPostProcessor.h"
+#import "TyphoonFactoryDefinition.h"
 
 @implementation TyphoonComponentFactory (InstanceBuilder)
 
@@ -59,16 +60,10 @@ TYPHOON_LINK_CATEGORY(TyphoonComponentFactory_InstanceBuilder)
 
 - (id)initializeInstanceWithDefinition:(TyphoonDefinition *)definition args:(TyphoonRuntimeArguments *)args
 {
-    id instance = nil;
-
-    if (definition.factory) {
-        id factoryComponent = [self componentForKey:[(TyphoonDefinition *)definition.factory key]];
-        instance = [self resultOfInvocationInitializer:definition.initializer on:factoryComponent withArgs:args];
+    id instance = [definition targetForInitializerWithFactory:self args:args];
+    if (definition.initializer) {
+        instance = [self resultOfInvocationInitializer:definition.initializer on:instance withArgs:args];
     }
-    else {
-        instance = [self resultOfInvocationInitializer:definition.initializer on:definition.type withArgs:args];
-    }
-
     return instance;
 }
 
@@ -134,13 +129,22 @@ TYPHOON_LINK_CATEGORY(TyphoonComponentFactory_InstanceBuilder)
     return [self buildInstanceWithDefinition:definition args:args];
 }
 
+- (void)registerInstance:(id)instance asSingletonForDefinition:(TyphoonDefinition *)definition
+{
+    if (definition.scope == TyphoonScopeSingleton || definition.scope == TyphoonScopeLazySingleton) {
+        [_singletons setObject:instance forKey:definition.key];
+    } else if (definition.scope == TyphoonScopeWeakSingleton) {
+        [_weakSingletons setObject:instance forKey:definition.key];
+    }
+}
+
 //-------------------------------------------------------------------------------------------
 #pragma mark - Injection process
 //-------------------------------------------------------------------------------------------
 
 - (void)doInjectionEventsOn:(id)instance withDefinition:(TyphoonDefinition *)definition args:(TyphoonRuntimeArguments *)args
 {
-    [self doBeforeInjectionsOn:instance withDefinition:definition];
+    [self doBeforeInjectionsOn:instance withDefinition:definition args:args];
 
     for (id <TyphoonPropertyInjection> property in [definition injectedProperties]) {
         [self doPropertyInjectionOn:instance property:property args:args];
@@ -152,30 +156,30 @@ TYPHOON_LINK_CATEGORY(TyphoonComponentFactory_InstanceBuilder)
 
     [self injectAssemblyOnInstanceIfTyphoonAware:instance];
 
-    [self doAfterInjectionsOn:instance withDefinition:definition];
+    [self doAfterInjectionsOn:instance withDefinition:definition args:args];
 }
 
-- (void)doBeforeInjectionsOn:(id)instance withDefinition:(TyphoonDefinition *)definition
+- (void)doBeforeInjectionsOn:(id)instance withDefinition:(TyphoonDefinition *)definition args:(TyphoonRuntimeArguments *)args
 {
     if ([instance respondsToSelector:@selector(typhoonWillInject)]) {
         [instance typhoonWillInject];
     }
 
-    if (definition && [instance respondsToSelector:definition.beforeInjections]) {
-        void(*method)(id, SEL) = (void (*)(id, SEL)) [instance methodForSelector:definition.beforeInjections];
-        method(instance, definition.beforeInjections);
+    TyphoonMethod *beforeInjections = [definition beforeInjections];
+    if (beforeInjections) {
+        [self doMethodInjection:beforeInjections onInstance:instance args:args];
     }
 }
 
-- (void)doAfterInjectionsOn:(id)instance withDefinition:(TyphoonDefinition *)definition
+- (void)doAfterInjectionsOn:(id)instance withDefinition:(TyphoonDefinition *)definition args:(TyphoonRuntimeArguments *)args
 {
     if ([instance respondsToSelector:@selector(typhoonDidInject)]) {
         [instance typhoonDidInject];
     }
 
-    if (definition && [instance respondsToSelector:definition.afterInjections]) {
-        void(*method)(id, SEL) = (void (*)(id, SEL)) [instance methodForSelector:definition.afterInjections];
-        method(instance, definition.afterInjections);
+    TyphoonMethod *afterInjections = [definition afterInjections];
+    if (afterInjections) {
+        [self doMethodInjection:afterInjections onInstance:instance args:args];
     }
 }
 

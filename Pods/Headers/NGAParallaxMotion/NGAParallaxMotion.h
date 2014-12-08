@@ -1,1 +1,0 @@
-../../NGAParallaxMotion/Classes/NGAParallaxMotion.h

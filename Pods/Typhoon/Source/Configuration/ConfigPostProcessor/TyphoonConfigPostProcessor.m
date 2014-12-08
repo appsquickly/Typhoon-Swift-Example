@@ -20,6 +20,8 @@
 #import "TyphoonJsonStyleConfiguration.h"
 #import "TyphoonBundleResource.h"
 #import "TyphoonPlistStyleConfiguration.h"
+#import "TyphoonInjectionByReference.h"
+#import "TyphoonRuntimeArguments.h"
 
 static NSMutableDictionary *propertyPlaceholderRegistry;
 
@@ -100,9 +102,10 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
 - (id)configurationValueForKey:(NSString *)key
 {
     __block id value = nil;
+#if DEBUG
     __block NSString *foundExtension = nil;
+#endif
     [_configs enumerateKeysAndObjectsUsingBlock:^(NSString *extension, id<TyphoonConfiguration>config, BOOL *stop) {
-
         id object = [config objectForKey:key];
 #if !DEBUG
         if (object) {
@@ -130,11 +133,35 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
 - (void)postProcessComponentFactory:(TyphoonComponentFactory *)factory
 {
     for (TyphoonDefinition *definition in [factory registry]) {
-        [definition enumerateInjectionsOfKind:[TyphoonInjectionByConfig class] options:TyphoonInjectionsEnumerationOptionAll
-                                   usingBlock:^(TyphoonInjectionByConfig *injection, id *injectionToReplace, BOOL *stop) {
-            injection.configuredInjection = [self injectionForConfigInjection:injection];
-        }];
+        [self configureInjectionsInDefinition:definition];
+        [self configureInjectionsInRuntimeArgumentsInDefinition:definition];
     }
+}
+
+- (void)configureInjectionsInDefinition:(TyphoonDefinition *)definition
+{
+    [definition enumerateInjectionsOfKind:[TyphoonInjectionByConfig class] options:TyphoonInjectionsEnumerationOptionAll
+                               usingBlock:^(TyphoonInjectionByConfig *injection, id *injectionToReplace, BOOL *stop) {
+        id configuredInjection = [self injectionForConfigInjection:injection];
+        if (configuredInjection) {
+           injection.configuredInjection = configuredInjection;
+        }
+    }];
+}
+
+- (void)configureInjectionsInRuntimeArgumentsInDefinition:(TyphoonDefinition *)definition
+{
+    [definition enumerateInjectionsOfKind:[TyphoonInjectionByReference class] options:TyphoonInjectionsEnumerationOptionAll
+                               usingBlock:^(TyphoonInjectionByReference *injection, id *injectionToReplace, BOOL *stop) {
+        [injection.referenceArguments enumerateArgumentsUsingBlock:^(TyphoonInjectionByConfig *argument, NSUInteger index, BOOL *stop) {
+           if ([argument isKindOfClass:[TyphoonInjectionByConfig class]]) {
+               id configuredInjection = [self injectionForConfigInjection:argument];
+               if (configuredInjection) {
+                   argument.configuredInjection = configuredInjection;
+               }
+           }
+        }];
+    }];
 }
 
 - (id<TyphoonInjection>)injectionForConfigInjection:(TyphoonInjectionByConfig *)injection
@@ -144,7 +171,7 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
 
     if ([value isKindOfClass:[NSString class]]) {
         result = TyphoonInjectionWithObjectFromString(value);
-    } else {
+    } else if (value) {
         result = TyphoonInjectionWithObject(value);
     }
 

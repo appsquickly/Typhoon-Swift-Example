@@ -19,6 +19,8 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
 
 #import "TyphoonInjectionByType.h"
 #import "TyphoonInjectionByRuntimeArgument.h"
+#import "TyphoonComponentFactory.h"
+#import "TyphoonRuntimeArguments.h"
 
 @implementation TyphoonDefinition (InstanceBuilder)
 
@@ -40,6 +42,12 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
                 [method replaceInjection:injection with:injectionToReplace];
             }];
         }
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[_afterInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+            [_afterInjections replaceInjection:injection with:injectionToReplace];
+        }];
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[_beforeInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+            [_beforeInjections replaceInjection:injection with:injectionToReplace];
+        }];
     }
 
     if (options & TyphoonInjectionsEnumerationOptionProperties) {
@@ -66,6 +74,16 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
             }
         }
     }
+}
+
+- (TyphoonMethod *)beforeInjections
+{
+    return _beforeInjections;
+}
+
+- (TyphoonMethod *)afterInjections
+{
+    return _afterInjections;
 }
 
 - (NSSet *)injectedProperties
@@ -138,6 +156,11 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
     if (![_injectedProperties containsObject:property]) {
         [_injectedProperties addObject:property];
     }
+}
+
+- (id)targetForInitializerWithFactory:(TyphoonComponentFactory *)factory args:(TyphoonRuntimeArguments *)args
+{
+    return _type;
 }
 
 - (BOOL)matchesAutoInjectionByProtocol:(Protocol *)aProtocol

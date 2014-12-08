@@ -9,37 +9,8 @@
 #import "TyphoonRuntimeArguments.h"
 #import "TyphoonIntrospectionUtils.h"
 #import "TyphoonInjectionByRuntimeArgument.h"
-
-@interface TyphoonRuntimeNullArgument : NSObject
-
-+ (instancetype)null;
-
-@end
-
-@implementation TyphoonRuntimeNullArgument
-
-+ (instancetype)null
-{
-    static TyphoonRuntimeNullArgument *sharedNull;
-    static dispatch_once_t once_token;
-    dispatch_once(&once_token, ^{
-        sharedNull = [TyphoonRuntimeNullArgument new];
-    });
-    return sharedNull;
-}
-
-- (NSUInteger)hash
-{
-    /** Any constant can be here, nothing magical */
-    return 25042013;
-}
-
-- (BOOL)isEqual:(id)object
-{
-    return [object isMemberOfClass:[TyphoonRuntimeNullArgument class]];
-}
-
-@end
+#import "TyphoonInjections.h"
+#import "TyphoonInjectionByReference.h"
 
 @implementation TyphoonRuntimeArguments
 {
@@ -60,15 +31,27 @@
         void *pointer;
         [invocation getArgument:&pointer atIndex:i];
         id argument = (__bridge id) pointer;
-        if (argument) {
-            [args addObject:argument];
-        }
-        else {
-            [args addObject:[TyphoonRuntimeNullArgument null]];
-        }
+
+        id<TyphoonInjection>injection = TyphoonMakeInjectionFromObjectIfNeeded(argument);
+        [self validateRuntimeArgumentWithInjection:injection];
+        [args addObject:injection];
     }
 
     return [[self alloc] initWithArguments:args];
+}
+
++ (void)validateRuntimeArgumentWithInjection:(id)injection
+{
+    if ([injection isKindOfClass:[TyphoonInjectionByReference class]]) {
+        TyphoonInjectionByReference *referenceInjection = injection;
+        [referenceInjection.referenceArguments enumerateArgumentsUsingBlock:^(id argument, NSUInteger index, BOOL *stop) {
+            if ([argument isKindOfClass:[TyphoonInjectionByRuntimeArgument class]]) {
+                [NSException raise:NSInternalInconsistencyException format:@"Congratulations you've tried to do something über-funky with Typhoon %%). You are the 3rd person EVER to receive this error message. Returning a definition that is the result of a nested runtime argument is not supported. Instead unroll the definition."];
+            } else {
+                [self validateRuntimeArgumentWithInjection:argument];
+            }
+        }];
+    }
 }
 
 - (id)initWithArguments:(NSMutableArray *)array
@@ -83,20 +66,29 @@
 
 - (id)argumentValueAtIndex:(NSUInteger)index
 {
-    id argument = _arguments[index];
-    if ([argument isMemberOfClass:[TyphoonRuntimeNullArgument class]]) {
-        return nil;
+    return _arguments[index];
+}
+
+- (void)enumerateArgumentsUsingBlock:(void(^)(id argument, NSUInteger index, BOOL *stop))block
+{
+    if (!block) {
+        return;
     }
-    else {
-        return argument;
+
+    NSUInteger count = [_arguments count];
+    for (NSUInteger i = 0; i < count; ++i) {
+        id argument = [self argumentValueAtIndex:i];
+        BOOL stop = NO;
+        block(argument, i, &stop);
+        if (stop) {
+            break;
+        }
     }
 }
 
 - (void)replaceArgumentAtIndex:(NSUInteger)index withArgument:(id)argument
 {
-    if (!argument) {
-        argument = [TyphoonRuntimeNullArgument null];
-    }
+    argument = TyphoonMakeInjectionFromObjectIfNeeded(argument);
     [_arguments replaceObjectAtIndex:index withObject:argument];
     _needRehash = YES;
 }

@@ -61,12 +61,21 @@ static TyphoonComponentFactory *defaultFactory;
         _factoryPostProcessors = [[NSMutableArray alloc] init];
         _componentPostProcessors = [[NSMutableArray alloc] init];
         [self attachPostProcessor:[TyphoonParentReferenceHydratingPostProcessor new]];
+        [self attachAutoInjectionPostProcessorIfNeeded];
         [self attachPostProcessor:[TyphoonFactoryPropertyInjectionPostProcessor new]];
-        [self attachPostProcessor:[TyphoonFactoryAutoInjectionPostProcessor new]];
     }
     return self;
 }
 
+- (void)attachAutoInjectionPostProcessorIfNeeded
+{
+    NSDictionary *bundleInfoDictionary = [[NSBundle mainBundle] infoDictionary];
+
+    NSNumber *value = bundleInfoDictionary[@"TyphoonAutoInjectionEnabled"];
+    if (!value || [value boolValue]) {
+        [self attachPostProcessor:[TyphoonFactoryAutoInjectionPostProcessor new]];
+    }
+}
 
 //-------------------------------------------------------------------------------------------
 #pragma mark - Interface Methods
@@ -192,6 +201,25 @@ static TyphoonComponentFactory *defaultFactory;
     return [_registry copy];
 }
 
+- (void)enumerateDefinitions:(void (^)(TyphoonDefinition *definition, NSUInteger index, TyphoonDefinition **definitionToReplace, BOOL *stop))block
+{
+    [self loadIfNeeded];
+
+    for (NSUInteger i = 0; i < [_registry count]; i++) {
+        TyphoonDefinition *definition = _registry[i];
+        TyphoonDefinition *definitionToReplace = nil;
+        BOOL stop = NO;
+        block(definition, i, &definitionToReplace, &stop);
+        if (definitionToReplace) {
+            _registry[i] = definitionToReplace;
+        }
+        if (stop) {
+            break;
+        }
+    }
+}
+
+
 - (void)attachPostProcessor:(id <TyphoonComponentFactoryPostProcessor>)postProcessor
 {
     LogTrace(@"Attaching post processor: %@", postProcessor);
@@ -202,12 +230,23 @@ static TyphoonComponentFactory *defaultFactory;
     }
 }
 
+static void AssertDefinitionScopeForInjectMethod(id instance, TyphoonDefinition *definition)
+{
+    if (definition.scope == TyphoonScopeWeakSingleton || definition.scope == TyphoonScopeLazySingleton
+            || definition.scope == TyphoonScopeSingleton) {
+        NSLog(@"Notice: injecting instance '<%@ %p>' with '%@' definition, but this definition scoped as singletone. Instance '<%@ %p>' will not be registered in singletons pool for this definition since was created outside typhoon", [instance class], (__bridge void *)instance, definition.key, [instance class], (__bridge void *)instance);
+    }
+}
+
 - (void)inject:(id)instance
 {
     @synchronized(self) {
         [self loadIfNeeded];
         TyphoonDefinition *definitionForInstance = [self definitionForType:[instance class] orNil:YES includeSubclasses:NO];
-        [self doInjectionEventsOn:instance withDefinition:definitionForInstance args:nil];
+        if (definitionForInstance) {
+            AssertDefinitionScopeForInjectMethod(instance, definitionForInstance);
+            [self doInjectionEventsOn:instance withDefinition:definitionForInstance args:nil];
+        }
     }
 }
 
@@ -217,6 +256,7 @@ static TyphoonComponentFactory *defaultFactory;
         [self loadIfNeeded];
         TyphoonDefinition *definition = [self definitionForKey:NSStringFromSelector(selector)];
         if (definition) {
+            AssertDefinitionScopeForInjectMethod(instance, definition);
             [self doInjectionEventsOn:instance withDefinition:definition args:nil];
         }
         else {

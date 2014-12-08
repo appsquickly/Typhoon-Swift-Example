@@ -16,6 +16,7 @@
 
 @class TyphoonDefinition;
 @class TyphoonRuntimeArguments;
+@class TyphoonFactoryDefinition;
 
 /**
 * @ingroup Definition
@@ -34,7 +35,7 @@
 * <strong>TyphoonScopeSingleton</strong>
 Indicates that Typhoon should retain the instance that exists for as long as the TyphoonComponentFactory exists.
 
-* <strong>TyphoonScopeLazySingleton</strong>
+* <strong>TnglyphoonScopeLazySieton</strong>
 This scope behaves the same as TyphoonScopeSingleton, but the object is not created unless or until it is needed.
 *
 * <strong>TyphoonScopeWeakSingleton</strong>
@@ -50,7 +51,6 @@ typedef NS_ENUM(NSInteger, TyphoonScope)
     TyphoonScopeLazySingleton,
     TyphoonScopeWeakSingleton,
 };
-
 
 typedef NS_OPTIONS(NSInteger, TyphoonAutoInjectVisibility)
 {
@@ -70,33 +70,33 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 {
     Class _type;
     NSString *_key;
+
     TyphoonMethod *_initializer;
+    TyphoonMethod *_beforeInjections;
     NSMutableSet *_injectedProperties;
     NSMutableSet *_injectedMethods;
+    TyphoonMethod *_afterInjections;
+
     TyphoonScope _scope;
-    TyphoonDefinition *_factory;
     TyphoonDefinition *_parent;
 }
 
 @property(nonatomic, readonly) Class type;
 
 /**
-* A custom callback method that is invoked before property injection occurs. Use this method as an alternative to
-* TyphoonPropertyInjectionDelegate if the component being instantiated is a 3rd party library, or if a direct dependency on Typhoon is not
-* desired.
-*
-* @see TyphoonPropertyInjectionDelegate
+* A custom callback methods that is invoked before properties and method injection occurs.
 */
-@property(nonatomic) SEL beforeInjections;
+
+- (void)performBeforeInjections:(SEL)sel;
+- (void)performBeforeInjections:(SEL)sel parameters:(void(^)(TyphoonMethod *params))parametersBlock;
+
 
 /**
-* A custom callback method that is invoked after property injection occurs. Use this method as an alternative to
-* TyphoonPropertyInjectionDelegate if the component being instantiated is a 3rd party library, or if a direct dependency on Typhoon is not
-* desired.
-*
-* @see TyphoonPropertyInjectionDelegate
+* A custom callback methods that is invoked after properties and method injection occurs.
 */
-@property(nonatomic) SEL afterInjections;
+
+- (void)performAfterInjections:(SEL)sel;
+- (void)performAfterInjections:(SEL)sel parameters:(void(^)(TyphoonMethod *param))parameterBlock;
 
 /**
 * The scope of the component, default being TyphoonScopeObjectGraph.
@@ -113,43 +113,6 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 */
 @property(nonatomic) TyphoonAutoInjectVisibility autoInjectionVisibility;
 
-/**
-* A component that will produce an instance (with or without parameters) of this component. For example:
-*
-@code
-
-- (id)sqliteManager
-{
-    return [TyphoonDefinition withClass:[MySqliteManager class] configuration:^(TyphoonDefinition* definition)
-    {
-        [definition useInitializer:@selector(initWithDatabaseName:) parameters:^(TyphoonMethod* initializer)
-        {
-            [initializer injectParameterWith:@"database.sqlite"];
-        }];
-        definition.scope = TyphoonScopeSingleton;
-    }];
-}
-
-- (id)databaseQueue
-{
-    return [TyphoonDefinition withClass:[FMDatabaseQueue class] configuration:^(TyphoonDefinition* definition)
-    {
-        [definition useInitializer:@selector(queue)];
-        definition.factory = [self sqliteManager];
-    }];
-}
-
-@endcode
-*
-* @note If the factory method takes arguments, these are provided in the initializer block, just like a regular initializer method.
-*
-* @see injectProperty:withDefinition:selector: An alternative short-hand approach for no-args instances.
-* @see injectProperty:withDefinition:keyPath: An alternative short-hand approach for no-args instances.
-* @see TyphoonFactoryProvider - For creating factories where the configuration arguments are not known until runtime.
-*
-*
-*/
-@property(nonatomic, strong) id factory;
 
 /**
 * A parent component. When parent is defined the initializer and/or properties from a definition are inherited, unless overridden. Example:
@@ -196,9 +159,48 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 
 + (id)withClass:(Class)clazz configuration:(TyphoonDefinitionBlock)injections;
 
-+ (id)withFactory:(id)definition selector:(SEL)selector;
+//TODO: Rewrite this doc
+/**
+* A component that will produce an instance (with or without parameters) of this component. For example:
+*
+@code
 
-+ (id)withFactory:(id)definition selector:(SEL)selector parameters:(void (^)(TyphoonMethod *factoryMethod))parametersBlock;
+- (id)sqliteManager
+{
+return [TyphoonDefinition withClass:[MySqliteManager class] configuration:^(TyphoonDefinition* definition)
+{
+[definition useInitializer:@selector(initWithDatabaseName:) parameters:^(TyphoonMethod* initializer)
+{
+[initializer injectParameterWith:@"database.sqlite"];
+}];
+definition.scope = TyphoonScopeSingleton;
+}];
+}
+
+- (id)databaseQueue
+{
+return [TyphoonDefinition withClass:[FMDatabaseQueue class] configuration:^(TyphoonDefinition* definition)
+{
+[definition useInitializer:@selector(queue)];
+definition.factory = [self sqliteManager];
+}];
+}
+
+@endcode
+*
+* @note If the factory method takes arguments, these are provided in the initializer block, just like a regular initializer method.
+*
+* @see injectProperty:withDefinition:selector: An alternative short-hand approach for no-args instances.
+* @see injectProperty:withDefinition:keyPath: An alternative short-hand approach for no-args instances.
+* @see TyphoonFactoryProvider - For creating factories where the configuration arguments are not known until runtime.
+*
+*
+*/
++ (id)withFactory:(id)factory selector:(SEL)selector;
+
++ (id)withFactory:(id)factory selector:(SEL)selector parameters:(void (^)(TyphoonMethod *factoryMethod))params;
+
++ (id)withFactory:(id)factory selector:(SEL)selector parameters:(void (^)(TyphoonMethod *factoryMethod))params configuration:(void(^)(TyphoonFactoryDefinition *definition))configuration;
 
 //-------------------------------------------------------------------------------------------
 #pragma mark Injection
@@ -254,6 +256,13 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 
 @end
 
+@interface TyphoonDefinition(Deprecated)
+
+- (void)setBeforeInjections:(SEL)sel DEPRECATED_MSG_ATTRIBUTE("Use performBeforeInjections method. (setBeforeInjections will be unavailable in Typhoon 3.0)");
+- (void)setAfterInjections:(SEL)sel DEPRECATED_MSG_ATTRIBUTE("Use performAterInjections method (setAfterInjections method will be unavailable in Typhoon 3.0)");
+
+@end
+
 @interface TyphoonDefinition(Unavailable)
 
 @property(nonatomic, assign, getter = isLazy) BOOL lazy __attribute((unavailable("Use TyphoonScopeLazySingleton instead")));
@@ -261,5 +270,7 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 + (id)withClass:(Class)clazz factory:(id)definition selector:(SEL)selector __attribute((unavailable("Use withFactory:selector: method instead")));
 + (instancetype)configDefinitionWithResource:(id)resource __attribute__((unavailable("Use configDefinitionWithName instead")));
 + (instancetype)configDefinitionWithResources:(NSArray *)array __attribute__((unavailable("Use configDefinitionWithName instead")));
+
+@property(nonatomic, strong) id factory  __attribute((unavailable("Use one of withFactory: method instead")));
 
 @end

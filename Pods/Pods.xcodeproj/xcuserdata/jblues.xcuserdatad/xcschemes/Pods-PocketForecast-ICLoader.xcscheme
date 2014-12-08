@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F243C829EB5B4D67B73CA2C9"
+               BlueprintIdentifier = "132C5A4F6375AD09ADB02E07"
                BuildableName = "libPods-PocketForecast-ICLoader.a"
                BlueprintName = "Pods-PocketForecast-ICLoader"
                ReferencedContainer = "container:Pods.xcodeproj">

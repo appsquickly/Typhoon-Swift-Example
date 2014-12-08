@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "98CDFD00A24B4F32B7517B6F"
+               BlueprintIdentifier = "90174F22889E06FC9A35F810"
                BuildableName = "libPods-PocketForecast-CKUITools.a"
                BlueprintName = "Pods-PocketForecast-CKUITools"
                ReferencedContainer = "container:Pods.xcodeproj">

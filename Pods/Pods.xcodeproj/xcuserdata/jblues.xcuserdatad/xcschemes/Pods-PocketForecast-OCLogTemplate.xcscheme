@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "759EC7662E3C45FA8C0E9504"
+               BlueprintIdentifier = "588DD2A7E5D597C657926E83"
                BuildableName = "libPods-PocketForecast-OCLogTemplate.a"
                BlueprintName = "Pods-PocketForecast-OCLogTemplate"
                ReferencedContainer = "container:Pods.xcodeproj">
