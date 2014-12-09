@@ -114,12 +114,16 @@ public class ApplicationAssembly: TyphoonAssembly {
         return TyphoonDefinition.withClass(AddCityViewController.self) {
             (definition) in
             
-            definition.useInitializer("initWithNibName:bundle:") {
-                (initializer) in
-                
-                initializer.injectParameterWith("AddCity")
-                initializer.injectParameterWith(NSBundle.mainBundle())
-            }
+            //TODO: It seems Swift optimizes `initWithNibName:bundle:` in release mode, making it unavailable 
+            //for dynamic invocation. 
+            
+//            definition.useInitializer("initWithNibName:bundle:") {
+//                (initializer) in
+//                
+//                initializer.injectParameterWith("AddCity")
+//                initializer.injectParameterWith(NSBundle.mainBundle())
+//            }
+            
             definition.injectProperty("cityDao", with:self.coreComponents.cityDao())
             definition.injectProperty("weatherClient", with:self.coreComponents.weatherClient())
             definition.injectProperty("theme", with:self.themeAssembly.currentTheme())
