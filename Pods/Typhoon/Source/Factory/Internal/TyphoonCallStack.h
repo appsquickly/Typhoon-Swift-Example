@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -18,7 +18,7 @@
 
 + (instancetype)stack;
 
-- (void)push:(TyphoonStackElement *)stackItem;
+- (void)push:(TyphoonStackElement *)stackElement;
 
 - (TyphoonStackElement *)pop;
 

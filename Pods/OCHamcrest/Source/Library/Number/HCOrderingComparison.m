@@ -1,20 +1,14 @@
-//
-//  OCHamcrest - HCOrderingComparison.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCOrderingComparison.h"
 
 
 @interface HCOrderingComparison ()
-@property (nonatomic, readonly) id expected;
-@property (nonatomic, readonly) NSComparisonResult minCompare;
-@property (nonatomic, readonly) NSComparisonResult maxCompare;
-@property (nonatomic, readonly) NSString *comparisonDescription;
+@property (readonly, nonatomic, strong) id expected;
+@property (readonly, nonatomic, assign) NSComparisonResult minCompare;
+@property (readonly, nonatomic, assign) NSComparisonResult maxCompare;
+@property (readonly, nonatomic, copy) NSString *comparisonDescription;
 @end
 
 @implementation HCOrderingComparison
@@ -41,7 +35,7 @@
                                        reason: @"Object must respond to compare:"
                                      userInfo: nil];
     }
-    
+
     self = [super init];
     if (self)
     {
@@ -57,8 +51,16 @@
 {
     if (item == nil)
         return NO;
-    
-    NSComparisonResult compare = [self.expected compare:item];
+
+    NSComparisonResult compare;
+    @try
+    {
+        compare = [self.expected compare:item];
+    }
+    @catch (NSException *e)
+    {
+        return NO;
+    }
     return self.minCompare <= compare && compare <= self.maxCompare;
 }
 

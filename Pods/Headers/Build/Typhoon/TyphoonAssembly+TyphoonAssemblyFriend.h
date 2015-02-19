@@ -1,1 +1,1 @@
-../../../Typhoon/Source/Factory/Block/TyphoonAssembly+TyphoonAssemblyFriend.h
+../../../Typhoon/Source/Factory/Assembly/TyphoonAssembly+TyphoonAssemblyFriend.h

@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCStringStartsWith.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCStringStartsWith.h"
 
@@ -21,7 +15,7 @@
 {
     if (![item respondsToSelector:@selector(hasPrefix:)])
         return NO;
-    
+
     return [item hasPrefix:self.substring];
 }
 

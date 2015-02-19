@@ -1,17 +1,9 @@
-//
-//  OCHamcrest - HCBaseMatcher.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCBaseMatcher.h"
 
 #import "HCStringDescription.h"
-
-#define ABSTRACT_METHOD [self subclassResponsibility:_cmd]
 
 
 @implementation HCBaseMatcher
@@ -23,7 +15,7 @@
 
 - (BOOL)matches:(id)item
 {
-    ABSTRACT_METHOD;
+    HC_ABSTRACT_METHOD;
     return NO;
 }
 
@@ -42,7 +34,7 @@
 
 - (void)describeTo:(id<HCDescription>)description
 {
-    ABSTRACT_METHOD;
+    HC_ABSTRACT_METHOD;
 }
 
 - (void)subclassResponsibility:(SEL)command

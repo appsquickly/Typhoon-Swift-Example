@@ -1,10 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////
 //
-//  TyphoonInjectionByType.m
-//  A-Typhoon
+//  TYPHOON FRAMEWORK
+//  Copyright 2013, Typhoon Framework Contributors
+//  All Rights Reserved.
 //
-//  Created by Aleksey Garbarev on 12.03.14.
-//  Copyright (c) 2014 Jasper Blues. All rights reserved.
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //
+////////////////////////////////////////////////////////////////////////////////
+
 
 #import "TyphoonInjectionByType.h"
 #import "TyphoonComponentFactory.h"
@@ -40,7 +44,9 @@
     
     if (!classOrProtocol) {
         if (self.type == TyphoonInjectionTypeProperty) {
-            [NSException raise:NSInternalInconsistencyException format:@"Can't recognize type for property '%@' of class '%@'. Make sure that @property exists and has correct type.", self.propertyName, context.destinationInstanceClass];
+            [NSException raise:NSInternalInconsistencyException
+                format:@"Can't recognize type for property '%@' of class '%@'. Make sure that @property exists and has correct type.",
+                       self.propertyName, context.classUnderConstruction];
         } else {
             [NSException raise:NSInternalInconsistencyException format:@"Only property injection support InjectionByType"];
 

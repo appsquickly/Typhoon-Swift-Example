@@ -1,10 +1,5 @@
-//
-//  OCMockito - MKTBaseMockObject.m
-//  Copyright 2014 Jonathan M. Reid. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Source: https://github.com/jonreid/OCMockito
-//
+//  OCMockito by Jon Reid, http://qualitycoding.org/about/
+//  Copyright 2015 Jonathan M. Reid. See LICENSE.txt
 
 #import "MKTBaseMockObject.h"
 
@@ -19,7 +14,7 @@
 
 
 @interface MKTBaseMockObject ()
-@property (nonatomic, readonly) MKTMockingProgress *mockingProgress;
+@property (readonly, nonatomic, strong) MKTMockingProgress *mockingProgress;
 @property (nonatomic, strong) MKTInvocationContainer *invocationContainer;
 @end
 
@@ -100,7 +95,7 @@
 
 - (void)useExistingAnswerInStub:(MKTStubbedInvocationMatcher *)stub forInvocation:(NSInvocation *)invocation
 {
-    [invocation mkt_setReturnValue:stub.answer];
+    [invocation mkt_setReturnValue:[stub answerInvocation:invocation]];
 }
 
 

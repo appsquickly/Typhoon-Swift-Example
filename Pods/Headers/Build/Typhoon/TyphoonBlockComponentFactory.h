@@ -1,1 +1,1 @@
-../../../Typhoon/Source/Factory/Block/TyphoonBlockComponentFactory.h
+../../../Typhoon/Source/Factory/Internal/TyphoonBlockComponentFactory.h

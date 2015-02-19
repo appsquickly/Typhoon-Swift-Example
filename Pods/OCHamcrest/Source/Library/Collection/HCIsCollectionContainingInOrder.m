@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCIsCollectionContainingInOrder.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCIsCollectionContainingInOrder.h"
 
@@ -13,9 +7,9 @@
 
 
 @interface HCMatchSequence : NSObject
-@property (nonatomic, readonly) NSArray *matchers;
-@property (nonatomic, readonly) id <HCDescription, NSObject> mismatchDescription;
-@property (nonatomic) NSUInteger nextMatchIndex;
+@property (readonly, nonatomic, copy) NSArray *matchers;
+@property (readonly, nonatomic, strong) id <HCDescription, NSObject> mismatchDescription;
+@property (nonatomic, assign) NSUInteger nextMatchIndex;
 @end
 
 @implementation HCMatchSequence
@@ -27,7 +21,7 @@
     if (self)
     {
         _matchers = [itemMatchers copy];
-        _mismatchDescription = description;        
+        _mismatchDescription = description;
     }
     return self;
 }
@@ -41,7 +35,7 @@
 {
     if (self.nextMatchIndex < [self.matchers count])
     {
-        [[self.mismatchDescription appendText:@"no item matched: "]
+        [[self.mismatchDescription appendText:@"no item was "]
                               appendDescriptionOf:self.matchers[self.nextMatchIndex]];
         return NO;
     }
@@ -80,7 +74,7 @@
 
 
 @interface HCIsCollectionContainingInOrder ()
-@property (nonatomic, readonly) NSArray *matchers;
+@property (readonly, nonatomic, copy) NSArray *matchers;
 @end
 
 @implementation HCIsCollectionContainingInOrder
@@ -98,32 +92,22 @@
     return self;
 }
 
-- (BOOL)matches:(id)collection
-{
-    return [self matches:collection describingMismatchTo:nil];
-}
-
 - (BOOL)matches:(id)collection describingMismatchTo:(id<HCDescription, NSObject>)mismatchDescription
 {
     if (![collection conformsToProtocol:@protocol(NSFastEnumeration)])
     {
-        [super describeMismatchOf:collection to:mismatchDescription];
+        [[mismatchDescription appendText:@"was non-collection "] appendDescriptionOf:collection];
         return NO;
     }
-    
+
     HCMatchSequence *matchSequence =
         [[HCMatchSequence alloc] initWithMatchers:self.matchers
                               mismatchDescription:mismatchDescription];
     for (id item in collection)
         if (![matchSequence matches:item])
             return NO;
-    
-    return [matchSequence isFinished];
-}
 
-- (void)describeMismatchOf:(id)item to:(id<HCDescription>)mismatchDescription
-{
-    [self matches:item describingMismatchTo:mismatchDescription];
+    return [matchSequence isFinished];
 }
 
 - (void)describeTo:(id<HCDescription>)description

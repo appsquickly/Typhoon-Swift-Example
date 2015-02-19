@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -13,6 +13,7 @@
 
 @class TyphoonConfigPostProcessor;
 @protocol TyphoonResource;
+@class TyphoonRuntimeArguments;
 
 /**
  Declares short-hand definition factory methods for infrastructure components.
@@ -20,6 +21,10 @@
 @interface TyphoonDefinition (Infrastructure)
 
 @property(nonatomic, strong) TyphoonRuntimeArguments *currentRuntimeArguments;
+
+/** This flag used to distinguish definitions from reference to them. First time, when definition created, processed flag set to NO,
+*  but next time, when this definition returned by reference (shortcut with another runtime args) processed flag will be set to YES */
+@property(nonatomic) BOOL processed;
 
 /**
 * The key of the component. A key is useful when multiple configuration of the same class or protocol are desired - for example

@@ -1,1 +1,1 @@
-../../../Typhoon/Source/Factory/Block/TyphoonCollaboratingAssemblyPropertyEnumerator.h
+../../../Typhoon/Source/Factory/Internal/TyphoonCollaboratingAssemblyPropertyEnumerator.h

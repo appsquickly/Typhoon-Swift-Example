@@ -1,22 +1,54 @@
+////////////////////////////////////////////////////////////////////////////////
 //
-//  TyphoonInjectionContext.m
-//  A-Typhoon
+//  TYPHOON FRAMEWORK
+//  Copyright 2013, Typhoon Framework Contributors
+//  All Rights Reserved.
 //
-//  Created by Aleksey Garbarev on 25.03.14.
-//  Copyright (c) 2014 Jasper Blues. All rights reserved.
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //
+////////////////////////////////////////////////////////////////////////////////
 
 #import "TyphoonInjectionContext.h"
+#import "TyphoonRuntimeArguments.h"
+
+@interface TyphoonInjectionContext ()
+
+@property(nonatomic, strong, readwrite) TyphoonComponentFactory* factory;
+@property(nonatomic, strong, readwrite) TyphoonRuntimeArguments* args;
+@property(nonatomic, readwrite) BOOL raiseExceptionIfCircular;
+
+@end
 
 @implementation TyphoonInjectionContext
 
-- (id)copyWithZone:(NSZone *)zone
+//-------------------------------------------------------------------------------------------
+#pragma mark - Initialization & Destruction
+
+- (instancetype)initWithFactory:(TyphoonComponentFactory*)factory args:(TyphoonRuntimeArguments*)args
+    raiseExceptionIfCircular:(BOOL)raiseExceptionIfCircular
 {
-    TyphoonInjectionContext *copied = [[TyphoonInjectionContext allocWithZone:zone] init];
+    self = [super init];
+    if (self)
+    {
+        _factory = factory;
+        _args = args;
+        _raiseExceptionIfCircular = raiseExceptionIfCircular;
+    }
+    return self;
+}
+
+//-------------------------------------------------------------------------------------------
+
+
+
+- (id)copyWithZone:(NSZone*)zone
+{
+    TyphoonInjectionContext* copied = [[TyphoonInjectionContext allocWithZone:zone] init];
     copied.factory = self.factory;
     copied.args = self.args;
     copied.destinationType = self.destinationType;
-    copied.destinationInstanceClass = self.destinationInstanceClass;
+    copied.classUnderConstruction = self.classUnderConstruction;
     copied.raiseExceptionIfCircular = self.raiseExceptionIfCircular;
     return copied;
 }

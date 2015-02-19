@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCHasCount.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCHasCount.h"
 
@@ -13,7 +7,7 @@
 
 
 @interface HCHasCount ()
-@property (nonatomic, readonly) id <HCMatcher> countMatcher;
+@property (readonly, nonatomic, strong) id <HCMatcher> countMatcher;
 @end
 
 @implementation HCHasCount
@@ -35,7 +29,7 @@
 {
     if (![self itemHasCount:item])
         return NO;
-    
+
     NSNumber *count = @([item count]);
     return [self.countMatcher matches:count];
 }

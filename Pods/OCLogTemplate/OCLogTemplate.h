@@ -90,6 +90,9 @@
 #undef LOGGING_LEVEL_DEBUG
 #endif
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+
 // Logging format
 #define LOG_FORMAT_NO_LOCATION(fmt, lvl, ...) NSLog((@"[%@] " fmt), lvl, ##__VA_ARGS__)
 #define LOG_FORMAT_WITH_LOCATION(fmt, lvl, ...) NSLog((@"%s[Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__)
@@ -127,3 +130,5 @@
 #else
 #define LogDebug(...)
 #endif
+
+#pragma clang diagnostic pop

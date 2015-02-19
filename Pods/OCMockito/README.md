@@ -133,6 +133,15 @@ NSArray *mockArray = mock([NSArray class]);
 
 // stubbing
 [given([mockArray objectAtIndex:0]) willReturn:@"first"];
+[given([mockArray objectAtIndex:1]) willThrow:[NSException exceptionWithName:@"name"
+                                                                      reason:@"reason"
+                                                                    userInfo:nil]];
+
+// following prints "first"
+NSLog(@"%@", [mockArray objectAtIndex:0]);
+
+// follows throws exception
+NSLog(@"%@", [mockArray objectAtIndex:1]);
 
 // following prints "(null)" because objectAtIndex:999 was not stubbed
 NSLog(@"%@", [mockArray objectAtIndex:999]);
@@ -143,8 +152,11 @@ How do you mock a class object?
 -------------------------------
 
 ```obj-c
-Class mockStringClass = mockClass([NSString class]);
+__strong Class mockStringClass = mockClass([NSString class]);
 ```
+
+(In the iOS 64-bit runtime, Class objects aren't strong by default. Either make
+it explicitly strong as shown above, or use `id` instead.)
 
 
 How do you mock a protocol?
@@ -152,6 +164,12 @@ How do you mock a protocol?
 
 ```obj-c
 id <MyDelegate> delegate = mockProtocol(@protocol(MyDelegate));
+```
+
+Or, if you don't want it to contain any optional methods:
+
+```obj-c
+id <MyDelegate> delegate = mockProtocolWithoutOptionals(@protocol(MyDelegate));
 ```
 
 
@@ -240,6 +258,9 @@ Use the shortcut `-withMatcher:` to specify a matcher for a single argument:
  willReturn:@"foo"];
 ```
 
+These methods are also available to specify matchers for verification. Just call
+them after `verify(…)` but before the invocation you want to verify.
+
 
 Verifying exact number of invocations / at least x / never
 ----------------------------------------------------------
@@ -292,6 +313,45 @@ MKTArgumentCaptor *argument = [[MKTArgumentCaptor alloc] init];
 NSComparator block = [argument value];
 assertThat(@(block(@"a", @"z")), is(@(NSOrderedAscending)));
 ```
+
+
+Stubbing consecutive calls
+--------------------------
+
+```obj-c
+[[given([mockObject someMethod:@"some arg"])
+    willThrow:[NSException exceptionWithName:@"name" reason:@"reason" userInfo:nil]]
+    willReturn:@"foo"];
+
+// First call: throws exception
+[mockObject someMethod:@"some arg"];
+
+// Second call: prints "foo"
+NSLog(@"%@", [mockObject someMethod:@"some arg"]);
+
+// Any consecutive call: prints "foo" as well. (Last stubbing wins.)
+NSLog(@"%@", [mockObject someMethod:@"some arg"]);
+```
+
+
+Stubbing with blocks
+--------------------
+
+We recommend using simple stubbing with `willReturn:` or `willThrow:` only. But
+`willDo:` using a block can sometimes be helpful. The block can call
+`mkt_arguments` (from NSInvocation+OCMockito.h) on the invocation to get the
+arguments. Whatever the block returns will be used as the stubbed return value.
+
+```obj-c
+[[given([mockObject someMethod:anything()]) willDo:^id (NSInvocation *invocation){
+    NSArray *args = [invocation mkt_arguments];
+    return @([args[0] intValue] * 2);
+}];
+
+// Following prints 4
+NSLog(@"%@", [mockObject someMethod:@2]);
+```
+
 
 Fixing retain cycles
 --------------------

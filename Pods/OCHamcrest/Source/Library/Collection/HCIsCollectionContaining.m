@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCIsCollectionContaining.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCIsCollectionContaining.h"
 
@@ -16,7 +10,7 @@
 
 
 @interface HCIsCollectionContaining ()
-@property (nonatomic, readonly) id <HCMatcher> elementMatcher;
+@property (readonly, nonatomic, strong) id <HCMatcher> elementMatcher;
 @end
 
 @implementation HCIsCollectionContaining
@@ -35,14 +29,34 @@
     return self;
 }
 
-- (BOOL)matches:(id)collection
+- (BOOL)matches:(id)collection describingMismatchTo:(id <HCDescription>)mismatchDescription
 {
     if (![collection conformsToProtocol:@protocol(NSFastEnumeration)])
+    {
+        [[mismatchDescription appendText:@"was non-collection "] appendDescriptionOf:collection];
         return NO;
-        
+    }
+
+    if ([collection count] == 0)
+    {
+        [mismatchDescription appendText:@"was empty"];
+        return NO;
+    }
+
     for (id item in collection)
         if ([self.elementMatcher matches:item])
             return YES;
+
+    [mismatchDescription appendText:@"mismatches were: ["];
+    BOOL isPastFirst = NO;
+    for (id item in collection)
+    {
+        if (isPastFirst)
+            [mismatchDescription appendText:@", "];
+        [self.elementMatcher describeMismatchOf:item to:mismatchDescription];
+        isPastFirst = YES;
+    }
+    [mismatchDescription appendText:@"]"];
     return NO;
 }
 

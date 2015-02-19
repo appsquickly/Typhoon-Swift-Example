@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -44,18 +44,20 @@
 //-------------------------------------------------------------------------------------------
 #pragma mark - Interface Methods
 
-- (void)push:(TyphoonStackElement *)stackItem
+- (void)push:(TyphoonStackElement *)stackElement
 {
-    if (![stackItem isKindOfClass:[TyphoonStackElement class]]) {
-        [NSException raise:NSInvalidArgumentException format:@"Not a TyphoonStackItem: %@", stackItem];
+#if DEBUG
+    if (![stackElement isKindOfClass:[TyphoonStackElement class]]) {
+        [NSException raise:NSInvalidArgumentException format:@"Not a TyphoonStackItem: %@", stackElement];
     }
-    [_storage addObject:stackItem];
+#endif
+    [_storage addObject:stackElement];
 }
 
 - (TyphoonStackElement *)pop
 {
     id element = [_storage lastObject];
-    if ([self isEmpty] == NO) {
+    if (![self isEmpty]) {
         [_storage removeLastObject];
     }
     return element;

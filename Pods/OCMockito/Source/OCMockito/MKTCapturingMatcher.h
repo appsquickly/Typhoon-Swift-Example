@@ -1,16 +1,7 @@
-//
-//  OCMockito - MKTCapturingMatcher.h
-//  Copyright 2014 Jonathan M. Reid. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Source: https://github.com/jonreid/OCMockito
-//
+//  OCMockito by Jon Reid, http://qualitycoding.org/about/
+//  Copyright 2015 Jonathan M. Reid. See LICENSE.txt
 
-#if TARGET_OS_MAC
-    #import <OCHamcrest/HCIsAnything.h>
-#else
-    #import <OCHamcrestIOS/HCIsAnything.h>
-#endif
+#import <OCHamcrest/HCIsAnything.h>
 
 
 @interface MKTCapturingMatcher : HCIsAnything

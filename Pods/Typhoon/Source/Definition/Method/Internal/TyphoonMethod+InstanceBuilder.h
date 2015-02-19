@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -18,7 +18,7 @@
 
 - (NSArray *)injectedParameters;
 
-- (void)createInvocationOnClass:(Class)clazz withContext:(TyphoonInjectionContext *)context completion:(void(^)(NSInvocation *invocation))result;
+- (void)createInvocationWithContext:(TyphoonInjectionContext *)context completion:(void(^)(NSInvocation *invocation))result;
 
 - (BOOL)isClassMethodOnClass:(Class)clazz;
 

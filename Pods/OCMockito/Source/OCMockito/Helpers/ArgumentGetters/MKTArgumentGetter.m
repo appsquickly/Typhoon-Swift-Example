@@ -1,3 +1,6 @@
+//  OCMockito by Jon Reid, http://qualitycoding.org/about/
+//  Copyright 2015 Jonathan M. Reid. See LICENSE.txt
+
 #import "MKTArgumentGetter.h"
 
 @interface MKTArgumentGetter (SubclassResponsibility)
@@ -5,8 +8,8 @@
 @end
 
 @interface MKTArgumentGetter ()
-@property (nonatomic, readonly) char const *handlerType;
-@property (nonatomic, readonly) MKTArgumentGetter *successor;
+@property (readonly, nonatomic, assign) char const *handlerType;
+@property (readonly, nonatomic, strong) MKTArgumentGetter *successor;
 @end
 
 

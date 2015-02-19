@@ -1,10 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////
 //
-//  TyphoonAbstractInjection.m
-//  A-Typhoon
+//  TYPHOON FRAMEWORK
+//  Copyright 2013, Typhoon Framework Contributors
+//  All Rights Reserved.
 //
-//  Created by Aleksey Garbarev on 11.03.14.
-//  Copyright (c) 2014 Jasper Blues. All rights reserved.
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //
+////////////////////////////////////////////////////////////////////////////////
+
 
 #import "TyphoonAbstractInjection.h"
 #import "TyphoonMethod+InstanceBuilder.h"
@@ -14,17 +18,21 @@
 
 @implementation TyphoonAbstractInjection
 
+- (NSString *)customDescription
+{
+    return @"";
+}
 
 - (NSString *)description
 {
     if (self.type == TyphoonInjectionTypeUndefinied) {
-        return [NSString stringWithFormat:@"<%@: %p, type=Undifined>", [self class], self];
+        return [NSString stringWithFormat:@"<%@: %p, %@type=Undifined>", [self class], self, [self customDescription]];
     }
     else if (self.type == TyphoonInjectionTypeParameter) {
-        return [NSString stringWithFormat:@"<%@: %p, index=%d>", [self class], self, (int) self.parameterIndex];
+        return [NSString stringWithFormat:@"<%@: %p, %@index=%d>", [self class], self, [self customDescription], (int) self.parameterIndex];
     }
     else {
-        return [NSString stringWithFormat:@"<%@: %p, property=%@>", [self class], self, self.propertyName];
+        return [NSString stringWithFormat:@"<%@: %p, %@property=%@>", [self class], self, [self customDescription], self.propertyName];
     }
 }
 

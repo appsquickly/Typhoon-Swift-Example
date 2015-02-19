@@ -1,19 +1,13 @@
-//
-//  OCHamcrest - HCIsCloseTo.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCIsCloseTo.h"
 
 
 @interface HCIsCloseTo ()
 
-@property (nonatomic, readonly) double value;
-@property (nonatomic, readonly) double delta;
+@property (readonly, nonatomic, assign) double value;
+@property (readonly, nonatomic, assign) double delta;
 @end
 
 
@@ -39,7 +33,7 @@
 {
     if ([self itemIsNotNumber:item])
         return NO;
-    
+
     return fabs([item doubleValue] - self.value) <= self.delta;
 }
 
