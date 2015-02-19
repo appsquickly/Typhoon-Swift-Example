@@ -11,7 +11,7 @@
 
 import Foundation
 
-public class WeatherReport : NSObject, NSCoding {
+public class WeatherReport : NSObject, NSCoding, Printable {
     
     public private(set) var city : String
     public private(set) var date : NSDate
@@ -42,10 +42,10 @@ public class WeatherReport : NSObject, NSCoding {
     }
     
     public required init(coder : NSCoder) {
-        self.city = coder.decodeObjectForKey("city") as String
-        self.date = coder.decodeObjectForKey("date") as NSDate
-        self.currentConditions = coder.decodeObjectForKey("currentConditions") as CurrentConditions
-        self.forecast = coder.decodeObjectForKey("forecast") as Array<ForecastConditions>
+        self.city = coder.decodeObjectForKey("city") as! String
+        self.date = coder.decodeObjectForKey("date") as! NSDate
+        self.currentConditions = coder.decodeObjectForKey("currentConditions") as! CurrentConditions
+        self.forecast = coder.decodeObjectForKey("forecast") as! Array<ForecastConditions>
     }
     
     public func reportDateAsString() -> String {
@@ -55,7 +55,7 @@ public class WeatherReport : NSObject, NSCoding {
         return dateFormatter.stringFromDate(self.date)
     }
     
-    public func description() -> String {
+    public override var description: String {
         return String(format: "Weather Report: city=%@, current conditions = %@, forecast=%@", self.city, self.currentConditions, self.forecast )
     }
     

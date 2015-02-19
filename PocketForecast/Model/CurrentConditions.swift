@@ -39,7 +39,7 @@ public class CurrentConditions : NSObject, NSCoding {
         return String(format: "%@. %@.", self.summary!, self.wind!)
     }
     
-    public func description() -> String {
+    public override var description: String {
         return String(format: "Current Conditions: summary=%@, temperature=%@", self.summary!, self.temperature!)
     }
     

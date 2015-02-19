@@ -32,16 +32,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6BC1C6791880DE0100A9B367"
-               BuildableName = "Tests.xctest"
-               BlueprintName = "Tests"
-               ReferencedContainer = "container:PocketForecast.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "6BD511681880E794009C487A"
                BuildableName = "PocketForecastTests.xctest"
                BlueprintName = "PocketForecastTests"
@@ -64,11 +54,12 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6BE9744E15AF01A3004472E2"
@@ -86,6 +77,15 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "6BE9744E15AF01A3004472E2"
+            BuildableName = "PocketForecast.app"
+            BlueprintName = "PocketForecast"
+            ReferencedContainer = "container:PocketForecast.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

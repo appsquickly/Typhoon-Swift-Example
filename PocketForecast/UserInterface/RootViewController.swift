@@ -28,7 +28,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     
     private var paperFoldView : PaperFoldView {
         get {
-            return self.view as PaperFoldView
+            return self.view as! PaperFoldView
         }
         set {
             self.view = newValue
@@ -92,7 +92,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     public func showCitiesListController() {
         if (self.sideViewState != SideViewState.Showing) {
             self.sideViewState = SideViewState.Showing
-            self.citiesListController = UINavigationController(rootViewController: self.assembly.citiesListController() as UIViewController)
+            self.citiesListController = UINavigationController(rootViewController: self.assembly.citiesListController() as! UIViewController)
             
             self.citiesListController!.view.frame = CGRectMake(0, 0, SIDE_CONTROLLER_WIDTH, self.mainContentViewContainer.frame.size.height)
             
@@ -124,7 +124,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
         if (self.addCitiesController == nil) {
             self.navigator.topViewController.view.userInteractionEnabled = false
             
-            self.addCitiesController = UINavigationController(rootViewController: self.assembly.addCityViewController() as UIViewController)            
+            self.addCitiesController = UINavigationController(rootViewController: self.assembly.addCityViewController() as! UIViewController)            
             
             self.addCitiesController!.view.frame = CGRectMake(0, self.view.frame.origin.y + self.view.frame.size.height, SIDE_CONTROLLER_WIDTH, self.view.frame.size.height)
             self.view.addSubview(self.addCitiesController!.view)
@@ -158,19 +158,15 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     //-------------------------------------------------------------------------------------------
     // MARK: - PaperFoldViewDelegate
     //-------------------------------------------------------------------------------------------
-
-    public func paperFoldView(paperFoldView: AnyObject!, didFoldAutomatically automated: Bool, toState state: Int) {
-        
-        //TODO: Why does Swift think this is a SideViewState
-        if (state == 0) {
+    public func paperFoldView(paperFoldView: AnyObject!, didFoldAutomatically automated: Bool, toState paperFoldState: PaperFoldState) {
+        if paperFoldState.value == 0 {
             self.navigator.topViewController.viewDidAppear(true)
             
-
+            
             let dummyView = UIView(frame: CGRectMake(1,1,1,1))
             self.paperFoldView.setLeftFoldContentView(dummyView, foldCount: 0, pullFactor: 0)
             self.citiesListController = nil
         }
-        
     }
 
     //-------------------------------------------------------------------------------------------

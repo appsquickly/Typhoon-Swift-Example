@@ -17,7 +17,7 @@ public enum TemperatureUnits : Int {
 }
 
 
-public class Temperature : NSObject, NSCoding {
+public class Temperature : NSObject, NSCoding, Printable {
     
     private var _temperatureInFahrenheit : NSDecimalNumber
     private var _shortFormatter : NSNumberFormatter
@@ -59,7 +59,7 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public required convenience init(coder : NSCoder) {
-        let temp = coder.decodeObjectForKey("temperatureInFahrenheit") as NSDecimalNumber
+        let temp = coder.decodeObjectForKey("temperatureInFahrenheit") as! NSDecimalNumber
         self.init(temperatureInFahrenheit: temp)
         
     }
@@ -110,9 +110,9 @@ public class Temperature : NSObject, NSCoding {
         return _longFormatter.stringFromNumber(self.inCelcius())! + "°"
     }
     
-    public func description() -> String {
+    public override var description: String {
         return NSString(format: "Temperature: %@f [%@ celsius]", self.asShortStringInFahrenheit(),
-            self.asShortStringInCelsius())
+            self.asShortStringInCelsius()) as! String
     }
     
     public func encodeWithCoder(coder : NSCoder) {

@@ -42,7 +42,7 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
                 self.cityNameLabel.text = weatherReport!.cityDisplayName
                 self.temperatureLabel.text = weatherReport!.currentConditions.temperature!.asShortStringInDefaultUnits()
                 self.conditionsDescriptionLabel.text = weatherReport!.currentConditions.longSummary()
-                self.lastUpdateLabel.text = NSString(format: "Updated %@", weatherReport!.reportDateAsString())
+                self.lastUpdateLabel.text = NSString(format: "Updated %@", weatherReport!.reportDateAsString()) as? String
 
             }
         }

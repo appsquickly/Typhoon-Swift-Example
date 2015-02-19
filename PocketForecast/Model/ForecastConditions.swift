@@ -43,7 +43,7 @@ public class ForecastConditions : NSObject, NSCoding {
         return formatter.stringFromDate(self.date!)
     }
     
-    public func description() -> String {
+    public override var description: String {
         if self.low != nil && self.high != nil {
             return String(format: "Forecast : day=%@, low=%@, high=%@", self.longDayOfTheWeek()!, self.low!, self.high!)
         } else {
