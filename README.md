@@ -44,6 +44,10 @@ place of the old one. And you'd be able to reuse the existing test cases.
 ![Weather Report](http://www.typhoonframework.org/images/portfolio/pf-beach1.png)
 ![Weather Report](http://www.typhoonframework.org/images/portfolio/pf-lights1.png)
 
+### I'm blown away!
+
+Typhoon is a non-profit, community driven project. We only ask that if you've found it useful to star us on Github or send a tweet mentioning us (<a href="https://twitter.com/appsquickly">@appsquickly</a>). If you've written Typhoon related blog or tutorial, or published a new Typhoon powered app, we'd certainly be happy to hear about that too. 
+
 ***Thanks @hongcheng for the excellent <a href="https://github.com/honcheng/PaperFold-for-iOS">Paperfold</a> animation, and @michaeljbishop for the <a href="https://github.com/michaeljbishop/NGAParallaxMotion">parallax effect</a>. ***
 
 
