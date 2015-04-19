@@ -3,7 +3,7 @@ Pocket Forecast (Swift)
 
 An example application built with <a href ="http://www.typhoonframework.org">Typhoon</a>.
 
-* Requires Xcode 6.1 (will not build with Xcode 6.0.x). 
+* Requires Xcode 6.3 (***will not build with Xcode 6.0.x or 6.1.x due to Swift language evolution***). 
 * Looking for an Objective-C sample application? We <a href="https://github.com/typhoon-framework/Typhoon-example">have one here</a>. 
 
 ###Features: 
@@ -13,6 +13,9 @@ An example application built with <a href ="http://www.typhoonframework.org">Typ
 * Stores (creates, reads, updates deletes) the cities that the user is interested in receiving reports for. 
 * Can use metric or imperial units. 
 * Displays a different theme (background image, colors, etc) on each run. 
+
+
+***NB: The free weather API that we were using no longer includes forecast information, so this won't be displayed in the app until we find an alternative. The concepts remain the same.***
 
 ###Running the sample:
 
