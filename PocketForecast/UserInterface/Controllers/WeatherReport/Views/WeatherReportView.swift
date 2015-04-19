@@ -75,10 +75,6 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
         self.initLastUpdateLabel()
     }
     
-    public convenience override init() {
-        self.init(frame: CGRectZero)
-    }
-
     public required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

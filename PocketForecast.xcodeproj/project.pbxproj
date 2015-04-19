@@ -1040,8 +1040,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = PocketForecast;
-				PROVISIONING_PROFILE = "b1ec8871-a055-4702-8363-f09690b4c816";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b1ec8871-a055-4702-8363-f09690b4c816";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PocketForecast/PocketForecast-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1075,8 +1075,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = PocketForecast;
-				PROVISIONING_PROFILE = "b1ec8871-a055-4702-8363-f09690b4c816";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b1ec8871-a055-4702-8363-f09690b4c816";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PocketForecast/PocketForecast-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2 \"${PROJECT_DIR}/Pods\"/**";
