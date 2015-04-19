@@ -14,6 +14,9 @@ An example application built with <a href ="http://www.typhoonframework.org">Typ
 * Can use metric or imperial units. 
 * Displays a different theme (background image, colors, etc) on each run. 
 
+
+*NB:* The free weather API that we were using no longer includes forecast information, so this won't be displayed in the app until we find an alternative. The concepts remain the same. 
+
 ###Running the sample:
 
 * Clone this repository, open the Xcode project in your favorite IDE, and run it. It'll say you need an API key.
