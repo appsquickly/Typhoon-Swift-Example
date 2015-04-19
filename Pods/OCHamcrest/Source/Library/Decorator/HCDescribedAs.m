@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCDescribedAs.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCDescribedAs.h"
 
@@ -32,25 +26,22 @@
         readDigit = YES;
     }
 
-    if (readDigit)
-    {
-        *number = decimal;
-        return [self substringFromIndex:index];
-    }
-    else
+    if (!readDigit)
     {
         *number = -1;
         return self;
     }
+    *number = decimal;
+    return [self substringFromIndex:index];
 }
 
 @end
 
 
 @interface HCDescribedAs ()
-@property (nonatomic, readonly) NSString *descriptionTemplate;
-@property (nonatomic, readonly) id <HCMatcher> matcher;
-@property (nonatomic, readonly) NSArray *values;
+@property (readonly, nonatomic, copy) NSString *descriptionTemplate;
+@property (readonly, nonatomic, strong) id <HCMatcher> matcher;
+@property (readonly, nonatomic, copy) NSArray *values;
 @end
 
 
@@ -123,7 +114,7 @@
 id HC_describedAs(NSString *description, id <HCMatcher> matcher, ...)
 {
     NSMutableArray *valueList = [NSMutableArray array];
-    
+
     va_list args;
     va_start(args, matcher);
     id value = va_arg(args, id);
@@ -133,6 +124,6 @@ id HC_describedAs(NSString *description, id <HCMatcher> matcher, ...)
         value = va_arg(args, id);
     }
     va_end(args);
-    
+
     return [HCDescribedAs describedAs:description forMatcher:matcher overValues:valueList];
 }

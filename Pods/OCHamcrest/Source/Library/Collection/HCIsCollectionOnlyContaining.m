@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCIsCollectionOnlyContaining.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCIsCollectionOnlyContaining.h"
 
@@ -13,37 +7,11 @@
 #import "HCCollect.h"
 
 
-@interface HCIsCollectionOnlyContaining ()
-@property (nonatomic, readonly) id <HCMatcher> matcher;
-@end
-
 @implementation HCIsCollectionOnlyContaining
 
 + (instancetype)isCollectionOnlyContaining:(id <HCMatcher>)matcher
 {
     return [[self alloc] initWithMatcher:matcher];
-}
-
-- (instancetype)initWithMatcher:(id <HCMatcher>)matcher
-{
-    self = [super init];
-    if (self)
-        _matcher = matcher;
-    return self;
-}
-
-- (BOOL)matches:(id)collection
-{
-    if (![collection conformsToProtocol:@protocol(NSFastEnumeration)])
-        return NO;
-    
-    if ([collection count] == 0)
-        return NO;
-    
-    for (id item in collection)
-        if (![self.matcher matches:item])
-            return NO;
-    return YES;
 }
 
 - (void)describeTo:(id<HCDescription>)description

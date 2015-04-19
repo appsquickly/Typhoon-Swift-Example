@@ -1,10 +1,6 @@
-//
-//  OCMockito - MKTAtLeastTimes.m
-//  Copyright 2014 Jonathan M. Reid. See LICENSE.txt
-//
-//  Created by Markus Gasser on 18.04.12.
-//  Source: https://github.com/jonreid/OCMockito
-//
+//  OCMockito by Jon Reid, http://qualitycoding.org/about/
+//  Copyright 2015 Jonathan M. Reid. See LICENSE.txt
+//  Contribution by Markus Gasser
 
 #import "MKTAtLeastTimes.h"
 
@@ -12,7 +8,7 @@
 
 
 @interface MKTAtLeastTimes ()
-@property (nonatomic, readonly) NSUInteger wantedCount;
+@property (readonly, nonatomic, assign) NSUInteger wantedCount;
 @end
 
 @implementation MKTAtLeastTimes

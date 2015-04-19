@@ -1,21 +1,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
 //  in accordance with the terms of the license agreement accompanying it.
 //
 ////////////////////////////////////////////////////////////////////////////////
-
+#import <UIKit/UIKit.h>
 
 #import "TyphoonStoryboard.h"
 #import "TyphoonComponentFactory+TyphoonDefinitionRegisterer.h"
 
 #import <objc/runtime.h>
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//-------------------------------------------------------------------------------------------
 #pragma mark - UIViewController + TyphoonDefinitionKey
 
 @interface UIViewController (TyphoonDefinitionKey)
@@ -40,7 +40,7 @@ static const char *kTyphoonKey;
 
 @end
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//-------------------------------------------------------------------------------------------
 #pragma mark - TyphoonStoryboard
 
 @implementation TyphoonStoryboard
@@ -71,7 +71,7 @@ static const char *kTyphoonKey;
 - (void)injectPropertiesForViewController:(UIViewController *)viewController
 {
     if (viewController.typhoonKey.length > 0) {
-        [self.factory inject:viewController withDefinition:NSSelectorFromString(viewController.typhoonKey)];
+        [self.factory inject:viewController withSelector:NSSelectorFromString(viewController.typhoonKey)];
     }
     else {
         [self.factory inject:viewController];

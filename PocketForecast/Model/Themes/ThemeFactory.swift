@@ -25,7 +25,7 @@ public class ThemeFactory : NSObject {
         if (_sequentialTheme == nil) {
             
             let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-            let documentsDirectory = paths[0] as String
+            let documentsDirectory = paths[0] as! String
             let indexFileName = documentsDirectory.stringByAppendingPathComponent("PF_CURRENT_THEME_INDEX")
             var index = NSString(contentsOfFile: indexFileName, encoding: NSUTF8StringEncoding, error: nil)?.integerValue
             if (index == nil || index > themes.count - 1) {

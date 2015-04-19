@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCIsEqualIgnoringWhiteSpace.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCIsEqualIgnoringWhiteSpace.h"
 
@@ -43,15 +37,15 @@ static NSMutableString *stripSpace(NSString *string)
             lastWasSpace = false;
         }
     }
-        
+
     removeTrailingSpace(result);
     return result;
 }
 
 
 @interface HCIsEqualIgnoringWhiteSpace ()
-@property (nonatomic, readonly) NSString *originalString;
-@property (nonatomic, readonly) NSString *strippedString;
+@property (readonly, nonatomic, copy) NSString *originalString;
+@property (readonly, nonatomic, copy) NSString *strippedString;
 @end
 
 @implementation HCIsEqualIgnoringWhiteSpace
@@ -64,12 +58,12 @@ static NSMutableString *stripSpace(NSString *string)
 - (instancetype)initWithString:(NSString *)string
 {
     HCRequireNonNilObject(string);
-    
+
     self = [super init];
     if (self)
     {
         _originalString = [string copy];
-        _strippedString = stripSpace(string);
+        _strippedString = [stripSpace(string) copy];
     }
     return self;
 }
@@ -78,7 +72,7 @@ static NSMutableString *stripSpace(NSString *string)
 {
     if (![item isKindOfClass:[NSString class]])
         return NO;
-    
+
     return [self.strippedString isEqualToString:stripSpace(item)];
 }
 

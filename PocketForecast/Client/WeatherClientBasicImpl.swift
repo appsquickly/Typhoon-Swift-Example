@@ -31,7 +31,7 @@ public class WeatherClientBasicImpl: NSObject, WeatherClient {
             let url = self.queryURL(city)
             let data = NSData(contentsOfURL: url)
 
-            let dictionary = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary
+            let dictionary = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: nil) as! NSDictionary
 
             if let error = dictionary.parseError() {
                 dispatch_async(dispatch_get_main_queue()) {

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -15,16 +15,16 @@
 #import "TyphoonComponentFactory.h"
 #import "TyphoonRuntimeArguments.h"
 
-@protocol TyphoonComponentPostProcessor;
+@protocol TyphoonInstancePostProcessor;
 
 @interface TyphoonComponentFactory (TyphoonDefinitionRegisterer)
 
 - (TyphoonDefinition *)definitionForKey:(NSString *)key;
 
-- (id)objectForDefinition:(TyphoonDefinition *)definition args:(TyphoonRuntimeArguments *)args;
+- (id)newOrScopeCachedInstanceForDefinition:(TyphoonDefinition *)definition args:(TyphoonRuntimeArguments *)args;
 
 - (void)addDefinitionToRegistry:(TyphoonDefinition *)definition;
 
-- (void)addComponentPostProcessor:(id <TyphoonComponentPostProcessor>)postProcessor;
+- (void)addInstancePostProcessor:(id <TyphoonInstancePostProcessor>)postProcessor;
 
 @end

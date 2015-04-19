@@ -1,1 +1,1 @@
-../../../Typhoon/Source/Factory/Block/TyphoonCollaboratingAssemblyProxy.h
+../../../Typhoon/Source/Factory/Internal/TyphoonCollaboratingAssemblyProxy.h

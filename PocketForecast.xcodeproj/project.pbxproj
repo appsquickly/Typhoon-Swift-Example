@@ -135,7 +135,6 @@
 		6B49B33119C6529C00D1A3B8 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
 		6B49B33319C66B5100D1A3B8 /* WeatherReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherReportView.swift; sourceTree = "<group>"; };
 		6B4E0FCA19BD802C009D705E /* WeatherReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherReport.swift; sourceTree = "<group>"; };
-		6B6EEA8A19BAA3C000B3AABB /* PocketForecast-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PocketForecast-Bridging-Header.h"; path = "/Users/jblues/MacProjects/Typhoon-Swift-Example/PocketForecast/PocketForecast-Bridging-Header.h"; sourceTree = "<absolute>"; };
 		6B6EEA8B19BAA3C100B3AABB /* ThemeAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeAssembly.swift; sourceTree = "<group>"; };
 		6B6EEA8D19BAD3A400B3AABB /* CoreComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreComponents.swift; sourceTree = "<group>"; };
 		6B6EEA8F19BAE36A00B3AABB /* ApplicationAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationAssembly.swift; sourceTree = "<group>"; };
@@ -166,6 +165,7 @@
 		6BE9746115AF01A3004472E2 /* PocketForecast-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PocketForecast-Prefix.pch"; sourceTree = "<group>"; };
 		6BE9747115AF01A3004472E2 /* SenTestingKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		7D3466ECF0B4C819A183980C /* Pods-PocketForecast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketForecast.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PocketForecast/Pods-PocketForecast.debug.xcconfig"; sourceTree = "<group>"; };
+		90D24B791A95A45F00E96432 /* PocketForecast-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PocketForecast-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA7980D610AB0AE04C4A3E99 /* icon_partly_cloudy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_partly_cloudy.png; sourceTree = "<group>"; };
 		BA79813E3EE85D93E2E01569 /* PFTemperatureTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFTemperatureTests.m; sourceTree = "<group>"; };
 		BA798162CA41E6D4902A2BD5 /* icon_rainy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_rainy@2x.png"; sourceTree = "<group>"; };
@@ -310,7 +310,7 @@
 		6BE9745915AF01A3004472E2 /* PocketForecast */ = {
 			isa = PBXGroup;
 			children = (
-				6B6EEA8A19BAA3C000B3AABB /* PocketForecast-Bridging-Header.h */,
+				90D24B791A95A45F00E96432 /* PocketForecast-Bridging-Header.h */,
 				BA7981AECCB463AE5C18DCD2 /* Assembly */,
 				6BE9745A15AF01A3004472E2 /* Supporting Files */,
 				BA798E7C3679201AEC43BC53 /* Client */,
@@ -1040,8 +1040,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = PocketForecast;
-				PROVISIONING_PROFILE = "b1ec8871-a055-4702-8363-f09690b4c816";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b1ec8871-a055-4702-8363-f09690b4c816";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PocketForecast/PocketForecast-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1075,8 +1075,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = PocketForecast;
-				PROVISIONING_PROFILE = "b1ec8871-a055-4702-8363-f09690b4c816";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b1ec8871-a055-4702-8363-f09690b4c816";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PocketForecast/PocketForecast-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2 \"${PROJECT_DIR}/Pods\"/**";

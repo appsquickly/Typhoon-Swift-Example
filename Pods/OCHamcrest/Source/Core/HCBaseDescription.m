@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCBaseDescription.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCBaseDescription.h"
 
@@ -26,11 +20,11 @@
         [self append:@"nil"];
     else if ([value conformsToProtocol:@protocol(HCSelfDescribing)])
         [value describeTo:self];
-    else if ([value isKindOfClass:[NSString class]])
+    else if ([value respondsToSelector:@selector(isKindOfClass:)] && [value isKindOfClass:[NSString class]])
         [self toCSyntaxString:value];
     else
         [self appendObjectDescriptionOf:value];
-    
+
     return self;
 }
 
@@ -60,7 +54,7 @@
                             end:(NSString *)end
 {
     BOOL separate = NO;
-    
+
     [self append:start];
     for (id item in values)
     {

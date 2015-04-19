@@ -37,7 +37,9 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
             cities = defaultCities;
             self.defaults.setObject(cities, forKey:self.citiesListKey)
         }
-        return cities!.sortedArrayUsingSelector("caseInsensitiveCompare:")
+        return sorted(cities as! [String]) {
+            return $0 < $1
+        }
     }
     
     public func saveCity(name: String!) {

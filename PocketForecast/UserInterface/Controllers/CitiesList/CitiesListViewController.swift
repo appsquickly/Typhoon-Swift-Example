@@ -96,10 +96,10 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
   
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let cityName : String = cities!.objectAtIndex(indexPath.row) as String
+        let cityName : String = cities!.objectAtIndex(indexPath.row) as! String
         cityDao.saveCurrentlySelectedCity(cityName)
         
-        let rootViewController = self.assembly.rootViewController() as RootViewController
+        let rootViewController = self.assembly.rootViewController() as! RootViewController
         rootViewController.dismissCitiesListController()
     }
     
@@ -111,7 +111,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            let city = cities!.objectAtIndex(indexPath.row) as String
+            let city = cities!.objectAtIndex(indexPath.row) as! String
             self.cityDao.deleteCity(city)
             self.refreshCitiesList()
         }
@@ -119,7 +119,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
 
     private dynamic func addCity() {
         
-        let rootViewController = self.assembly.rootViewController() as RootViewController
+        let rootViewController = self.assembly.rootViewController() as! RootViewController
         rootViewController.showAddCitiesController()
     }
     

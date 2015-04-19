@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCTestFailure.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCTestFailure.h"
 
@@ -21,9 +15,9 @@
     if (self)
     {
         _testCase = testCase;
-        _fileName = fileName;
+        _fileName = [fileName copy];
         _lineNumber = lineNumber;
-        _reason = reason;
+        _reason = [reason copy];
     }
     return self;
 }

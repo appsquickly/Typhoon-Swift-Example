@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -45,8 +45,8 @@
 {
     if ([self isInitializingInstance]) {
         [NSException raise:@"CircularInitializerDependence"
-                    format:@"The object for key %@ is currently initializing, but was specified as init dependency in another object. "
-                               "To inject a circular dependency, use a property setter or method injection instead.", self.key];
+            format:@"The object for key %@ is currently initializing, but was specified as init dependency in another object. "
+                       "To inject a circular dependency, use a property setter or method injection instead.", self.key];
     }
     return _instance;
 }

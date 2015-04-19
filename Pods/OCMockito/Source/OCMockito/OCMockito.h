@@ -1,10 +1,5 @@
-//
-//  OCMockito - OCMockito.h
-//  Copyright 2014 Jonathan M. Reid. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Source: https://github.com/jonreid/OCMockito
-//
+//  OCMockito by Jon Reid, http://qualitycoding.org/about/
+//  Copyright 2015 Jonathan M. Reid. See LICENSE.txt
 
 #import <Foundation/Foundation.h>
 
@@ -52,6 +47,19 @@
  */
 #ifdef MOCKITO_SHORTHAND
     #define mockProtocol(aProtocol) MKTMockProtocol(aProtocol)
+#endif
+
+
+#define MKTMockProtocolWithoutOptionals(aProtocol) (id)[MKTProtocolMock mockForProtocol:aProtocol includeOptionalMethods:NO]
+
+/**
+ Returns a mock object implementing a given protocol, but with no optional methods.
+
+ (In the event of a name clash, don't \#define @c MOCKITO_SHORTHAND and use the synonym
+ @c MKTMockProtocolWithoutOptionals instead.)
+*/
+#ifdef MOCKITO_SHORTHAND
+    #define mockProtocolWithoutOptionals(aProtocol) MKTMockProtocolWithoutOptionals(aProtocol)
 #endif
 
 

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -21,6 +21,7 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Infrastructure)
 #import "TyphoonMethod+InstanceBuilder.h"
 #import "TyphoonReferenceDefinition.h"
 #import "TyphoonIntrospectionUtils.h"
+#import "TyphoonRuntimeArguments.h"
 
 @implementation TyphoonDefinition (Infrastructure)
 
@@ -96,6 +97,15 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Infrastructure)
     return result;
 }
 
+- (void)setProcessed:(BOOL)processed
+{
+    _processed = processed;
+}
+
+- (BOOL)processed
+{
+    return _processed;
+}
 
 //-------------------------------------------------------------------------------------------
 #pragma mark - Private Methods

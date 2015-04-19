@@ -1,16 +1,24 @@
+////////////////////////////////////////////////////////////////////////////////
 //
-//  TyphoonInjectionByRuntimeArgument.m
-//  A-Typhoon
+//  TYPHOON FRAMEWORK
+//  Copyright 2013, Typhoon Framework Contributors
+//  All Rights Reserved.
 //
-//  Created by Aleksey Garbarev on 12.03.14.
-//  Copyright (c) 2014 Jasper Blues. All rights reserved.
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //
+////////////////////////////////////////////////////////////////////////////////
 
 #import "TyphoonInjectionByRuntimeArgument.h"
 #import "TyphoonRuntimeArguments.h"
 #import "NSInvocation+TCFUnwrapValues.h"
 
 @implementation TyphoonInjectionByRuntimeArgument
+
+- (NSString *)customDescription
+{
+    return [NSString stringWithFormat:@"runtimeIndex = %d, ", (int)self.runtimeArgumentIndex];
+}
 
 - (instancetype)initWithArgumentIndex:(NSUInteger)index
 {
@@ -34,8 +42,6 @@
 {
     id<TyphoonInjection> injection = [context.args argumentValueAtIndex:self.runtimeArgumentIndex];
     [injection valueToInjectWithContext:context completion:result];
-
-//    result([context.args argumentValueAtIndex:self.runtimeArgumentIndex]);
 }
 
 - (id)copyWithZone:(NSZone *)zone

@@ -26,7 +26,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     @IBOutlet var validationMessage : UILabel!
     @IBOutlet var spinner : UIActivityIndicatorView!
     
-    dynamic override init() {
+    dynamic init() {
         super.init(nibName : "AddCity", bundle : NSBundle.mainBundle())
     }
 

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -72,10 +72,6 @@
     [_patches setObject:objectCreationBlock forKey:key];
 }
 
-- (void)patchDefinition:(TyphoonDefinition *)definition withObject:(TyphoonPatchObjectCreationBlock)objectCreationBlock
-{
-    [self patchDefinitionWithKey:definition.key withObject:objectCreationBlock];
-}
 
 - (void)patchDefinitionWithSelector:(SEL)definitionSelector withObject:(TyphoonPatchObjectCreationBlock)objectCreationBlock
 {
@@ -90,9 +86,9 @@
 //-------------------------------------------------------------------------------------------
 #pragma mark - Protocol Methods
 
-- (void)postProcessComponentFactory:(TyphoonComponentFactory *)factory
+- (void)postProcessDefinitionsInFactory:(TyphoonComponentFactory *)factory
 {
-    [super postProcessComponentFactory:factory];
+    [super postProcessDefinitionsInFactory:factory];
 
     [factory enumerateDefinitions:^(TyphoonDefinition *definition, NSUInteger index, TyphoonDefinition **definitionToReplace, BOOL *stop) {
         TyphoonPatchObjectCreationBlock patchObjectBlock = _patches[definition.key];
@@ -102,5 +98,14 @@
     }];
 }
 
+
+@end
+
+@implementation TyphoonPatcher(Deprecated)
+
+- (void)patchDefinition:(TyphoonDefinition *)definition withObject:(TyphoonPatchObjectCreationBlock)objectCreationBlock
+{
+    [self patchDefinitionWithKey:definition.key withObject:objectCreationBlock];
+}
 
 @end

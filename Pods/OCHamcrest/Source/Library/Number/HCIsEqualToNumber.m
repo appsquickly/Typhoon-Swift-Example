@@ -1,11 +1,5 @@
-//
-//  OCHamcrest - HCIsEqualToNumber.m
+//  OCHamcrest by Jon Reid, http://qualitycoding.org/about/
 //  Copyright 2014 hamcrest.org. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Docs: http://hamcrest.github.com/OCHamcrest/
-//  Source: https://github.com/hamcrest/OCHamcrest
-//
 
 #import "HCIsEqualToNumber.h"
 
@@ -84,23 +78,32 @@ FOUNDATION_EXPORT id HC_equalToUnsignedInteger(NSUInteger value)
 
 #pragma mark -
 
+static NSString *stringForBool(BOOL value)
+{
+    return value ? @"<YES>" : @"<NO>";
+}
+
 FOUNDATION_EXPORT id HC_equalToBool(BOOL value)
 {
     return [[HCIsEqualToBool alloc] initWithValue:value];
 }
 
 @implementation HCIsEqualToBool
-{
-    BOOL _value;
-}
 
-+ (NSString*) stringForBool:(BOOL)value
+static void HCRequireYesOrNo(BOOL value)
 {
-    return value ? @"<YES>" : @"<NO>";
+    if (value != YES && value != NO)
+    {
+        @throw [NSException exceptionWithName:@"BoolValue"
+                                       reason:@"Must be YES or NO"
+                                     userInfo:nil];
+    }
 }
 
 - (instancetype)initWithValue:(BOOL)value
 {
+    HCRequireYesOrNo(value);
+
     self = [super init];
     if (self)
         _value = value;
@@ -112,19 +115,22 @@ FOUNDATION_EXPORT id HC_equalToBool(BOOL value)
     if (![item isKindOfClass:[NSNumber class]])
         return NO;
 
-    return [item boolValue] == _value;
+    return [item boolValue] == self.value;
 }
 
 - (void)describeTo:(id<HCDescription>)description
 {
-    [description appendText:@"a BOOL with value "];
-    [description appendText:[HCIsEqualToBool stringForBool:_value]];
+    [[description appendText:@"a BOOL with value "]
+                  appendText:stringForBool(self.value)];
 }
 
 - (void)describeMismatchOf:(id)item to:(id<HCDescription>)mismatchDescription
 {
     [mismatchDescription appendText:@"was "];
-    [mismatchDescription appendText:[HCIsEqualToBool stringForBool:[item boolValue]]];
+    if ([item isKindOfClass:[NSNumber class]])
+        [mismatchDescription appendText:stringForBool([item boolValue])];
+    else
+        [mismatchDescription appendDescriptionOf:item];
 }
 
 @end

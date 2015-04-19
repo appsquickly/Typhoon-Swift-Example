@@ -1,10 +1,5 @@
-//
-//  OCMockito - MKTUnsignedLongLongArgumentGetter.m
-//  Copyright 2014 Jonathan M. Reid. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Source: https://github.com/jonreid/OCMockito
-//
+//  OCMockito by Jon Reid, http://qualitycoding.org/about/
+//  Copyright 2015 Jonathan M. Reid. See LICENSE.txt
 
 #import "MKTUnsignedLongLongArgumentGetter.h"
 

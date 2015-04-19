@@ -1,14 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//  Copyright 2014 ibipit
+//  TYPHOON FRAMEWORK
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
-//  NOTICE: This software is the proprietary information of ibipit
-//  Use is subject to license terms.
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //
 ////////////////////////////////////////////////////////////////////////////////
-
-
 
 #import "TyphoonAbstractDetachableComponentFactoryPostProcessor.h"
 #import "TyphoonComponentFactory.h"
@@ -26,7 +25,7 @@
 
 @implementation TyphoonAbstractDetachableComponentFactoryPostProcessor
 
-- (void)postProcessComponentFactory:(TyphoonComponentFactory *)factory
+- (void)postProcessDefinitionsInFactory:(TyphoonComponentFactory *)factory
 {
     _factory = factory;
     [self cacheDefinitionsIn:_factory];
@@ -34,7 +33,7 @@
 
 - (void)rollback
 {
-    NSMutableArray *postProcessors = (NSMutableArray *) _factory.factoryPostProcessors;
+    NSMutableArray *postProcessors = (NSMutableArray *) _factory.definitionPostProcessors;
     if (![postProcessors.lastObject isEqual:self]) {
         [NSException raise:@"Only the last TyphoonAbstractDetachableComponentFactoryPostProcessor can be rolled-back"
             format:@"%@",NSInternalInconsistencyException];

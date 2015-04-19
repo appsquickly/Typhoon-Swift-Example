@@ -135,6 +135,7 @@ OCHamcrest comes with a library of useful matchers:
   * `isA` - match object type precisely, no subclasses
   * `nilValue`, `notNilValue` - match `nil`, or not `nil`
   * `sameInstance` - match same object
+  * `throwsException` - match block that throws an exception
 
 * Number
 
@@ -143,6 +144,8 @@ OCHamcrest comes with a library of useful matchers:
   `equalToInt` for an `int`)
   * `greaterThan`, `greaterThanOrEqualTo`, `lessThan`,
   `lessThanOrEqualTo` - match numeric ordering
+  * `isFalse` - match zero
+  * `isTrue` - match non-zero
 
 * Text
 
@@ -166,6 +169,7 @@ OCHamcrest comes with a library of useful matchers:
 
   * `contains` - exactly match the entire collection
   * `containsInAnyOrder` - match the entire collection, but in any order
+  * `everyItem` - match if every item in a collection satisfies a given matcher
   * `hasCount` - match number of elements against another matcher
   * `hasCountOf` - match collection with given number of elements
   * `hasEntries` - match dictionary with list of key-value pairs
@@ -206,6 +210,20 @@ Other matchers that take matchers as arguments provide similar shortcuts,
 wrapping non-matcher arguments in `equalTo`.
 
 
+How can I assert on an asynchronous call?
+-----------------------------------------
+
+`assertThatAfter` will keep trying to evaluate an expression until the matcher
+is satisfied or a timeout is reached. For example,
+
+```obj-c
+assertThatAfter(5, futureValueOf(self.someString), is(equalTo(@"expected")));
+```
+
+This checks several times for this string to be @"expected" before timing out
+after 5 seconds. `futureValueOf` is a convenience function to create a block.
+
+
 Writing custom matchers
 -----------------------
 
@@ -213,3 +231,9 @@ OCHamcrest comes bundled with lots of useful matchers, but you'll probably find
 that you need to create your own from time to time to fit your testing needs.
 See the ["Writing Custom Matchers" guide for more information](https://github.com/hamcrest/OCHamcrest/wiki/Writing-Custom-Matchers
 ).
+
+
+What about Swift?
+-----------------
+
+Try the [native Swift implementation of Hamcrest](https://github.com/nschum/SwiftHamcrest).

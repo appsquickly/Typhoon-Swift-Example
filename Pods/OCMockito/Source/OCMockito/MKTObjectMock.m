@@ -1,16 +1,14 @@
-//
-//  OCMockito - MKTObjectMock.m
-//  Copyright 2014 Jonathan M. Reid. See LICENSE.txt
-//
-//  Created by: Jon Reid, http://qualitycoding.org/
-//  Source: https://github.com/jonreid/OCMockito
-//
+//  OCMockito by Jon Reid, http://qualitycoding.org/about/
+//  Copyright 2015 Jonathan M. Reid. See LICENSE.txt
 
 #import "MKTObjectMock.h"
 
+#import "MKTDynamicProperties.h"
+
 
 @interface MKTObjectMock ()
-@property (nonatomic, strong, readonly) Class mockedClass;
+@property (readonly, nonatomic, strong) Class mockedClass;
+@property (nonatomic, strong) MKTDynamicProperties *dynamicProperties;
 @end
 
 @implementation MKTObjectMock
@@ -24,7 +22,10 @@
 {
     self = [super init];
     if (self)
+    {
         _mockedClass = aClass;
+        _dynamicProperties = [[MKTDynamicProperties alloc] initWithClass:aClass];
+    }
     return self;
 }
 
@@ -35,6 +36,9 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
+    NSMethodSignature *dynamicPropertySignature = [self.dynamicProperties methodSignatureForSelector:aSelector];
+    if (dynamicPropertySignature)
+        return dynamicPropertySignature;
     return [self.mockedClass instanceMethodSignatureForSelector:aSelector];
 }
 
@@ -48,7 +52,8 @@
 
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
-    return [self.mockedClass instancesRespondToSelector:aSelector];
+    return [self.dynamicProperties methodSignatureForSelector:aSelector] ||
+           [self.mockedClass instancesRespondToSelector:aSelector];
 }
 
 @end

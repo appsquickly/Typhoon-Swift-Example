@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -19,7 +19,7 @@
 #import "TyphoonTypeConverterRegistry.h"
 #import <objc/message.h>
 #import "OCLogTemplate.h"
-#import "TyphoonComponentPostProcessor.h"
+#import "TyphoonInstancePostProcessor.h"
 #import "TyphoonMethod.h"
 #import "TyphoonMethod+InstanceBuilder.h"
 #import "TyphoonIntrospectionUtils.h"
@@ -79,8 +79,8 @@
 
 - (BOOL)definitionIsInfrastructureComponent
 {
-    if ([_definition.type conformsToProtocol:@protocol(TyphoonComponentFactoryPostProcessor)] ||
-        [_definition.type conformsToProtocol:@protocol(TyphoonComponentPostProcessor)] ||
+    if ([_definition.type conformsToProtocol:@protocol(TyphoonDefinitionPostProcessor)] ||
+        [_definition.type conformsToProtocol:@protocol(TyphoonInstancePostProcessor)] ||
         [_definition.type conformsToProtocol:@protocol(TyphoonTypeConverter)]) {
         return YES;
     }
@@ -91,12 +91,12 @@
 {
     LogTrace(@"Registering Infrastructure component: %@ with key: %@", NSStringFromClass(_definition.type), _definition.key);
 
-    id infrastructureComponent = [_componentFactory objectForDefinition:_definition args:nil];
-    if ([_definition.type conformsToProtocol:@protocol(TyphoonComponentFactoryPostProcessor)]) {
+    id infrastructureComponent = [_componentFactory newOrScopeCachedInstanceForDefinition:_definition args:nil];
+    if ([_definition.type conformsToProtocol:@protocol(TyphoonDefinitionPostProcessor)]) {
         [_componentFactory attachPostProcessor:infrastructureComponent];
     }
-    else if ([_definition.type conformsToProtocol:@protocol(TyphoonComponentPostProcessor)]) {
-        [_componentFactory addComponentPostProcessor:infrastructureComponent];
+    else if ([_definition.type conformsToProtocol:@protocol(TyphoonInstancePostProcessor)]) {
+        [_componentFactory addInstancePostProcessor:infrastructureComponent];
     }
     else if ([_definition.type conformsToProtocol:@protocol(TyphoonTypeConverter)]) {
         [[TyphoonTypeConverterRegistry shared] registerTypeConverter:infrastructureComponent];
