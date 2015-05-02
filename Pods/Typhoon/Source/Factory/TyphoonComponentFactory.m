@@ -134,7 +134,7 @@ static TyphoonComponentFactory *xibResolvingFactory = nil;
     [registerer doRegistration];
 
     if ([self isLoaded]) {
-        [self _load];
+        [self _loadOnlyOne:definition];
     }
 }
 
@@ -186,14 +186,9 @@ static TyphoonComponentFactory *xibResolvingFactory = nil;
 
 - (void)loadIfNeeded
 {
-    if ([self notLoaded]) {
+    if (![self isLoaded]) {
         [self load];
     }
-}
-
-- (BOOL)notLoaded
-{
-    return ![self isLoaded];
 }
 
 - (void)makeDefault
@@ -213,8 +208,7 @@ static TyphoonComponentFactory *xibResolvingFactory = nil;
     return [_registry copy];
 }
 
-- (void)
-enumerateDefinitions:(void (^)(TyphoonDefinition *definition, NSUInteger index, TyphoonDefinition **definitionToReplace,
+- (void)enumerateDefinitions:(void (^)(TyphoonDefinition *definition, NSUInteger index, TyphoonDefinition **definitionToReplace,
         BOOL *stop))block
 {
     [self loadIfNeeded];
@@ -297,6 +291,12 @@ enumerateDefinitions:(void (^)(TyphoonDefinition *definition, NSUInteger index, 
     [self instantiateEagerSingletons];
 }
 
+- (void)_loadOnlyOne:(TyphoonDefinition *)definition
+{
+    definition = [self definitionAfterApplyingPostProcessorsToDefinition:definition];
+    [self instantiateIfEagerSingleton:definition];
+}
+
 - (NSArray *)orderedArray:(NSMutableArray *)array
 {
     return [array sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -321,19 +321,41 @@ enumerateDefinitions:(void (^)(TyphoonDefinition *definition, NSUInteger index, 
 
 - (void)applyPostProcessors
 {
-    [_definitionPostProcessors enumerateObjectsUsingBlock:^(id<TyphoonDefinitionPostProcessor> postProcessor,
-            NSUInteger idx, BOOL *stop) {
-        [postProcessor postProcessDefinitionsInFactory:self];
+    [self enumerateDefinitions:^(TyphoonDefinition *definition, NSUInteger index, TyphoonDefinition **definitionToReplace, BOOL *stop) {
+        TyphoonDefinition *result = [self definitionAfterApplyingPostProcessorsToDefinition:definition];
+        if (definitionToReplace && result != definition) {
+            *definitionToReplace = result;
+        }
     }];
+}
+
+- (TyphoonDefinition *)definitionAfterApplyingPostProcessorsToDefinition:(TyphoonDefinition *)definition
+{
+    TyphoonDefinition *result = definition;
+
+    for (id<TyphoonDefinitionPostProcessor> postProcessor in _definitionPostProcessors) {
+        TyphoonDefinition *currentReplacement = nil;
+        [postProcessor postProcessDefinition:result replacement:&currentReplacement withFactory:self];
+        if (currentReplacement) {
+            result = currentReplacement;
+        }
+    }
+
+    return result;
 }
 
 - (void)instantiateEagerSingletons
 {
     [_registry enumerateObjectsUsingBlock:^(TyphoonDefinition *definition, NSUInteger idx, BOOL *stop) {
-        if (definition.scope == TyphoonScopeSingleton) {
-            [self newOrScopeCachedInstanceForDefinition:definition args:nil];
-        }
+        [self instantiateIfEagerSingleton:definition];
     }];
+}
+
+- (void)instantiateIfEagerSingleton:(TyphoonDefinition *)definition
+{
+    if (definition.scope == TyphoonScopeSingleton) {
+        [self newOrScopeCachedInstanceForDefinition:definition args:nil];
+    }
 }
 
 - (NSString *)poolKeyForDefinition:(TyphoonDefinition *)definition args:(TyphoonRuntimeArguments *)args

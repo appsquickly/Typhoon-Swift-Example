@@ -49,6 +49,25 @@ static NSString *const kFragmentBegin   = @"#";
   return self;
 }
 
+- (NSURL*) uq_URLByRemovingQuery {
+  NSArray *queryComponents = [self.absoluteString componentsSeparatedByString:kQueryBegin];
+  if (queryComponents.count) {
+    return [NSURL URLWithString:queryComponents.firstObject];
+  }
+  return self;
+}
+
+- (NSURL *)uq_URLByReplacingQueryWithDictionary:(NSDictionary *)queryDictionary {
+  return [self uq_URLByReplacingQueryWithDictionary:queryDictionary withSortedKeys:NO];
+}
+
+- (NSURL*) uq_URLByReplacingQueryWithDictionary:(NSDictionary*) queryDictionary
+                                 withSortedKeys:(BOOL) sortedKeys
+{
+  NSURL *stripped = [self uq_URLByRemovingQuery];
+  return [stripped uq_URLByAppendingQueryDictionary:queryDictionary withSortedKeys:sortedKeys];
+}
+
 @end
 
 #pragma mark -

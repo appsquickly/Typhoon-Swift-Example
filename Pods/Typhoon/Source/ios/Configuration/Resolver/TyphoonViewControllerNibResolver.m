@@ -20,12 +20,10 @@
 
 #pragma mark - Protocol methods
 
-- (void)postProcessDefinitionsInFactory:(TyphoonComponentFactory *)factory
+- (void)postProcessDefinition:(TyphoonDefinition *)definition replacement:(TyphoonDefinition **)definitionToReplace withFactory:(TyphoonComponentFactory *)factory
 {
-    for (TyphoonDefinition *definition in [factory registry]) {
-        if ([self shouldProcessDefinition:definition]) {
-            [self processViewControllerDefinition:definition];
-        }
+    if ([self shouldProcessDefinition:definition]) {
+        [self processViewControllerDefinition:definition];
     }
 }
 

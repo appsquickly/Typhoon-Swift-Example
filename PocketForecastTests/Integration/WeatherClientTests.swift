@@ -18,11 +18,12 @@ public class WeatherClientTests : XCTestCase {
     
     public override func setUp() {
 
-        let factory = TyphoonBlockComponentFactory(assemblies: [CoreComponents()])
+        let assembly = ApplicationAssembly().activate()
+
         let configurer = TyphoonConfigPostProcessor()
         configurer.useResourceWithName("Configuration.plist")
-        factory.attachPostProcessor(configurer)
-        self.weatherClient = factory.componentForKey("weatherClient") as WeatherClient
+        assembly.attachPostProcessor(configurer)
+        self.weatherClient = assembly.coreComponents.weatherClient() as! WeatherClient
     }
     
     public func test_it_receives_a_wather_report_given_a_valid_city() {

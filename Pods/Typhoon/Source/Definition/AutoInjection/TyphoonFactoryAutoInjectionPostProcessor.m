@@ -13,7 +13,6 @@
 #import "TyphoonComponentFactory.h"
 #import "TyphoonDefinition.h"
 #import "TyphoonDefinition+InstanceBuilder.h"
-#import "NSObject+TyphoonIntrospectionUtils.h"
 #import "TyphoonIntrospectionUtils.h"
 #import "TyphoonTypeDescriptor.h"
 #import "TyphoonInjectedObject.h"
@@ -25,11 +24,9 @@ static id TypeForInjectionFromType(TyphoonTypeDescriptor *type);
 
 @implementation TyphoonFactoryAutoInjectionPostProcessor
 
-- (void)postProcessDefinitionsInFactory:(TyphoonComponentFactory *)factory
+- (void)postProcessDefinition:(TyphoonDefinition *)definition replacement:(TyphoonDefinition **)definitionToReplace withFactory:(TyphoonComponentFactory *)factory
 {
-    for (TyphoonDefinition *definition in [factory registry]) {
-        [self postProcessDefinition:definition];
-    }
+    [self postProcessDefinition:definition];
 }
 
 - (void)postProcessDefinition:(TyphoonDefinition *)definition
@@ -48,7 +45,7 @@ static id TypeForInjectionFromType(TyphoonTypeDescriptor *type);
     NSMutableArray *injections = nil;
     NSSet *allProperties = [TyphoonIntrospectionUtils propertiesForClass:clazz upToParentClass:[NSObject class]];
     for (NSString *propertyName in allProperties) {
-        TyphoonTypeDescriptor *type = [clazz typhoon_typeForPropertyWithName:propertyName];
+        TyphoonTypeDescriptor *type = [TyphoonIntrospectionUtils typeForPropertyNamed:propertyName inClass:clazz];
         if (IsTyphoonAutoInjectionType(type)) {
             id explicitType = TypeForInjectionFromType(type);
             if (!explicitType) {

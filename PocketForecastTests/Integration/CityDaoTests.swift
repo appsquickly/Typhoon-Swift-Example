@@ -18,8 +18,8 @@ public class CityDaoTests : XCTestCase {
     var cityDao : CityDao!
     
     public override func setUp() {
-        let factory = TyphoonBlockComponentFactory(assemblies: [CoreComponents()])
-        self.cityDao = factory.componentForKey("cityDao") as CityDao
+        let assembly = ApplicationAssembly().activate()
+        self.cityDao = assembly.coreComponents.cityDao() as! CityDao
     }
     
     public func test_it_lists_all_cities_alphabetically() {
@@ -29,7 +29,7 @@ public class CityDaoTests : XCTestCase {
     
     public func test_it_allows_adding_a_city() {
         self.cityDao.saveCity("Manila")
-        let cities : [String!] = self.cityDao.listAllCities() as [String!]
+        let cities : [String!] = self.cityDao.listAllCities() as! [String!]
         
         XCTAssertTrue(cities.filter {$0 == "Manila"}.count == 1)
     }
@@ -38,13 +38,13 @@ public class CityDaoTests : XCTestCase {
         self.cityDao.saveCity("Manila")
         self.cityDao.saveCity("Manila")
         
-        let cities : [String!] = self.cityDao.listAllCities() as [String!]
+        let cities : [String!] = self.cityDao.listAllCities() as! [String!]
         XCTAssertTrue(cities.filter {$0 == "Manila"}.count == 1)
     }
 
     public func test_allows_removing_a_city() {
         self.cityDao.deleteCity("Manila")
-        let cities : [String!] = self.cityDao.listAllCities() as [String!]
+        let cities : [String!] = self.cityDao.listAllCities() as! [String!]
         XCTAssertTrue(cities.filter {$0 == "Manila"}.count == 0)
     }
   

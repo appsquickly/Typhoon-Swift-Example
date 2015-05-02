@@ -29,6 +29,21 @@
 /** As above, but `sortedKeys=NO` */
 - (NSURL*) uq_URLByAppendingQueryDictionary:(NSDictionary*) queryDictionary;
 
+/**
+ *  @return Copy of URL with its query component replaced with
+ *  the specified dictionary.
+ *  @param queryDictionary A new query dictionary
+ *  @param sortedKeys      Whether or not to sort the query keys
+ */
+- (NSURL*) uq_URLByReplacingQueryWithDictionary:(NSDictionary*) queryDictionary
+                                 withSortedKeys:(BOOL) sortedKeys;
+
+/** As above, but `sortedKeys=NO` */
+- (NSURL*) uq_URLByReplacingQueryWithDictionary:(NSDictionary*) queryDictionary;
+
+/** @return Receiver with query component completely removed */
+- (NSURL*) uq_URLByRemovingQuery;
+
 @end
 
 #pragma mark -

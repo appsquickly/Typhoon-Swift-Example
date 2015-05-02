@@ -17,8 +17,8 @@ public class WeatherReportDaoTests : XCTestCase {
     var weatherReportDao : WeatherReportDao!
     
     public override func setUp() {
-        let factory = TyphoonBlockComponentFactory(assemblies: [CoreComponents()])
-        self.weatherReportDao = factory.componentForKey("weatherReportDao") as WeatherReportDao
+        let assembly = ApplicationAssembly().activate()
+        self.weatherReportDao = assembly.coreComponents.weatherReportDao() as! WeatherReportDao
     }
     
     

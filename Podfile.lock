@@ -4,15 +4,15 @@ PODS:
   - ICLoader (1.0.3):
     - CKUITools
   - NGAParallaxMotion (1.1.0)
-  - NSURL+QueryDictionary (1.0.3)
+  - NSURL+QueryDictionary (1.1.0)
   - OCHamcrest (4.1.1)
   - OCLogTemplate (1.0.1)
   - OCMockito (1.4.0):
     - OCHamcrest (~> 4.0)
   - PaperFold (1.2)
-  - Typhoon (HEAD based on 3.0.1):
-    - Typhoon/no-arc (= HEAD based on 3.0.1)
-  - Typhoon/no-arc (HEAD based on 3.0.1)
+  - Typhoon (HEAD based on 3.1.5):
+    - Typhoon/no-arc (= HEAD based on 3.1.5)
+  - Typhoon/no-arc (HEAD based on 3.1.5)
 
 DEPENDENCIES:
   - CKUITools
@@ -37,15 +37,15 @@ CHECKOUT OPTIONS:
     :tag: 1.2-no-gesture-recognizers
 
 SPEC CHECKSUMS:
-  CKUITools: b7e352ba583531b8946f22319aef43ce5e258f33
-  Expecta: 112bcafa2304ee0f3c5e586505f24555a47b25d5
-  ICLoader: fc21a5ad5ca6467dc897638fec533ef1516b7bdc
-  NGAParallaxMotion: 62644b783178f75a234f458270f416afee89877c
-  NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e
-  OCHamcrest: af1c7c5ea345de69ea6c9c2958f65f3044e5c420
-  OCLogTemplate: e7ffb1c1d0590ac4fd04e16a7f18314138c97088
-  OCMockito: 991936bb775cc4c27f063d38f5e17b9161fbd21c
-  PaperFold: 56c21be56fe6454fa99927b251396471d341c874
-  Typhoon: 825ec92176814a9f456979ef226c9d027d236dc1
+  CKUITools: c11046721720fefbe06dee7fb0b2df54627aa329
+  Expecta: cfaf1d3e2e194ca704a25e997093d30a1ce70b61
+  ICLoader: 894bfaa0dc4b64acecaa3e18937036826ff2a22d
+  NGAParallaxMotion: 8772f51f75e5177840053229bbf32bf6f7687e52
+  NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
+  OCHamcrest: 6f03ffa81d12feab872638490a44ab0a6d3aca10
+  OCLogTemplate: 3a67ba6e6b40bc7675f6017cb71674e51cd68fa2
+  OCMockito: 4981140c9a9ec06c31af40f636e3c0f25f27e6b2
+  PaperFold: 1cf0beee99261dfc2a85821e3e5f1b6d4a3c365d
+  Typhoon: fa33f14d5b242232293527888510cc4e8a40a201
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.0

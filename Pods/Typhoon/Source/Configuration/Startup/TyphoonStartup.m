@@ -26,7 +26,6 @@
 #endif
 
 #if TARGET_OS_IPHONE
-#import <UIKit/UIKit.h>
 #define ApplicationDidFinishLaunchingNotification UIApplicationDidFinishLaunchingNotification
 #elif TARGET_OS_MAC
 #define ApplicationDidFinishLaunchingNotification NSApplicationDidFinishLaunchingNotification
@@ -115,9 +114,7 @@ static TyphoonComponentFactory *initialFactory;
 + (void)injectInitialFactoryIntoDelegate:(id)appDelegate
 {
     [initialFactory load];
-    TyphoonDefinition *definition = [[initialFactory allDefinitionsForType:[appDelegate class]] lastObject];
-    [initialFactory doInjectionEventsOn:appDelegate withDefinition:definition args:nil];
-    [initialFactory registerInstance:appDelegate asSingletonForDefinition:definition];
+    [initialFactory inject:appDelegate];
 }
 
 

@@ -155,10 +155,23 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 
 //-------------------------------------------------------------------------------------------
 #pragma mark Factory methods
+//-------------------------------------------------------------------------------------------
 
 + (id)withClass:(Class)clazz;
 
 + (id)withClass:(Class)clazz configuration:(TyphoonDefinitionBlock)injections;
+
+/**
+* Returns a definition that inherits initializer injections, property injections, method injections and scope
+* from the specified parent definition. Parent definitions can be chained.
+*/
++ (id)withParent:(id)parent class:(Class)clazz;
+
+/**
+* Returns a definition that inherits initializer injections, property injections, method injections and scope
+* from the specified parent definition, adding the specified configuration.  Parent definitions can be chained.
+*/
++ (id)withParent:(id)parent class:(Class)clazz configuration:(TyphoonDefinitionBlock)injections;
 
 //TODO: Rewrite this doc
 /**
@@ -205,6 +218,7 @@ definition.factory = [self sqliteManager];
 
 //-------------------------------------------------------------------------------------------
 #pragma mark Injection
+//-------------------------------------------------------------------------------------------
 
 /**
 * Injects property with a component from the container that matches the type (class or protocol) of the property.
@@ -220,14 +234,14 @@ definition.factory = [self sqliteManager];
  */
 - (void)injectProperty:(SEL)selector with:(id)injection;
 
-/** 
+/**
  * Injects method specified by selector with parameters.
  * @see TyphoonMethod documentation for information about parameters
  */
 - (void)injectMethod:(SEL)selector parameters:(void (^)(TyphoonMethod *method))parametersBlock;
 
 /**
- * Injects initializer specified by selector and parameters. 
+ * Injects initializer specified by selector and parameters.
  * Initializer allow you to create object with special selector and params. Without this injection,
  * object will be created by 'alloc-init' calls
  */
@@ -257,12 +271,6 @@ definition.factory = [self sqliteManager];
 
 @end
 
-@interface TyphoonDefinition(Deprecated)
-
-- (void)setBeforeInjections:(SEL)sel DEPRECATED_MSG_ATTRIBUTE("Use performBeforeInjections method. (setBeforeInjections will be unavailable in Typhoon 3.0)");
-- (void)setAfterInjections:(SEL)sel DEPRECATED_MSG_ATTRIBUTE("Use performAterInjections method (setAfterInjections method will be unavailable in Typhoon 3.0)");
-
-@end
 
 @interface TyphoonDefinition(Unavailable)
 
@@ -273,5 +281,9 @@ definition.factory = [self sqliteManager];
 + (instancetype)configDefinitionWithResources:(NSArray *)array __attribute__((unavailable("Use configDefinitionWithName instead")));
 
 @property(nonatomic, strong) id factory  __attribute((unavailable("Use one of withFactory: method instead")));
+
+- (void)setBeforeInjections:(SEL)sel __attribute((unavailable("Use performBeforeInjections method. (setBeforeInjections will be unavailable in Typhoon 3.0)")));
+- (void)setAfterInjections:(SEL)sel __attribute((unavailable("Use performAterInjections method (setAfterInjections method will be unavailable in Typhoon 3.0)")));
+
 
 @end

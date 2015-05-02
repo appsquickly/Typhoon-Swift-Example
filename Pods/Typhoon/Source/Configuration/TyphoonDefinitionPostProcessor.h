@@ -13,6 +13,7 @@
 #import <Foundation/Foundation.h>
 
 @class TyphoonComponentFactory;
+@class TyphoonDefinition;
 
 /**
 * @ingroup Assembly
@@ -28,11 +29,14 @@
 @protocol TyphoonDefinitionPostProcessor <NSObject>
 
 /**
- Post process a component factory after its initialization.
+ Post process a definition.
 
- May be called more than once, if a PostProcessor is added to a ComponentFactory after a component has been retrieved from that factory.
- @param factory The component factory
+ Called for each definition in the factory. You able to modify definition and you can return another definition, using definitionToReplace pointer.
+
+ @param definition The definition.
+ @param definitionToReplace pointer to definition replacement
+ @param factory The component factory.
  */
-- (void)postProcessDefinitionsInFactory:(TyphoonComponentFactory *)factory;
+- (void)postProcessDefinition:(TyphoonDefinition *)definition replacement:(TyphoonDefinition **)definitionToReplace withFactory:(TyphoonComponentFactory *)factory;
 
 @end
