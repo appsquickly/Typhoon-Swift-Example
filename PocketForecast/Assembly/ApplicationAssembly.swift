@@ -114,6 +114,9 @@ public class ApplicationAssembly: TyphoonAssembly {
         return TyphoonDefinition.withClass(AddCityViewController.self) {
             (definition) in
             
+            //TODO: Seems Swift 1.2 still vtables this initializer
+            
+            /*
 
             definition.useInitializer("initWithNibName:bundle:") {
                 (initializer) in
@@ -121,6 +124,8 @@ public class ApplicationAssembly: TyphoonAssembly {
                 initializer.injectParameterWith("AddCity")
                 initializer.injectParameterWith(NSBundle.mainBundle())
             }
+
+            */
             
             definition.injectProperty("cityDao", with:self.coreComponents.cityDao())
             definition.injectProperty("weatherClient", with:self.coreComponents.weatherClient())
