@@ -21,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        
+        
         ICLoader.setImageName("cloud_icon.png")
         ICLoader.setLabelFontName(UIFont.applicationFontOfSize(10).fontName)
         

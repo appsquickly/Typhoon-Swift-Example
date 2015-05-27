@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  TYPHOON FRAMEWORK
-//  Copyright 2013, Jasper Blues & Contributors
+//  Copyright 2013, Typhoon Framework Contributors
 //  All Rights Reserved.
 //
 //  NOTICE: The authors permit you to use, modify, and distribute this file
@@ -28,6 +28,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     
     required dynamic init()
     {
+        NSLog( "Foobar!")
         super.init(nibName: "AddCity", bundle: NSBundle.mainBundle())
     }
 
@@ -35,8 +36,9 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    required dynamic init(nibname : String?, bundle : NSBundle?)
+    required dynamic init(nibname : String!, bundle : NSBundle!)
     {
+        NSLog("yehay!!!!!!!!!!!!!!!!!!!!!")
         super.init(nibName: nibname, bundle: bundle)
     }
 

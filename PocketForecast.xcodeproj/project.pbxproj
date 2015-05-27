@@ -167,7 +167,6 @@
 		7D3466ECF0B4C819A183980C /* Pods-PocketForecast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketForecast.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PocketForecast/Pods-PocketForecast.debug.xcconfig"; sourceTree = "<group>"; };
 		90D24B791A95A45F00E96432 /* PocketForecast-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PocketForecast-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA7980D610AB0AE04C4A3E99 /* icon_partly_cloudy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_partly_cloudy.png; sourceTree = "<group>"; };
-		BA79813E3EE85D93E2E01569 /* PFTemperatureTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFTemperatureTests.m; sourceTree = "<group>"; };
 		BA798162CA41E6D4902A2BD5 /* icon_rainy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_rainy@2x.png"; sourceTree = "<group>"; };
 		BA7981A0F0B7E0735109ABD3 /* bg5-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg5-568h@2x.png"; sourceTree = "<group>"; };
 		BA79820A0DFD6D50563F87BC /* bg4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg4@2x.png"; sourceTree = "<group>"; };
@@ -462,7 +461,6 @@
 		BA7986967D5038324EDD7DDC /* Unit */ = {
 			isa = PBXGroup;
 			children = (
-				BA79813E3EE85D93E2E01569 /* PFTemperatureTests.m */,
 				6B2E5BFA19C967B2000F31B4 /* WeatherReportParsingTests.swift */,
 			);
 			path = Unit;
