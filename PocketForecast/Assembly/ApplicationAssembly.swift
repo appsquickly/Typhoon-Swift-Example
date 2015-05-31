@@ -115,14 +115,12 @@ public class ApplicationAssembly: TyphoonAssembly {
             (definition) in
 
             //TODO: Seems Swift 1.2 still vtables this initializer
-
-
-            definition.useInitializer("initWithNibName:bundle:") {
-                (initializer) in
-
-                initializer.injectParameterWith("AddCity")
-                initializer.injectParameterWith(NSBundle.mainBundle())
-            }
+//            definition.useInitializer("initWithNibName:bundle:") {
+//                (initializer) in
+//
+//                initializer.injectParameterWith("AddCity")
+//                initializer.injectParameterWith(NSBundle.mainBundle())
+//            }
 
 
 
