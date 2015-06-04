@@ -26,12 +26,6 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     @IBOutlet var validationMessage : UILabel!
     @IBOutlet var spinner : UIActivityIndicatorView!
     
-    required dynamic init()
-    {
-        NSLog( "Foobar!")
-        super.init(nibName: "AddCity", bundle: NSBundle.mainBundle())
-    }
-
     required dynamic init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

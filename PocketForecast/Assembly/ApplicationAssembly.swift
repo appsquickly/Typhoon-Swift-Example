@@ -114,7 +114,8 @@ public class ApplicationAssembly: TyphoonAssembly {
         return TyphoonDefinition.withClass(AddCityViewController.self) {
             (definition) in
 
-//            TODO: Seems Swift 1.2 still vtables this initializer
+            // TODO: Seems sub-class MUST override this initializer otherwise it can't be
+            // TODO: invoked in RELEASE configuration. Bug?
             definition.useInitializer("initWithNibName:bundle:") {
                 (initializer) in
 
