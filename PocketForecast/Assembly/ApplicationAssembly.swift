@@ -114,13 +114,13 @@ public class ApplicationAssembly: TyphoonAssembly {
         return TyphoonDefinition.withClass(AddCityViewController.self) {
             (definition) in
 
-            //TODO: Seems Swift 1.2 still vtables this initializer
-//            definition.useInitializer("initWithNibName:bundle:") {
-//                (initializer) in
-//
-//                initializer.injectParameterWith("AddCity")
-//                initializer.injectParameterWith(NSBundle.mainBundle())
-//            }
+//            TODO: Seems Swift 1.2 still vtables this initializer
+            definition.useInitializer("initWithNibName:bundle:") {
+                (initializer) in
+
+                initializer.injectParameterWith("AddCity")
+                initializer.injectParameterWith(NSBundle.mainBundle())
+            }
 
 
 

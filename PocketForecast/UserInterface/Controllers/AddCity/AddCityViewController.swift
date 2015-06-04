@@ -35,11 +35,11 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     required dynamic init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    required dynamic init(nibname : String!, bundle : NSBundle!)
+
+    required override init(nibName : String!, bundle : NSBundle!)
     {
         NSLog("yehay!!!!!!!!!!!!!!!!!!!!!")
-        super.init(nibName: nibname, bundle: bundle)
+        super.init(nibName: nibName, bundle: bundle)
     }
 
     override func viewDidLoad() {
