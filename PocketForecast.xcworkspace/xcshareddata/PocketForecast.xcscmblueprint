@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "67B732563E4098273055BF252E7025CB12DA3131",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "67B732563E4098273055BF252E7025CB12DA3131" : 0,
+    "E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1F3F9164-3660-4440-AEC8-9598E91A28EA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "67B732563E4098273055BF252E7025CB12DA3131" : "Typhoon-Swift-Example",
+    "E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509" : "Typhoon-example"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "PocketForecast",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "PocketForecast.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:typhoon-framework\/Typhoon-Swift-Example.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "67B732563E4098273055BF252E7025CB12DA3131"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/typhoon-framework\/Typhoon-example.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E1B9FE4B1C190E2D0FDACD5B5F131ED2CA3FA509"
+    }
+  ]
+}

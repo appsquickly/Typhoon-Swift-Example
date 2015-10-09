@@ -42,11 +42,12 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
                 [method replaceInjection:injection with:injectionToReplace];
             }];
         }
+        
         [self enumerateInjectionsOfKind:injectionClass onCollection:[_afterInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
-            [_afterInjections replaceInjection:injection with:injectionToReplace];
+            [self->_afterInjections replaceInjection:injection with:injectionToReplace];
         }];
         [self enumerateInjectionsOfKind:injectionClass onCollection:[_beforeInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
-            [_beforeInjections replaceInjection:injection with:injectionToReplace];
+            [self->_beforeInjections replaceInjection:injection with:injectionToReplace];
         }];
     }
 
@@ -110,12 +111,12 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
     return properties;
 }
 
-- (NSSet *)injectedMethods
+- (NSOrderedSet *)injectedMethods
 {
     if (!self.parent) {
         return [_injectedMethods mutableCopy];
     }
-    NSMutableSet *methods = (NSMutableSet *)[self.parent injectedMethods];
+    NSMutableOrderedSet *methods = (NSMutableOrderedSet *)[self.parent injectedMethods];
 
     NSMutableSet *overriddenMethods = [NSMutableSet set];
     for (TyphoonMethod *parentMethod in methods) {
@@ -127,7 +128,7 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
     }
 
     [methods minusSet:overriddenMethods];
-    [methods unionSet:_injectedMethods];
+    [methods unionOrderedSet:_injectedMethods];
 
     return methods;
 }

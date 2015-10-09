@@ -57,9 +57,8 @@ typedef NS_OPTIONS(NSInteger, TyphoonAutoInjectVisibility)
     TyphoonAutoInjectVisibilityNone = 0,
     TyphoonAutoInjectVisibilityByClass = 1 << 0,
     TyphoonAutoInjectVisibilityByProtocol = 1 << 1,
+    TyphoonAutoInjectVisibilityDefault = TyphoonAutoInjectVisibilityByClass | TyphoonAutoInjectVisibilityByProtocol,
 };
-
-const static TyphoonAutoInjectVisibility TyphoonAutoInjectVisibilityDefault = TyphoonAutoInjectVisibilityByClass | TyphoonAutoInjectVisibilityByProtocol;
 
 typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 
@@ -75,7 +74,7 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
     TyphoonMethod *_initializer;
     TyphoonMethod *_beforeInjections;
     NSMutableSet *_injectedProperties;
-    NSMutableSet *_injectedMethods;
+    NSMutableOrderedSet *_injectedMethods;
     TyphoonMethod *_afterInjections;
 
     TyphoonScope _scope;
@@ -152,6 +151,8 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition *definition);
 */
 @property(nonatomic) BOOL abstract;
 
+
+- (id)initWithClass:(Class)clazz key:(NSString *)key;
 
 //-------------------------------------------------------------------------------------------
 #pragma mark Factory methods
@@ -268,6 +269,10 @@ definition.factory = [self sqliteManager];
  * @param keyPath path used as argument while calling valueForKeyPath: on resolved definition
  */
 - (id)keyPath:(NSString *)keyPath;
+
+#pragma mark Making definition with injection
+
++ (id)with:(id)injection;
 
 @end
 

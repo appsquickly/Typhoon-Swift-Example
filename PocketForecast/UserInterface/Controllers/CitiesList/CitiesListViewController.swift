@@ -34,7 +34,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
         self.theme = theme
     }
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

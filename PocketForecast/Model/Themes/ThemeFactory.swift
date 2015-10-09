@@ -25,14 +25,17 @@ public class ThemeFactory : NSObject {
         if (_sequentialTheme == nil) {
             
             let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-            let documentsDirectory = paths[0] as! String
+            let documentsDirectory : NSString = paths[0] as NSString!
             let indexFileName = documentsDirectory.stringByAppendingPathComponent("PF_CURRENT_THEME_INDEX")
-            var index = NSString(contentsOfFile: indexFileName, encoding: NSUTF8StringEncoding, error: nil)?.integerValue
+            var index = (try? NSString(contentsOfFile: indexFileName, encoding: NSUTF8StringEncoding))?.integerValue
             if (index == nil || index > themes.count - 1) {
                 index = 0
             }
             _sequentialTheme = themes[index!]
-            NSString(format: "%i", (index! + 1)).writeToFile(indexFileName, atomically: false, encoding: NSUTF8StringEncoding, error: nil)
+            do {
+                try NSString(format: "%i", (index! + 1)).writeToFile(indexFileName, atomically: false, encoding: NSUTF8StringEncoding)
+            } catch _ {
+            }
         }
         return _sequentialTheme!
     }

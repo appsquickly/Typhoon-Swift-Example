@@ -75,7 +75,7 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
         self.initLastUpdateLabel()
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

@@ -37,7 +37,7 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
             cities = defaultCities;
             self.defaults.setObject(cities, forKey:self.citiesListKey)
         }
-        return sorted(cities as! [String]) {
+        return (cities as! [String]).sort {
             return $0 < $1
         }
     }
@@ -51,7 +51,7 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
             savedCities = defaultCities
         }
         
-        var cities = NSMutableArray(array: savedCities!)
+        let cities = NSMutableArray(array: savedCities!)
         
         var canAddCity = true
         for city in cities {
@@ -68,7 +68,7 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
     public func deleteCity(name: String!) {
         
         let trimmedName = name.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        var cities = NSMutableArray(array: self.defaults.arrayForKey(self.citiesListKey)!)
+        let cities = NSMutableArray(array: self.defaults.arrayForKey(self.citiesListKey)!)
         var cityToRemove : String?
         for city in cities {
             if (city.lowercaseString == trimmedName.lowercaseString) {

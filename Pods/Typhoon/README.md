@@ -1,8 +1,5 @@
 ![Typhoon](http://www.typhoonframework.org/typhoon-splash.png)
-# <a href="http://typhoonframework.org">typhoonframework.org</a>  
-<a href="http://builds.appsquick.ly/browse/TPN-TC/latest">
-![Build Status](http://typhoonframework.org/build-status/build-status.png?q=z)
-</a>
+## <a href="http://typhoonframework.org">typhoonframework.org</a>  
 
 Powerful dependency injection for Cocoa and CocoaTouch. Lightweight, yet full-featured and super-easy to use. 
 
@@ -23,15 +20,17 @@ Check out the <a href="http://www.typhoonframework.org/#features">feature list</
 * And here are the <a href="http://www.typhoonframework.org/docs/latest/api/modules.html">API Docs</a>. Generally googling a Typhoon class name will return the correct page as the first hit. 
 * <a href="http://ios.caph.jp/typhoon/introduction">日本のドキュメンテーション</a>
 
+```swift
+let assembly = MyAssembly().activate()
+let viewControler = assembly.recommendationController() as! RecommendationController
+```
+
 # Open Source Sample Applications
 
 * Try the official <a href="https://github.com/typhoon-framework/Typhoon-Swift-Example">Swift Sample Application</a> or <a href="https://github.com/typhoon-framework/Typhoon-example">Objective-C Sample Application</a>. 
 * This sample shows how to <a href="https://github.com/typhoon-framework/Typhoon-CoreData-RAC-Example">set up Typhoon with Storyboards, Core Data and Reactive Cocoa</a>. 
-* <a href="https://github.com/JeffBNimble/LoLBookOfChampions-ios">Here's a really fun sample</a> that was created by <a href="https://github.com/JeffBNimble">Jeff Roberts</a> of <a href="http://www.nimblenogginsoftware.com/">Nimble Noggin Software</a>. It was used to teach Typhoon to the good folks at <a href="http://www.riotgames.com/">Riot Games</a>, where he consults. 
 
 *Have a Typhoon example app that you'd like to share? Great! Get in touch with us :)*
-
----------------------------------------
 
 # Installing 
 <a href="https://github.com/appsquickly/Typhoon/wiki/Change-Log">![Cocoapods Version](https://cocoapod-badges.herokuapp.com/v/Typhoon/badge.png)</a> [![Pod Platform](http://img.shields.io/cocoapods/p/Typhoon.svg?style=flat)](http://typhoonframework.org/docs/latest/api/modules.html) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![Dependency Status](https://www.versioneye.com/objective-c/typhoon/1.1.1/badge.svg?style=flat)](https://www.versioneye.com/objective-c/typhoon) [![Pod License](http://img.shields.io/cocoapods/l/Typhoon.svg?style=flat)](https://github.com/appsquickly/Typhoon/blob/master/LICENSE)
@@ -56,7 +55,7 @@ end
 
 ###Dynamic Framework
 
-If you're using Swift, you may with to install dynamic frameworks, which can be done with the Podfile shown below: 
+If you're using Swift, you may wish to install dynamic frameworks, which can be done with the Podfile shown below: 
 
 ```ruby
 # platform *must* be at least 8.0
@@ -85,7 +84,7 @@ github "appsquickly/Typhoon"
 
 Alternatively, add the source files to your project's target or set up an Xcode workspace. 
 
-**NB:** *All version of Typhoon work with iOS5 and up (and OSX 10.7 and up), iOS8 is only required if you wish to use dynamic frameworks.* 
+**NB:** *All versions of Typhoon work with iOS5 and up (and OSX 10.7 and up), iOS8 is only required if you wish to use dynamic frameworks.* 
 
 ---------------------------------------
 

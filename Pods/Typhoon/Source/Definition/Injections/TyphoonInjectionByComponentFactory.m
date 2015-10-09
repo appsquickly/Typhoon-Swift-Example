@@ -12,6 +12,7 @@
 
 #import "TyphoonInjectionByComponentFactory.h"
 #import "NSInvocation+TCFUnwrapValues.h"
+#import "TyphoonIntrospectionUtils.h"
 
 @implementation TyphoonInjectionByComponentFactory
 

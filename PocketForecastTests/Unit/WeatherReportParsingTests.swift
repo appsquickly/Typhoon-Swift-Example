@@ -19,7 +19,7 @@ public class WeatherReportParsing : XCTestCase {
         
         let jsonData = TyphoonBundleResource.withName("SampleForecast.json", inBundle: NSBundle(forClass: self.classForCoder)).data
         
-        let dictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil)
+        let dictionary = (try! NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions.MutableContainers))
             as! NSDictionary
         let weatherReport : WeatherReport = dictionary.toWeatherReport()
         
@@ -27,7 +27,7 @@ public class WeatherReportParsing : XCTestCase {
     
     public func test_parses_error_report() {
         let jsonData = TyphoonBundleResource.withName("ErrorForecast.json", inBundle: NSBundle(forClass: self.classForCoder)).data
-        let dictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil)
+        let dictionary = (try! NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions.MutableContainers))
            as! NSDictionary
         
         let error : NSError! = dictionary.parseError()
@@ -40,7 +40,7 @@ public class WeatherReportParsing : XCTestCase {
         
         let jsonData = TyphoonBundleResource.withName("SampleForecast.json", inBundle: NSBundle(forClass: self.classForCoder)).data
         
-        let dictionary = NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions.MutableContainers, error: nil)
+        let dictionary = (try! NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions.MutableContainers))
             as! NSDictionary
         
         let error : NSError? = dictionary.parseError()

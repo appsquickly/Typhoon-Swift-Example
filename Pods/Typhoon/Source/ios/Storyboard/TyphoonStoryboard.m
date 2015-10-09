@@ -12,19 +12,76 @@
 
 #import "TyphoonStoryboard.h"
 #import "TyphoonComponentFactory+TyphoonDefinitionRegisterer.h"
+#import "OCLogTemplate.h"
 
 #import <objc/runtime.h>
 
 //-------------------------------------------------------------------------------------------
 #pragma mark - UIViewController + TyphoonDefinitionKey
 
-@interface UIViewController (TyphoonDefinitionKey)
+@interface UIViewController (TyphoonStoryboardIntegration)
+
+@property(nonatomic, strong) NSString *typhoonKey;
+
+- (void)setViewDidLoadNotificationBlock:(void(^)())viewDidLoadBlock;
+
++ (void)swizzleViewDidLoadMethod;
+
+@end
+
+@implementation UIViewController (TyphoonStoryboardIntegration)
+
+static const char *kTyphoonKey;
+static const char *kTyphoonViewDidLoadBlock;
+
+- (void)setTyphoonKey:(NSString *)typhoonKey
+{
+    objc_setAssociatedObject(self, &kTyphoonKey, typhoonKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString *)typhoonKey
+{
+    return objc_getAssociatedObject(self, &kTyphoonKey);
+}
+
+- (void)setViewDidLoadNotificationBlock:(void(^)())viewDidLoadBlock
+{
+    objc_setAssociatedObject(self, &kTyphoonViewDidLoadBlock, viewDidLoadBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
++ (void)swizzleViewDidLoadMethod
+{
+    SEL sel = @selector(viewDidLoad);
+    Method method = class_getInstanceMethod([UIViewController class], sel);
+
+    void(*originalImp)(id, SEL) = (void (*)(id, SEL)) method_getImplementation(method);
+
+    IMP adjustedImp = imp_implementationWithBlock(^void(id instance) {
+
+        void(^didLoadBlock)() = objc_getAssociatedObject(instance, &kTyphoonViewDidLoadBlock);
+        if (didLoadBlock) {
+            didLoadBlock();
+            objc_setAssociatedObject(instance, &kTyphoonViewDidLoadBlock, nil, OBJC_ASSOCIATION_COPY_NONATOMIC);
+        }
+
+        originalImp(instance, sel);
+    });
+
+    method_setImplementation(method, adjustedImp);
+}
+
+@end
+
+//-------------------------------------------------------------------------------------------
+#pragma mark - UIView + TyphoonDefinitionKey
+
+@interface UIView (TyphoonDefinitionKey)
 
 @property(nonatomic, strong) NSString *typhoonKey;
 
 @end
 
-@implementation UIViewController (TyphoonDefinitionKey)
+@implementation UIView (TyphoonDefinitionKey)
 
 static const char *kTyphoonKey;
 
@@ -45,8 +102,15 @@ static const char *kTyphoonKey;
 
 @implementation TyphoonStoryboard
 
++ (void)load
+{
+    [UIViewController swizzleViewDidLoadMethod];
+}
+
 + (TyphoonStoryboard *)storyboardWithName:(NSString *)name bundle:(NSBundle *)storyboardBundleOrNil
 {
+    LogInfo(@"*** Warning *** The TyphoonStoryboard with name %@ doesn't have a TyphoonComponentFactory inside. Is this "
+            "intentional? You won't be able to inject anything in its ViewControllers", name);
     return [self storyboardWithName:name factory:nil bundle:storyboardBundleOrNil];
 }
 
@@ -77,22 +141,28 @@ static const char *kTyphoonKey;
         [self.factory inject:viewController];
     }
 
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
-        for (UIViewController *controller in ((UINavigationController *) viewController).viewControllers) {
-            [self injectPropertiesForViewController:controller];
-        }
+    for (UIViewController *controller in viewController.childViewControllers) {
+        [self injectPropertiesForViewController:controller];
     }
 
-    if ([viewController isKindOfClass:[UITabBarController class]]) {
-        for (UIViewController *controller in ((UITabBarController *) viewController).viewControllers) {
-            [self injectPropertiesForViewController:controller];
-        }
+    __weak __typeof (viewController) weakViewController = viewController;
+    [viewController setViewDidLoadNotificationBlock:^{
+        [self injectPropertiesInView:weakViewController.view];
+    }];
+}
+
+- (void)injectPropertiesInView:(UIView *)view
+{
+    if (view.typhoonKey.length > 0) {
+        [self.factory inject:view withSelector:NSSelectorFromString(view.typhoonKey)];
     }
     
-    if ([viewController isKindOfClass:[UISplitViewController class]]) {
-        for (UIViewController *controller in ((UISplitViewController *) viewController).viewControllers) {
-            [self injectPropertiesForViewController:controller];
-        }
+    if ([view.subviews count] == 0) {
+        return;
+    }
+    
+    for (UIView *subview in view.subviews) {
+        [self injectPropertiesInView:subview];
     }
 }
 

@@ -27,6 +27,7 @@
 #import "TyphoonInjections.h"
 #import "TyphoonFactoryDefinition.h"
 #import "TyphoonRuntimeArguments.h"
+#import "TyphoonInjectionDefinition.h"
 
 static NSString *TyphoonScopeToString(TyphoonScope scope)
 {
@@ -62,7 +63,32 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
 @synthesize currentRuntimeArguments = _currentRuntimeArguments;
 
 //-------------------------------------------------------------------------------------------
-#pragma MARK: - Class Methods
+#pragma mark: - Initialization
+//-------------------------------------------------------------------------------------------
+
+- (id)initWithClass:(Class)clazz key:(NSString *)key
+{
+    self = [super init];
+    if (self) {
+        _type = clazz;
+        _injectedProperties = [[NSMutableSet alloc] init];
+        _injectedMethods = [[NSMutableOrderedSet alloc] init];
+        _key = [key copy];
+        _scope = TyphoonScopeObjectGraph;
+        self.autoInjectionVisibility = TyphoonAutoInjectVisibilityDefault;
+        [self validateRequiredParametersAreSet];
+    }
+    return self;
+}
+
+- (id)init
+{
+    return [self initWithClass:nil key:nil];
+}
+
+
+//-------------------------------------------------------------------------------------------
+#pragma mark: - Class Methods
 //-------------------------------------------------------------------------------------------
 
 - (id)factory
@@ -140,7 +166,7 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
 }
 
 //-------------------------------------------------------------------------------------------
-#pragma MARK: - Interface Methods
+#pragma mark: - Interface Methods
 //-------------------------------------------------------------------------------------------
 
 - (void)injectProperty:(SEL)selector
@@ -231,6 +257,11 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
         initWithReference:self.key args:self.currentRuntimeArguments keyPath:keyPath];
 }
 
++ (id)with:(id)injection
+{
+    return [[TyphoonInjectionDefinition alloc] initWithInjection:TyphoonMakeInjectionFromObjectIfNeeded(injection)];
+}
+
 //-------------------------------------------------------------------------------------------
 #pragma mark - Overridden Methods
 //-------------------------------------------------------------------------------------------
@@ -317,14 +348,29 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
 
 - (void)validateScope
 {
-    if ((self.scope != TyphoonScopePrototype && self.scope != TyphoonScopeObjectGraph) &&
-        [self hasRuntimeArgumentInjections]) {
+    if (self.scope == TyphoonScopeSingleton && [self hasRuntimeArgumentInjections]) {
         [NSException raise:NSInvalidArgumentException
-            format:@"The runtime arguments injections are only applicable to prototype and object-graph scoped definitions, but is set for definition: %@ ",
+            format:@"The runtime arguments injections are not applicable to singleton scoped definitions, because we don't know initial arguments to instantiate eager singletons. But it set for definition: %@ ",
                    self];
     }
 }
 
+
+//-------------------------------------------------------------------------------------------
+#pragma mark - Private Methods
+//-------------------------------------------------------------------------------------------
+
+- (void)validateRequiredParametersAreSet
+{
+    if (_type == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Property 'clazz' is required."];
+    }
+    
+    BOOL hasAppropriateSuper = [_type isSubclassOfClass:[NSObject class]] || [_type isSubclassOfClass:[NSProxy class]];
+    if (!hasAppropriateSuper) {
+        [NSException raise:NSInvalidArgumentException format:@"Subclass of NSProxy or NSObject is required."];
+    }
+}
 
 @end
 

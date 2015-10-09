@@ -39,14 +39,14 @@ public class WeatherClientTests : XCTestCase {
             }, onError: {
                 (message) in
                 
-                println("Unexpected error: " + message)
+                print("Unexpected error: " + message)
         })
 
    
         TyphoonTestUtils.waitForCondition( { () -> Bool in
             return receivedReport != nil
             }, andPerformTests: {
-                println(String(format: "Got report: %@", receivedReport!))
+                print(String(format: "Got report: %@", receivedReport!))
                 
         })
     }
@@ -59,7 +59,7 @@ public class WeatherClientTests : XCTestCase {
                 (message) in
             
                 receivedMessage = message
-                println("Got message: " + message)
+                print("Got message: " + message)
         })
         
         

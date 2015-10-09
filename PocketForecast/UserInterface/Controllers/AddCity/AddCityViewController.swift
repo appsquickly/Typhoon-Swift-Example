@@ -25,8 +25,8 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     @IBOutlet var nameOfCityToAdd: UITextField!
     @IBOutlet var validationMessage : UILabel!
     @IBOutlet var spinner : UIActivityIndicatorView!
-    
-    required dynamic init(coder aDecoder: NSCoder) {
+
+    required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -58,7 +58,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     }
         
     private dynamic func doneAdding(textField : UITextField) {
-        if (!self.nameOfCityToAdd.text.isEmpty) {
+        if (!self.nameOfCityToAdd.text!.isEmpty) {
             self.validationMessage.text = "Validating city . ."
             self.validationMessage.hidden = false
             self.nameOfCityToAdd.enabled = false
@@ -75,7 +75,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
                     
                     self.spinner.stopAnimating()
                     self.nameOfCityToAdd.enabled = true
-                    self.validationMessage.text = String(format: "No weather reports for '%@'.", self.nameOfCityToAdd.text)
+                    self.validationMessage.text = String(format: "No weather reports for '%@'.", self.nameOfCityToAdd.text!)
             })
         }
         else {
@@ -85,7 +85,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     }
     
     private func applyTheme() {
-        println (String(format:"In apply theme: %@", self.theme!))
+        print (String(format:"In apply theme: %@", self.theme!))
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController!.navigationBar.barTintColor = self.theme.navigationBarColor
     }

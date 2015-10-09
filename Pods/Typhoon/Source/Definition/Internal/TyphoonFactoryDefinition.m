@@ -16,24 +16,33 @@
 #import "TyphoonComponentFactory.h"
 #import "TyphoonDefinition+InstanceBuilder.h"
 #import "TyphoonRuntimeArguments.h"
+#import "TyphoonAbstractInjection.h"
+#import "TyphoonInjections.h"
 
 
 @implementation TyphoonFactoryDefinition
 {
-    NSString *_factoryKey;
+    id <TyphoonInjection> _factoryInjection;
 };
 
 - (id)targetForInitializerWithFactory:(TyphoonComponentFactory *)factory args:(TyphoonRuntimeArguments *)args
 {
-    return [factory componentForKey:_factoryKey];
+    __block id result = nil;
+
+    TyphoonInjectionContext *context = [[TyphoonInjectionContext alloc] initWithFactory:factory args:args raiseExceptionIfCircular:YES];
+    [_factoryInjection valueToInjectWithContext:context completion:^(id value) {
+        result = value;
+    }];
+
+    return result;
 }
 
 
-- (id)initWithFactory:(id)factory selector:(SEL)selector parameters:(void (^)(TyphoonMethod *method))params;
+- (id)initWithFactory:(id)factory selector:(SEL)selector parameters:(void (^)(TyphoonMethod *method))params
 {
     self = [super initWithClass:[NSObject class] key:nil];
     if (self) {
-        _factoryKey = [factory key];
+        _factoryInjection = TyphoonMakeInjectionFromObjectIfNeeded(factory);
         self.scope = TyphoonScopePrototype;
         [super useInitializer:selector parameters:params];
     }

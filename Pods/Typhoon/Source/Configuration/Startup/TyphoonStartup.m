@@ -15,7 +15,10 @@
 #import "TyphoonBlockComponentFactory.h"
 #import "TyphoonComponentFactory+InstanceBuilder.h"
 #import "TyphoonIntrospectionUtils.h"
-
+#import "TyphoonConfigPostProcessor.h"
+#import "OCLogTemplate.h"
+#import "TyphoonAssemblyBuilder+PlistProcessor.h"
+#import "TyphoonAssemblyBuilder.h"
 
 #import <objc/runtime.h>
 
@@ -36,37 +39,70 @@
 
 + (void)load
 {
-    __weak __typeof(self) weakSelf = self;
-    [[NSNotificationCenter defaultCenter]
-        addObserverForName:ApplicationDidFinishLaunchingNotification object:nil queue:[NSOperationQueue mainQueue]
-        usingBlock:^(NSNotification* note) {
-            [weakSelf releaseInitialFactory];
-        }];
-
     [self swizzleSetDelegateMethodOnApplicationClass];
 }
 
 + (TyphoonComponentFactory *)factoryFromAppDelegate:(id)appDelegate
 {
     TyphoonComponentFactory *result = nil;
-
-    if ([appDelegate respondsToSelector:@selector(initialFactory)]) {
-        result = [appDelegate initialFactory];
+    SEL initialFactorySelector = NSSelectorFromString(@"initialFactory");
+    SEL initialAssembliesSelector = NSSelectorFromString(@"initialAssemblies");
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    if ([appDelegate respondsToSelector:initialFactorySelector]) {
+        result = [appDelegate performSelector:initialFactorySelector];
     }
-
+    
+    if ([appDelegate respondsToSelector:initialAssembliesSelector]) {
+        NSArray *assemblyClasses = [appDelegate performSelector:initialAssembliesSelector];
+        NSArray *assemblies = [TyphoonAssemblyBuilder buildAssembliesWithClasses:assemblyClasses];
+        result = [TyphoonBlockComponentFactory factoryWithAssemblies:assemblies];
+    }
+#pragma clang diagnostic pop
+    
     return result;
 }
 
 #pragma mark -
 
 static TyphoonComponentFactory *initialFactory;
+static NSUInteger initialFactoryRequestCount = 0;
+static BOOL initialFactoryWasCreated = NO;
 
-+ (void)loadInitialFactory
++ (void)requireInitialFactory
 {
-    initialFactory = [TyphoonBlockComponentFactory factoryFromPlistInBundle:[NSBundle mainBundle]];
+    if (initialFactoryRequestCount == 0 && !initialFactoryWasCreated) {
+        NSArray *assemblies = [TyphoonAssemblyBuilder buildAssembliesFromPlistInBundle:[NSBundle mainBundle]];
+        if (assemblies.count > 0) {
+            initialFactory = [TyphoonBlockComponentFactory factoryWithAssemblies:assemblies];
+            initialFactoryWasCreated = YES;
+        }
+    }
+    initialFactoryRequestCount += 1;
 }
 
-+ (TyphoonComponentFactory*)initialFactory
++ (id<TyphoonDefinitionPostProcessor>)configPostProcessor
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *fileName = [bundle infoDictionary][@"TyphoonConfigFilename"];
+    if (![fileName length]) {
+        NSString *bundleID = [bundle infoDictionary][@"CFBundleIdentifier"];
+        NSString *configFilename = [NSString stringWithFormat:@"config_%@.plist", bundleID];
+        NSString *configPath = [[bundle resourcePath] stringByAppendingPathComponent:configFilename];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:configPath]) {
+            fileName = configFilename;
+        }
+    }
+    id<TyphoonDefinitionPostProcessor> configProcessor = nil;
+    if ([fileName length]) {
+        configProcessor = [TyphoonConfigPostProcessor forResourceNamed:fileName];
+    }
+    return configProcessor;
+}
+
+
++ (TyphoonComponentFactory *)initialFactory
 {
     return initialFactory;
 }
@@ -79,24 +115,26 @@ static TyphoonComponentFactory *initialFactory;
     void(*originalImp)(id, SEL, id) = (void (*)(id, SEL, id))method_getImplementation(method);
 
     IMP adjustedImp = imp_implementationWithBlock(^(id instance, id delegate) {
-        [self loadInitialFactory];
+        [self requireInitialFactory];
         id factoryFromDelegate = [self factoryFromAppDelegate:delegate];
-        if (factoryFromDelegate && initialFactory)
-        {
+        if (factoryFromDelegate && initialFactory) {
             [NSException raise:NSInternalInconsistencyException
                 format:@"The method 'initialFactory' is implemented on %@, also Info.plist"
                            " has 'TyphoonInitialAssemblies' key. Typhoon can't decide which factory to use.",
                        [delegate class]];
         }
-        if (factoryFromDelegate)
-        {
+        if (factoryFromDelegate) {
             initialFactory = factoryFromDelegate;
         }
-        if (initialFactory)
-        {
+        if (initialFactory) {
+            id<TyphoonDefinitionPostProcessor> processor = [self configPostProcessor];
+            if (processor) {
+                [initialFactory attachPostProcessor:processor];
+            }
             [self injectInitialFactoryIntoDelegate:delegate];
             [TyphoonComponentFactory setFactoryForResolvingFromXibs:initialFactory];
         }
+        [self releaseInitialFactoryWhenApplicationDidFinishLaunching];
 
         originalImp(instance, sel, delegate);
     });
@@ -104,9 +142,22 @@ static TyphoonComponentFactory *initialFactory;
     method_setImplementation(method, adjustedImp);
 }
 
++ (void)releaseInitialFactoryWhenApplicationDidFinishLaunching
+{
+    __weak __typeof(self) weakSelf = self;
+    [[NSNotificationCenter defaultCenter]
+        addObserverForName:ApplicationDidFinishLaunchingNotification object:nil queue:[NSOperationQueue mainQueue]
+        usingBlock:^(NSNotification *note) {
+            [weakSelf releaseInitialFactory];
+        }];
+}
+
 + (void)releaseInitialFactory
 {
-    initialFactory = nil;
+    initialFactoryRequestCount -= 1;
+    if (initialFactoryRequestCount == 0) {
+        initialFactory = nil;
+    }
 }
 
 #pragma mark -
@@ -116,6 +167,5 @@ static TyphoonComponentFactory *initialFactory;
     [initialFactory load];
     [initialFactory inject:appDelegate];
 }
-
 
 @end

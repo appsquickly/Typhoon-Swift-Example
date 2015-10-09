@@ -19,6 +19,9 @@
 
 @implementation TyphoonIntrospectionUtils
 
+BOOL TyphoonIsInvalidClassName(NSString *className);
+NSString *TyphoonDefaultModuleName(void);
+
 + (TyphoonTypeDescriptor *)typeForPropertyNamed:(NSString *)propertyName inClass:(Class)clazz
 {
     TyphoonTypeDescriptor *typeDescriptor = nil;
@@ -36,7 +39,7 @@
             return (NULL);
         }
 
-        int len = (int) (e - attributes);
+        NSUInteger len = (NSUInteger) (e - attributes);
         memcpy( buffer, attributes, len );
         buffer[len] = '\0';
 
@@ -230,13 +233,38 @@ NSString *TyphoonTypeStringFor(id classOrProtocol)
     }
 }
 
+NSString *TyphoonDefaultModuleName(void)
+{
+    static NSString *defaultModuleName;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultModuleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleExecutable"];
+        defaultModuleName = [[defaultModuleName stringByReplacingOccurrencesOfString:@" " withString:@"_"]
+                             stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+    });
+    return defaultModuleName;
+}
+
+BOOL TyphoonIsInvalidClassName(NSString *className)
+{
+    if (className.length == 0) {
+        return YES;
+    }
+    if ([className isEqualToString:@"?"]) {
+        return YES;
+    }
+    return NO;
+}
+
 Class TyphoonClassFromString(NSString *className)
 {
+    if (TyphoonIsInvalidClassName(className)) {
+        return Nil;
+    }
+    
     Class clazz = NSClassFromString(className);
     if (!clazz) {
-        NSString *defaultModuleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
-        defaultModuleName = [defaultModuleName stringByReplacingOccurrencesOfString:@" " withString:@"_"];
-        clazz = NSClassFromString([defaultModuleName stringByAppendingFormat:@".%@", className]);
+        clazz = NSClassFromString([TyphoonDefaultModuleName() stringByAppendingFormat:@".%@", className]);
     }
     if (!clazz) {
         /**

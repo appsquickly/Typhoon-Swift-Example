@@ -45,6 +45,16 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Infrastructure)
     }];
 }
 
++ (instancetype)configDefinitionWithName:(NSString *)fileName bundle:(NSBundle *)fileBundle {
+    return [self withClass:[TyphoonConfigPostProcessor class] configuration:^(TyphoonDefinition *definition) {
+        [definition injectMethod:@selector(useResourceWithName:bundle:) parameters:^(TyphoonMethod *method) {
+            [method injectParameterWith:fileName];
+            [method injectParameterWith:fileBundle];
+        }];
+        definition.key = [NSString stringWithFormat:@"%@-%@", NSStringFromClass(definition.class), fileName];
+    }];
+}
+
 + (instancetype)configDefinitionWithPath:(NSString *)filePath
 {
     return [self withClass:[TyphoonConfigPostProcessor class] configuration:^(TyphoonDefinition *definition) {
@@ -53,29 +63,6 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Infrastructure)
         }];
         definition.key = [NSString stringWithFormat:@"%@-%@", NSStringFromClass(definition.class), [filePath lastPathComponent]];
     }];
-}
-
-//-------------------------------------------------------------------------------------------
-#pragma mark - Initialization & Destruction
-
-- (id)initWithClass:(Class)clazz key:(NSString *)key
-{
-    self = [super init];
-    if (self) {
-        _type = clazz;
-        _injectedProperties = [[NSMutableSet alloc] init];
-        _injectedMethods = [[NSMutableSet alloc] init];
-        _key = [key copy];
-        _scope = TyphoonScopeObjectGraph;
-        self.autoInjectionVisibility = TyphoonAutoInjectVisibilityDefault;
-        [self validateRequiredParametersAreSet];
-    }
-    return self;
-}
-
-- (id)init
-{
-    return [self initWithClass:nil key:nil];
 }
 
 - (BOOL)isCandidateForInjectedClass:(Class)clazz includeSubclasses:(BOOL)includeSubclasses
@@ -108,16 +95,6 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Infrastructure)
 - (BOOL)processed
 {
     return _processed;
-}
-
-//-------------------------------------------------------------------------------------------
-#pragma mark - Private Methods
-
-- (void)validateRequiredParametersAreSet
-{
-    if (_type == nil) {
-        [NSException raise:NSInvalidArgumentException format:@"Property 'clazz' is required."];
-    }
 }
 
 @end

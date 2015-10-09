@@ -27,7 +27,7 @@ public class ForecastConditions : NSObject, NSCoding {
         self.imageUri = imageUri
     }
     
-    public required init(coder : NSCoder) {
+    public required init?(coder : NSCoder) {
         self.date = coder.decodeObjectForKey("date") as? NSDate
         self.low = coder.decodeObjectForKey("low") as? Temperature
         self.high = coder.decodeObjectForKey("high") as? Temperature

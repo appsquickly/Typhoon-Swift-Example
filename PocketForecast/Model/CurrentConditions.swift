@@ -27,7 +27,7 @@ public class CurrentConditions : NSObject, NSCoding {
         self.imageUri = imageUri
     }
     
-    public required init(coder : NSCoder) {
+    public required init?(coder : NSCoder) {
         self.summary = coder.decodeObjectForKey("summary") as? String
         self.temperature = coder.decodeObjectForKey("temperature") as? Temperature
         self.humidity = coder.decodeObjectForKey("humidity") as? String

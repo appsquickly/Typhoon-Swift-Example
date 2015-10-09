@@ -11,7 +11,7 @@
 
 import Foundation
 
-public class WeatherReport : NSObject, NSCoding, Printable {
+public class WeatherReport : NSObject, NSCoding {
     
     public private(set) var city : String
     public private(set) var date : NSDate
@@ -41,7 +41,7 @@ public class WeatherReport : NSObject, NSCoding, Printable {
         self.forecast = forecast
     }
     
-    public required init(coder : NSCoder) {
+    public required init?(coder : NSCoder) {
         self.city = coder.decodeObjectForKey("city") as! String
         self.date = coder.decodeObjectForKey("date") as! NSDate
         self.currentConditions = coder.decodeObjectForKey("currentConditions") as! CurrentConditions

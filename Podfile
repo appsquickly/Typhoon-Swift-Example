@@ -4,7 +4,7 @@ target :PocketForecast, :exclusive => true do
     
     pod 'Typhoon', :head
     
-    pod 'CKUITools'
+
     pod 'ICLoader'
     pod 'NGAParallaxMotion'
     pod 'NSURL+QueryDictionary'

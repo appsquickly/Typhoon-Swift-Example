@@ -51,7 +51,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
         self.pushViewController(mainContentViewController, replaceRoot: true)
     }
         
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -107,7 +107,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
         if (self.sideViewState != SideViewState.Hidden) {
             self.sideViewState = SideViewState.Hidden
             self.paperFoldView.setPaperFoldState(PaperFoldStateDefault)
-            self.navigator!.topViewController.viewWillAppear(true)
+            self.navigator!.topViewController!.viewWillAppear(true)
         }
     }
 
@@ -122,7 +122,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     
     public func showAddCitiesController() {
         if (self.addCitiesController == nil) {
-            self.navigator.topViewController.view.userInteractionEnabled = false
+            self.navigator.topViewController!.view.userInteractionEnabled = false
             
             self.addCitiesController = UINavigationController(rootViewController: self.assembly.addCityViewController() as! UIViewController)            
             
@@ -150,7 +150,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
                 self.addCitiesController!.view.removeFromSuperview()
                 self.addCitiesController = nil
                 self.citiesListController?.viewDidAppear(true)
-                self.navigator.topViewController.view.userInteractionEnabled = true
+                self.navigator.topViewController!.view.userInteractionEnabled = true
             })
         }
     }
@@ -159,8 +159,8 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     // MARK: - PaperFoldViewDelegate
     //-------------------------------------------------------------------------------------------
     public func paperFoldView(paperFoldView: AnyObject!, didFoldAutomatically automated: Bool, toState paperFoldState: PaperFoldState) {
-        if paperFoldState.value == 0 {
-            self.navigator.topViewController.viewDidAppear(true)
+        if paperFoldState.rawValue == 0 {
+            self.navigator.topViewController!.viewDidAppear(true)
             
             
             let dummyView = UIView(frame: CGRectMake(1,1,1,1))
@@ -177,7 +177,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
         let screen = UIScreen.mainScreen().bounds
         self.paperFoldView = PaperFoldView(frame: CGRectMake(0, 0, screen.size.width, screen.size.height))
         self.paperFoldView.timerStepDuration = 0.02
-        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        self.view.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         
         self.mainContentViewContainer = UIView(frame: self.paperFoldView.bounds)
         self.mainContentViewContainer.backgroundColor = UIColor.blackColor()
@@ -189,16 +189,16 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     }
     
     public override func shouldAutorotate() -> Bool {
-        return self.navigator!.topViewController.shouldAutorotate()
+        return self.navigator!.topViewController!.shouldAutorotate()
     }
     
     public override func willRotateToInterfaceOrientation(orientation: UIInterfaceOrientation, duration: NSTimeInterval) {
 
-        self.navigator!.topViewController.willRotateToInterfaceOrientation(orientation, duration: duration)
+        self.navigator!.topViewController!.willRotateToInterfaceOrientation(orientation, duration: duration)
     }
     
     public override func didRotateFromInterfaceOrientation(orientation: UIInterfaceOrientation) {
-        self.navigator!.topViewController.didRotateFromInterfaceOrientation(orientation)
+        self.navigator!.topViewController!.didRotateFromInterfaceOrientation(orientation)
     }
 
             

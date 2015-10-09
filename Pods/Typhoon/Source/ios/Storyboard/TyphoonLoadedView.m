@@ -11,7 +11,8 @@
 
 
 #import "TyphoonLoadedView.h"
-#import "TyphoonStoryboard.h"
+#import "TyphoonViewHelpers.h"
+
 #import <objc/runtime.h>
 
 @implementation TyphoonLoadedView
@@ -23,7 +24,7 @@
 
 - (id)awakeAfterUsingCoder:(NSCoder *)aDecoder
 {
-    id replacement = [[self class] viewFromDefinition:[self typhoonKey] originalView:self];
+    id replacement = [TyphoonViewHelpers viewFromDefinition:[self typhoonKey] originalView:self];
     if (replacement != self) {
         /**
          * Coupling view loaded from Xib with replacement loaded from Typhoon
@@ -36,47 +37,11 @@
     return replacement;
 }
 
-+ (id)viewFromDefinition:(NSString *)definitionKey originalView:(UIView *)original
-{
-    if ([[original subviews] count] > 0) {
-        NSLog(@"Warning: placeholder view contains (%d) subviews. They will be replaced by typhoon definition '%@'", (int)[[original subviews] count], definitionKey);
-    }
-    TyphoonComponentFactory *currentFactory = [TyphoonComponentFactory factoryForResolvingFromXibs];
-    if (!currentFactory) {
-        [NSException raise:NSInternalInconsistencyException format:@"Can't find Typhoon factory to resolve definition from xib. Check [TyphoonComponentFactory setFactoryForResolvingFromXibs:] method."];
-    }
-    id result = [currentFactory componentForKey:definitionKey];
-    if (![result isKindOfClass:[UIView class]]) {
-        [NSException raise:NSInternalInconsistencyException format:@"Error: definition for key '%@' is not kind of UIView but %@", definitionKey, result];
-    }
-    [self transferPropertiesFromView:original toView:result];
-    return result;
-}
-
-+ (void)transferPropertiesFromView:(UIView *)src toView:(UIView *)dst
-{
-    //Transferring autolayout
-    dst.translatesAutoresizingMaskIntoConstraints = src.translatesAutoresizingMaskIntoConstraints;
-
-    for (NSLayoutConstraint *constraint in src.constraints) {
-        BOOL replaceFirstItem = [constraint firstItem] == src;
-        BOOL replaceSecondItem = [constraint secondItem] == src;
-        id firstItem = replaceFirstItem ? dst : constraint.firstItem;
-        id secondItem = replaceSecondItem ? dst : constraint.secondItem;
-        NSLayoutConstraint *copy = [NSLayoutConstraint constraintWithItem:firstItem attribute:constraint.firstAttribute relatedBy:constraint.relation toItem:secondItem attribute:constraint.secondAttribute multiplier:constraint.multiplier constant:constraint.constant];
-        [dst addConstraint:copy];
-    }
-
-    dst.frame = src.frame;
-    dst.autoresizesSubviews = src.autoresizesSubviews;
-    dst.autoresizingMask = src.autoresizingMask;
-}
-
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    [[UIColor colorWithWhite:0.93 alpha:1] setFill];
+    [[UIColor colorWithWhite:0.93f alpha:1] setFill];
 
     CGContextFillRect(context, self.bounds);
 
@@ -84,7 +49,7 @@
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
     label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor colorWithWhite:0.78 alpha:1];
+    label.textColor = [UIColor colorWithWhite:0.78f alpha:1];
 
     UIFont *baseFont = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:33];
     UIFont *subtitleFont = [baseFont fontWithSize:24];

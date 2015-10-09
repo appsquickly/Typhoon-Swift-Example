@@ -4,10 +4,9 @@
 
 #import "Typhoon.h"
 #import "NSURL+QueryDictionary.h"
-#import "UIColor+CKUITools.h"
+#import "NanoFrame.h"
 #import "ICLoader.h"
 #import "NGAParallaxMotion.h"
-#import "CKUITools.h"
 #import "PaperFoldConstants.h"
 #import "PaperFoldView.h"
 
