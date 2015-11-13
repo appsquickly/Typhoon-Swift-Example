@@ -1,9 +1,9 @@
 Pocket Forecast (Swift)
 ==========================
 
-An example application built with <a href ="http://www.typhoonframework.org">Typhoon</a>.
+An example application built with <a href ="http://typhoonframework.org/">Typhoon</a>.
 
-* Looking for an Objective-C sample application? We <a href="https://github.com/typhoon-framework/Typhoon-example">have one here</a>. 
+* Looking for an Objective-C sample application? We <a href="https://github.com/appsquickly/Typhoon-example">have one here</a>. 
 
 ###Features: 
 
@@ -19,7 +19,7 @@ An example application built with <a href ="http://www.typhoonframework.org">Typ
 ###Running the sample:
 
 * Clone this repository, open the Xcode project in your favorite IDE, and run it. It'll say you need an API key.
-* Get an API key from http://developer.worldweatheronline.com. 
+* Get an API key from https://developer.worldweatheronline.com/ 
 * Using your API key, set the <a href="https://github.com/typhoon-framework/Typhoon-example/blob/master/PocketForecast/Assembly/Configuration.plist">application configuration</a>.
 * Run the App in the simulator or on your device. Look up the weather in your town, and put a jacket on, if you need 
 to (Ha!). Now, proceed to the exercises below. 
@@ -42,9 +42,9 @@ place of the old one. And you'd be able to reuse the existing test cases.
 
 
 ### The App 
-![Weather Report](http://www.typhoonframework.org/images/portfolio/PocketForecast3.gif)
-![Weather Report](http://www.typhoonframework.org/images/portfolio/pf-beach1.png)
-![Weather Report](http://www.typhoonframework.org/images/portfolio/pf-lights1.png)
+![Weather Report](http://typhoonframework.org/images/portfolio/PocketForecast3.gif)
+![Weather Report](http://typhoonframework.org/images/portfolio/pf-beach1.png)
+![Weather Report](http://typhoonframework.org/images/portfolio/pf-lights1.png)
 
 ### I'm blown away!
 
