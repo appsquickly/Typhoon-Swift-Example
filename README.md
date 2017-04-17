@@ -5,7 +5,7 @@ An example application built with <a href ="http://typhoonframework.org/">Typhoo
 
 * Looking for an Objective-C sample application? We <a href="https://github.com/appsquickly/Typhoon-example">have one here</a>. 
 
-###Features: 
+### Features: 
 
 * Returns weather reports from a remote cloud service
 * Caches weather reports locally, for later off-line use. 
@@ -16,7 +16,7 @@ An example application built with <a href ="http://typhoonframework.org/">Typhoo
 
 ***NB: The free weather API that we were using no longer includes forecast information, so this won't be displayed in the app until we find an alternative. The concepts remain the same.***
 
-###Running the sample:
+### Running the sample:
 
 * Clone this repository, open the Xcode project in your favorite IDE, and run it. It'll say you need an API key.
 * Get an API key from https://developer.worldweatheronline.com/ 
