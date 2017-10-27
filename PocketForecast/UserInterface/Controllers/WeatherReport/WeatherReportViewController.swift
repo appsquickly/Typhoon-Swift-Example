@@ -58,13 +58,13 @@ public class WeatherReportViewController: UIViewController {
     // MARK: - Overridden Methods
     //-------------------------------------------------------------------------------------------
     
-    public override func viewWillAppear(animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController!.navigationBarHidden = true
+        self.navigationController!.isNavigationBarHidden = true
 
         self.cityName = self.cityDao.loadSelectedCity()
         if (self.cityName != nil) {
-            self.weatherReport = self.weatherReportDao.getReportForCityName(self.cityName)
+            self.weatherReport = self.weatherReportDao.getReportForCityName(cityName: self.cityName)
             if (self.weatherReport != nil) {
                 self.weatherReportView.weatherReport = self.weatherReport
             }
@@ -74,18 +74,18 @@ public class WeatherReportViewController: UIViewController {
         }
     }
 
-    public override func viewDidAppear(animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if (self.cityName != nil) {
             
-            let cityListButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Bookmarks, target: self, action: "presentMenu")
-            cityListButton.tintColor = UIColor.whiteColor()
+            let cityListButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.bookmarks, target: self, action: #selector(WeatherReportViewController.presentMenu))
+            cityListButton.tintColor = .white
             
-            let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+            let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
             
-            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: "refreshData")
-            refreshButton.tintColor = UIColor.whiteColor()
+            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.refresh, target: self, action: #selector(WeatherReportViewController.refreshData))
+            refreshButton.tintColor = .white
             
             self.weatherReportView.toolbar.items = [
                 cityListButton,
@@ -96,8 +96,8 @@ public class WeatherReportViewController: UIViewController {
     }
 
     
-    public override func viewWillDisappear(animated: Bool) {
-        self.navigationController!.navigationBarHidden = false
+    public override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController!.isNavigationBarHidden = false
         super.viewWillDisappear(animated)
     }
     
@@ -109,7 +109,7 @@ public class WeatherReportViewController: UIViewController {
     private dynamic func refreshData() {
         ICLoader.present()
         
-        self.weatherClient.loadWeatherReportFor(self.cityName, onSuccess: {
+        self.weatherClient.loadWeatherReportFor(city: self.cityName, onSuccess: {
             (weatherReport) in
             
             self.weatherReportView.weatherReport = weatherReport
@@ -119,7 +119,7 @@ public class WeatherReportViewController: UIViewController {
                 (message) in
                 
                 ICLoader.dismiss()
-                print ("Error" + message)
+                print ("Error" + message!)
                 
                 
         })

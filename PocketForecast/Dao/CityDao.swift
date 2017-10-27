@@ -20,7 +20,7 @@ import Foundation
     /**
     * Returns an array containing the names of all cities to report weather for.
     */
-    func listAllCities() -> [AnyObject]!
+    func listAllCities() -> [String]!
     
     /**
     * Adds a new city to the list of cities to report weather for. If the city already exists in 

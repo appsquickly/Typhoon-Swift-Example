@@ -26,10 +26,10 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     @IBOutlet var citiesListTableView : UITableView!
     @IBOutlet var temperatureUnitsControl : UISegmentedControl!
     
-    var cities : NSArray?
+    var cities : Array<String>?
     
     init(cityDao : CityDao, theme : Theme) {
-        super.init(nibName: "CitiesList", bundle: NSBundle.mainBundle())
+        super.init(nibName: "CitiesList", bundle: Bundle.main)
         self.cityDao = cityDao
         self.theme = theme
     }
@@ -42,9 +42,9 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     public override func viewDidLoad() {
         self.title = "Pocket Forecast"
         self.navigationItem.rightBarButtonItem =
-            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addCity")
-        self.citiesListTableView.editing = true
-        self.temperatureUnitsControl.addTarget(self, action: "saveTemperatureUnitPreference", forControlEvents: UIControlEvents.ValueChanged)
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(CitiesListViewController.addCity))
+        self.citiesListTableView.isEditing = true
+        self.temperatureUnitsControl.addTarget(self, action: #selector(CitiesListViewController.saveTemperatureUnitPreference), for: .valueChanged)
         if (Temperature.defaultUnits() == TemperatureUnits.Celsius) {
             self.temperatureUnitsControl.selectedSegmentIndex = celciusSegmentIndex
         }
@@ -55,14 +55,15 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     }
     
 
-    public override func viewWillAppear(animated : Bool) {
+    public override func viewWillAppear(_ animated : Bool) {
         super.viewWillAppear(animated)
         self.refreshCitiesList()
         let cityName : String? = cityDao.loadSelectedCity()
-        if (cityName != nil) {
-            
-            let indexPath = NSIndexPath(forRow: cities!.indexOfObject(cityName!), inSection: 0)
-            self.citiesListTableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.Middle)
+        if let cityName = cityName, let cities = cities {
+            if let index = cities.index(of: cityName) {
+                let indexPath = IndexPath(row: index, section: 0)
+                self.citiesListTableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+            }
         }
     }
     
@@ -70,49 +71,49 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
         return 1
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (cities != nil) {
             return cities!.count
         }
         return 0
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let reuseId = "Cities"
-        var cell : CityTableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseId) as? CityTableViewCell
+        var cell : CityTableViewCell? = tableView.dequeueReusableCell(withIdentifier: reuseId) as? CityTableViewCell
         if (cell == nil) {
-            cell = CityTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reuseId)
+            cell = CityTableViewCell(style: .default, reuseIdentifier: reuseId)
         }
-        cell!.selectionStyle = UITableViewCellSelectionStyle.Gray
-        cell!.cityLabel.backgroundColor = UIColor.clearColor()
-        cell!.cityLabel.font = UIFont.applicationFontOfSize(16)
-        cell!.cityLabel.textColor = UIColor.darkGrayColor()
-        cell!.cityLabel.text = cities!.objectAtIndex(indexPath.row) as? String
-        cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell!.selectionStyle = .gray
+        cell!.cityLabel.backgroundColor = .clear
+        cell!.cityLabel.font = UIFont.applicationFontOfSize(size: 16)
+        cell!.cityLabel.textColor = .darkGray
+        cell!.cityLabel.text = cities![indexPath.row]
+        cell!.accessoryType = .disclosureIndicator
         
         return cell!
     }
   
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cityName : String = cities!.objectAtIndex(indexPath.row) as! String
-        cityDao.saveCurrentlySelectedCity(cityName)
+        let cityName : String = cities![indexPath.row]
+        cityDao.saveCurrentlySelectedCity(cityName: cityName)
         
         let rootViewController = self.assembly.rootViewController() as! RootViewController
         rootViewController.dismissCitiesListController()
     }
     
-    public func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         
-        return UITableViewCellEditingStyle.Delete
+        return .delete
     }
 
-    public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
-        if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            let city = cities!.objectAtIndex(indexPath.row) as! String
-            self.cityDao.deleteCity(city)
+        if (editingStyle == .delete) {
+            let city = cities![indexPath.row]
+            self.cityDao.deleteCity(name: city)
             self.refreshCitiesList()
         }
     }
@@ -124,22 +125,22 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     }
     
     private func refreshCitiesList() {
-        self.cities = self.cityDao.listAllCities() as? Array<String>
+        self.cities = self.cityDao.listAllCities()
         self.citiesListTableView.reloadData()
     }
     
     private dynamic func saveTemperatureUnitPreference() {
         if (self.temperatureUnitsControl.selectedSegmentIndex == celciusSegmentIndex) {
-            Temperature.setDefaultUnits(TemperatureUnits.Celsius)
+            Temperature.setDefaultUnits(units: TemperatureUnits.Celsius)
         }
         else {
-            Temperature.setDefaultUnits(TemperatureUnits.Fahrenheit)
+            Temperature.setDefaultUnits(units: TemperatureUnits.Fahrenheit)
         }
     }
     
     private func applyTheme() {
         self.temperatureUnitsControl.tintColor = self.theme.controlTintColor
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController!.navigationBar.tintColor = .white
         self.navigationController!.navigationBar.barTintColor = self.theme.navigationBarColor
     }
     

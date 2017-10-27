@@ -43,7 +43,7 @@ public class ApplicationAssembly: TyphoonAssembly {
      */
     public dynamic func config() -> AnyObject {
 
-        return TyphoonDefinition.configDefinitionWithName("Configuration.plist")
+        return TyphoonDefinition.configDefinition(withName: "Configuration.plist")
     }
 
 

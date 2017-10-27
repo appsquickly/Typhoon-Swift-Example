@@ -35,7 +35,7 @@ public class CoreComponents: TyphoonAssembly {
             definition.useInitializer("initWithDefaults:") {
                 (initializer) in
                 
-                initializer.injectParameterWith(NSUserDefaults.standardUserDefaults())
+                initializer.injectParameterWith(UserDefaults.standardUserDefaults())
             }
         }        
     }

@@ -52,51 +52,51 @@ public class ForecastTableViewCell : UITableViewCell {
     }
     
     private func initOverlay() {
-        self.overlayView = UIImageView(frame: CGRectMake(0, 0, self.frame.size.width, 50))
+        self.overlayView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: 50))
         self.overlayView.image = UIImage(named: "cell_fade")
-        self.overlayView.contentMode = UIViewContentMode.ScaleToFill
+        self.overlayView.contentMode = .scaleToFill
         self.addSubview(self.overlayView)
     }
     
     private func initConditionsIcon() {
-        self.conditionsIcon = UIImageView(frame:CGRectMake(6, 7, 60 - 12, 50 - 12))
+        self.conditionsIcon = UIImageView(frame:CGRect(x: 6, y: 7, width: 60 - 12, height: 50 - 12))
         self.conditionsIcon.clipsToBounds = true
-        self.conditionsIcon.contentMode = UIViewContentMode.ScaleAspectFit
+        self.conditionsIcon.contentMode = .scaleAspectFit
         self.conditionsIcon.image = UIImage(named: "icon_cloudy")
         self.addSubview(self.conditionsIcon)
     }
     
     private func initDayLabel() {
-        self.dayLabel = UILabel(frame: CGRectMake(70, 10, 150, 18))
-        self.dayLabel.font = UIFont.applicationFontOfSize(16)
-        self.dayLabel.textColor = UIColor.whiteColor()
-        self.dayLabel.backgroundColor = UIColor.clearColor()
+        self.dayLabel = UILabel(frame: CGRect(x: 70, y: 10, width: 150, height: 18))
+        self.dayLabel.font = UIFont.applicationFontOfSize(size: 16)
+        self.dayLabel.textColor = .white
+        self.dayLabel.backgroundColor = .clear
         self.addSubview(self.dayLabel)
     }
     
     private func initDescriptionLabel() {
-        self.descriptionLabel = UILabel(frame:CGRectMake(70, 28, 150, 16))
-        self.descriptionLabel.font = UIFont.applicationFontOfSize(13)
+        self.descriptionLabel = UILabel(frame:CGRect(x: 70, y: 28, width: 150, height: 16))
+        self.descriptionLabel.font = UIFont.applicationFontOfSize(size: 13)
         self.descriptionLabel.textColor = UIColor(hexRGB: 0xe9e1cd)
-        self.descriptionLabel.backgroundColor = UIColor.clearColor()
+        self.descriptionLabel.backgroundColor = .clear
         self.addSubview(self.descriptionLabel)
     }
     
     private func initHighTempLabel() {
-        self.highTempLabel = UILabel(frame: CGRectMake(210, 10, 55, 30))
-        self.highTempLabel.font = UIFont.temperatureFontOfSize(27)
-        self.highTempLabel.textColor = UIColor.whiteColor()
-        self.highTempLabel.backgroundColor = UIColor.clearColor()
-        self.highTempLabel.textAlignment = NSTextAlignment.Right
+        self.highTempLabel = UILabel(frame: CGRect(x: 210, y: 10, width: 55, height: 30))
+        self.highTempLabel.font = UIFont.temperatureFontOfSize(size: 27)
+        self.highTempLabel.textColor = .white
+        self.highTempLabel.backgroundColor = .clear
+        self.highTempLabel.textAlignment = .right
         self.addSubview(self.highTempLabel)
     }
     
     private func initLowTempLabel() {
-        self.lowTempLabel = UILabel(frame: CGRectMake(270, 11.5, 40, 30))
-        self.lowTempLabel.font = UIFont.temperatureFontOfSize(20)
+        self.lowTempLabel = UILabel(frame: CGRect(x: 270, y: 11.5, width: 40, height: 30))
+        self.lowTempLabel.font = UIFont.temperatureFontOfSize(size: 20)
         self.lowTempLabel.textColor = UIColor(hexRGB: 0xd9d1bd)
-        self.lowTempLabel.backgroundColor = UIColor.clearColor()
-        self.lowTempLabel.textAlignment = NSTextAlignment.Right
+        self.lowTempLabel.backgroundColor = .clear
+        self.lowTempLabel.textAlignment = .right
         self.addSubview(self.lowTempLabel)
     }    
     
