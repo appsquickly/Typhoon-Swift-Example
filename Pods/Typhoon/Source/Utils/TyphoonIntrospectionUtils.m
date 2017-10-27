@@ -21,6 +21,7 @@
 
 BOOL TyphoonIsInvalidClassName(NSString *className);
 NSString *TyphoonDefaultModuleName(void);
+Class TyphoonClassFromFrameworkString(NSString *className);
 
 + (TyphoonTypeDescriptor *)typeForPropertyNamed:(NSString *)propertyName inClass:(Class)clazz
 {
@@ -33,7 +34,7 @@ NSString *TyphoonDefaultModuleName(void);
             return (NULL);
         }
 
-        static char buffer[256];
+        char buffer[256];
         const char *e = strchr(attributes, ',');
         if (e == NULL) {
             return (NULL);
@@ -256,6 +257,11 @@ BOOL TyphoonIsInvalidClassName(NSString *className)
     return NO;
 }
 
+Class TyphoonClassFromClass(Class clazz)
+{
+    return TyphoonClassFromString(NSStringFromClass(clazz));
+}
+
 Class TyphoonClassFromString(NSString *className)
 {
     if (TyphoonIsInvalidClassName(className)) {
@@ -302,28 +308,84 @@ Class TyphoonClassFromString(NSString *className)
         the name of the module
 
         */
+        
+        //Those class names will never be resolved, so no reason to try
+        if(!className || [className isEqual:@"?"] || [className isEqual:@""]) {
+            return nil;
+        }
+        
+        clazz = TyphoonClassFromFrameworkString(className);
+        
+    }
+    return clazz;
+}
+
+
+#if TARGET_OS_IOS
+Class TyphoonClassFromFrameworkString(NSString *className) {
+    
+    Class clazz = nil;
+    // on iOS, we can safely precache frameworks
+    // because they'll never change during app lifetime
+    static NSArray * frameworkNames = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableArray * temporaryNames = [NSMutableArray array];
         NSArray *frameworks = [NSBundle allFrameworks];
-        for (uint i = 0; i < frameworks.count && clazz == nil; ++i) {
-            NSBundle *framework = [frameworks objectAtIndex:i];
+        [frameworks enumerateObjectsUsingBlock:^(NSBundle*  _Nonnull framework, NSUInteger idx, BOOL * _Nonnull stop) {
             NSString *bundleIdentifier = [framework bundleIdentifier];
-            // ignore apple frameworks
-            if (![bundleIdentifier hasPrefix:@"com.apple"]) {
-                NSRange range = [bundleIdentifier rangeOfString:@"." options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *frameworkName = [bundleIdentifier substringFromIndex:range.location + 1];
-                    if (frameworkName != nil) {
-                        clazz = NSClassFromString([frameworkName stringByAppendingFormat:@".%@", className]);
-                    }
+            // ignore apple frameworks and resource bundles
+            if (bundleIdentifier && ![bundleIdentifier hasPrefix:@"com.apple"]) {
+                [temporaryNames addObject:bundleIdentifier];
+            }
+        }];
+        frameworkNames = [temporaryNames copy];
+    });
+    
+    for (uint i = 0; i < frameworkNames.count && clazz == nil; ++i) {
+        NSString *bundleIdentifier = frameworkNames[i];
+        NSRange range = [bundleIdentifier rangeOfString:@"." options:NSBackwardsSearch];
+        if (range.location != NSNotFound) {
+            NSString *frameworkName = [bundleIdentifier substringFromIndex:range.location + 1];
+            if (frameworkName != nil) {
+                clazz = NSClassFromString([frameworkName stringByAppendingFormat:@".%@", className]);
+            }
+        }
+    }
+    return clazz;
+}
+#else
+Class TyphoonClassFromFrameworkString(NSString *className) {
+    // For OSX we still need to iterate, since platform allows us to use downloaded frameworks
+    // and they can change during app lifetime
+    Class clazz = nil;
+    NSArray *frameworks = [NSBundle allFrameworks];
+    for (uint i = 0; i < frameworks.count && clazz == nil; ++i) {
+        NSBundle *framework = [frameworks objectAtIndex:i];
+        NSString *bundleIdentifier = [framework bundleIdentifier];
+        // ignore apple frameworks
+        if (![bundleIdentifier hasPrefix:@"com.apple"]) {
+            NSRange range = [bundleIdentifier rangeOfString:@"." options:NSBackwardsSearch];
+            if (range.location != NSNotFound) {
+                NSString *frameworkName = [bundleIdentifier substringFromIndex:range.location + 1];
+                if (frameworkName != nil) {
+                    clazz = NSClassFromString([frameworkName stringByAppendingFormat:@".%@", className]);
                 }
             }
         }
     }
     return clazz;
 }
+#endif
 
 BOOL IsClass(id classOrProtocol)
 {
     return class_isMetaClass(object_getClass(classOrProtocol));
+}
+
+BOOL IsBlock(const char *objCType)
+{
+    return strcmp(objCType, "@?") == 0;
 }
 
 BOOL IsProtocol(id classOrProtocol)

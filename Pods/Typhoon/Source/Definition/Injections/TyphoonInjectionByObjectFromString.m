@@ -48,31 +48,49 @@
 - (void)valueToInjectWithContext:(TyphoonInjectionContext *)context completion:(TyphoonInjectionValueBlock)result
 {
     TyphoonTypeDescriptor *type = context.destinationType;
+    TyphoonComponentFactory *factory = context.factory;
 
-    id value = nil;
-    
-    if (type.isPrimitive) {
-        TyphoonPrimitiveTypeConverter *converter = [[TyphoonTypeConverterRegistry shared] primitiveTypeConverter];
-        value = [converter valueFromText:self.textValue withType:type];
-    }
-    else {
-        value = [self convertText:self.textValue];
-    }
+    id value = [self convertText:self.textValue toType:type withTypeConverterRegistry:factory.typeConverterRegistry];
     
     result(value);
 }
 
-- (id)convertText:(NSString *)text
+- (id)convertText:(NSString *)text toType:(TyphoonTypeDescriptor *)type withTypeConverterRegistry:(TyphoonTypeConverterRegistry *)typeConverterRegistry
 {
-    id result = text;
-    NSString *typeString = [TyphoonTypeConverterRegistry typeFromTextValue:text];
-    if (typeString) {
-        id <TyphoonTypeConverter> converter = [[TyphoonTypeConverterRegistry shared] converterForType:typeString];
+    // First, let's see if the text explicitly states the value type.
+    NSString *typeStringFromText = [TyphoonTypeConversionUtils typeFromTextValue:text];
+    if (typeStringFromText) {
+        id <TyphoonTypeConverter> converter = [typeConverterRegistry converterForType:typeStringFromText];
         if (converter) {
-            result = [converter convert:text];
+            return [converter convert:text];
         }
     }
-    return result;
+    
+    // In case we know the type from the method argument, let's try to use it.
+    if (type) {
+        if (type.isPrimitive) {
+            TyphoonPrimitiveTypeConverter *converter = [typeConverterRegistry primitiveTypeConverter];
+            return [converter valueFromText:text withType:type];
+        }
+        else {
+            NSString *typeString;
+            
+            if (type.typeBeingDescribed) {
+                typeString = NSStringFromClass(type.typeBeingDescribed);
+            }
+            else {
+                typeString = [NSString stringWithFormat:@"<%@>", type.declaredProtocol];
+            }
+            
+            id<TyphoonTypeConverter> converter = [typeConverterRegistry converterForType:typeString];
+            if (converter) {
+                return [converter convert:text];
+            }
+        }
+    }
+    
+    // Fallback to injecting string.
+    return text;
 }
 
 - (NSUInteger)customHash

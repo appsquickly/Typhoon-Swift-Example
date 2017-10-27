@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #import <Foundation/Foundation.h>
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE || TARGET_OS_TV
 #import <UIKit/UIKit.h>
 #endif
 
@@ -22,25 +22,28 @@ FOUNDATION_EXPORT const unsigned char TyphoonVersionString[];
 
 #import "TyphoonAssembly.h"
 #import "TyphoonDefinition.h"
-#import "TyphoonFactoryDefinition.h"
-#import "TyphoonDefinition+Infrastructure.h"
+#import "TyphoonBlockDefinition.h"
+#import "TyphoonInject.h"
 #import "TyphoonMethod.h"
 #import "TyphoonConfigPostProcessor.h"
+#import "TyphoonDefinition+Config.h"
 #import "TyphoonResource.h"
 #import "TyphoonBundleResource.h"
 #import "TyphoonComponentFactory.h"
-#import "TyphoonComponentFactory+InstanceBuilder.h"
+#import "TyphoonBlockComponentFactory.h"
+#import "TyphoonFactoryDefinition.h"
 #import "TyphoonDefinitionPostProcessor.h"
+#import "TyphoonInstancePostProcessor.h"
+#import "TyphoonTypeConverter.h"
 #import "TyphoonIntrospectionUtils.h"
 #import "TyphoonCollaboratingAssemblyProxy.h"
+#import "TyphoonTestUtils.h"
+#import "TyphoonPatcher.h"
+#import "TyphoonAutoInjection.h"
+#import "TyphoonDefinitionNamespace.h"
 #import "NSObject+FactoryHooks.h"
 
-#import "TyphoonBlockComponentFactory.h"
-#import "TyphoonAssemblyActivator.h"
-
-#import "TyphoonAutoInjection.h"
-
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE || TARGET_OS_TV
 #import "TyphooniOS.h"
 #endif
 

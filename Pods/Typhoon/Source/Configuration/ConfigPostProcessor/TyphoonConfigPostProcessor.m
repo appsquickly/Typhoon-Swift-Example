@@ -11,10 +11,11 @@
 
 
 #import "TyphoonConfigPostProcessor.h"
+#import "TyphoonConfigPostProcessor+Internal.h"
 #import "TyphoonResource.h"
 #import "TyphoonDefinition.h"
 #import "TyphoonInjectionByConfig.h"
-#import "TyphoonDefinition+InstanceBuilder.h"
+#import "TyphoonDefinition+Infrastructure.h"
 #import "TyphoonPropertyStyleConfiguration.h"
 #import "TyphoonInjections.h"
 #import "TyphoonJsonStyleConfiguration.h"
@@ -22,6 +23,8 @@
 #import "TyphoonPlistStyleConfiguration.h"
 #import "TyphoonInjectionByReference.h"
 #import "TyphoonRuntimeArguments.h"
+#import "TyphoonDefinitionNamespace.h"
+#import "TyphoonInject.h"
 #import "OCLogTemplate.h"
 
 static NSMutableDictionary *propertyPlaceholderRegistry;
@@ -29,6 +32,7 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
 @implementation TyphoonConfigPostProcessor
 {
     NSDictionary *_configs;
+    TyphoonDefinitionNamespace *_space;
 }
 
 
@@ -93,6 +97,9 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
             mutableConfigs[key] = [configClass new];
         }];
         _configs = mutableConfigs;
+        
+        // Each ConfigPostProcessor has global namespace unless explicitly set to another namespace.
+        _space = [TyphoonDefinitionNamespace globalNamespace];
     }
     return self;
 }
@@ -109,6 +116,11 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
 //-------------------------------------------------------------------------------------------
 #pragma mark - Interface Methods
 //-------------------------------------------------------------------------------------------
+
+- (void)registerNamespace:(TyphoonDefinitionNamespace *)space
+{
+    _space = space;
+}
 
 - (void)useResourceWithName:(NSString *)name
 {
@@ -127,9 +139,6 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
 
 - (void)useResource:(id<TyphoonResource>)resource withExtension:(NSString *)typeExtension
 {
-    LogInfo("======================================================================================================");
-    LogInfo(@"CONFIG: %@", resource.description);
-    LogInfo("======================================================================================================");
     id<TyphoonConfiguration> config = _configs[typeExtension];
     [config appendResource:resource];
 }
@@ -165,20 +174,25 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
 }
 
 //-------------------------------------------------------------------------------------------
-#pragma mark - Interface Methods
-//-------------------------------------------------------------------------------------------
-
-
-
-//-------------------------------------------------------------------------------------------
 #pragma mark - Protocol Methods
 //-------------------------------------------------------------------------------------------
 
 - (void)postProcessDefinition:(TyphoonDefinition *)definition replacement:(TyphoonDefinition **)definitionToReplace
     withFactory:(TyphoonComponentFactory *)factory
 {
-    [self configureInjectionsInDefinition:definition];
-    [self configureInjectionsInRuntimeArgumentsInDefinition:definition];
+    if ([self shouldInjectDefinition:definition]) {
+        [self configureInjectionsInDefinition:definition];
+        [self configureInjectionsInRuntimeArgumentsInDefinition:definition];
+    }
+}
+
+//-------------------------------------------------------------------------------------------
+#pragma mark - Private Methods
+//-------------------------------------------------------------------------------------------
+
+- (BOOL)shouldInjectDefinition:(TyphoonDefinition *)definition
+{
+    return [_space isEqual:definition.space] || [_space isGlobalNamespace];
 }
 
 - (void)configureInjectionsInDefinition:(TyphoonDefinition *)definition
@@ -224,10 +238,10 @@ static NSMutableDictionary *propertyPlaceholderRegistry;
     return result;
 }
 
-
 @end
+
 
 id TyphoonConfig(NSString *configKey)
 {
-    return TyphoonInjectionWithConfigKey(configKey);
+    return [TyphoonInject byConfigKey:configKey];
 }

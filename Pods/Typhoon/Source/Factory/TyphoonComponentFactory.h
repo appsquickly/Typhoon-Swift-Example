@@ -13,11 +13,14 @@
 
 #import <Foundation/Foundation.h>
 #import "TyphoonDefinitionPostProcessor.h"
+#import "TyphoonInstancePostProcessor.h"
+#import "TyphoonTypeConverter.h"
 #import "TyphoonComponentsPool.h"
 
 @class TyphoonDefinition;
 @class TyphoonCallStack;
 @class TyphoonRuntimeArguments;
+@class TyphoonTypeConverterRegistry;
 
 /**
 *
@@ -79,10 +82,22 @@
 - (void)makeDefault;
 
 /**
-Attach a TyphoonComponentFactoryPostProcessor to this component factory.
-@param postProcessor The post-processor to attach.
+Attach a TyphoonDefinitionPostProcessor to this component factory.
+@param postProcessor The definition post processor to attach.
 */
-- (void)attachPostProcessor:(id <TyphoonDefinitionPostProcessor>)postProcessor;
+- (void)attachDefinitionPostProcessor:(id<TyphoonDefinitionPostProcessor>)postProcessor NS_SWIFT_NAME(attachDefinitionPostProcessor(postProcessor:));
+
+/**
+ Attach a TyphoonInstancePostProcessor to this component factory.
+ @param postProcessor The instance post processor to attach.
+ */
+- (void)attachInstancePostProcessor:(id<TyphoonInstancePostProcessor>)postProcessor NS_SWIFT_NAME(attachInstancePostProcessor(postProcessor:));
+
+/**
+ Attach a TyphoonTypeConverter to this component factory.
+ @param typeConverter The type converter to attach.
+ */
+- (void)attachTypeConverter:(id<TyphoonTypeConverter>)typeConverter;
 
 @end
 
@@ -102,6 +117,7 @@ Attach a TyphoonComponentFactoryPostProcessor to this component factory.
     id <TyphoonComponentsPool> _weakSingletons;
 
     TyphoonCallStack *_stack;
+    TyphoonTypeConverterRegistry *_typeConverterRegistry;
     NSMutableArray *_definitionPostProcessors;
     NSMutableArray *_instancePostProcessors;
     BOOL _isLoading;
@@ -143,11 +159,15 @@ Attach a TyphoonComponentFactoryPostProcessor to this component factory.
 */
 + (id)defaultFactory;
 
++ (instancetype)newFactoryForResolvingUI;
 
-+ (void)setFactoryForResolvingFromXibs:(TyphoonComponentFactory *)factory;
++ (void)setFactoryForResolvingUI:(TyphoonComponentFactory *)factory;
+
+/** Factory used to resolve definition for UI. */
++ (TyphoonComponentFactory *)factoryForResolvingUI;
 
 /** Factory used to resolve definition from TyphoonLoadedView. */
-+ (TyphoonComponentFactory *)factoryForResolvingFromXibs;
++ (TyphoonComponentFactory *)factoryForResolvingFromXibs DEPRECATED_MSG_ATTRIBUTE("use factoryForResolvingUI instead");
 
 /**
 * Mutate the component definitions and
@@ -168,6 +188,8 @@ Attach a TyphoonComponentFactoryPostProcessor to this component factory.
 
 
 - (NSArray *)registry;
+
+- (TyphoonTypeConverterRegistry *)typeConverterRegistry;
 
 - (void)enumerateDefinitions:(void(^)(TyphoonDefinition *definition, NSUInteger index, TyphoonDefinition **definitionToReplace, BOOL *stop))block;
 

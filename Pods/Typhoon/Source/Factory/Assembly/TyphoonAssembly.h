@@ -9,10 +9,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#import <Foundation/Foundation.h>
+#import "TyphoonComponentFactory.h"
 #import "TyphoonDefinition.h"
 #import "TyphoonDefinition+Option.h"
-#import "TyphoonComponentFactory.h"
-#import <Foundation/Foundation.h>
+
+#if TARGET_OS_IPHONE
+#import "TyphoonDefinition+Storyboard.h"
+#endif
 
 @class TyphoonComponentFactory;
 
@@ -41,14 +45,14 @@ AnalyticsService* service = [assembly analyticsService];
 * - Allows the use of IDE features like refactoring and code completion.
 *
 */
-@interface TyphoonAssembly : NSObject<TyphoonComponentFactory>
+@interface TyphoonAssembly : NSObject <TyphoonComponentFactory>
 
-+ (instancetype)assembly;
++ (__nonnull instancetype)assembly;
 
 /**
 * Returns the [TyphoonComponentFactory defaultFactory] posing as a TyphoonAssembly.
 */
-+ (instancetype)defaultAssembly;
++ (__nullable instancetype)defaultAssembly;
 
 
 /**
@@ -58,7 +62,24 @@ AnalyticsService* service = [assembly analyticsService];
  * @see activateWithCollaboratingAssemblies
  *
  */
-- (instancetype)activate;
+- (__nonnull instancetype)activated;
+
+/**
+ * Activates the assembly, attaching the specified config resource name from the application bundle.
+ *
+ * This method is a convenience for:
+@code
+
+TyphoonConfigPostProcessor *processor = [TyphoonConfigPostProcessor processor];
+[processor useResourceWithName:@"Config_production.plist"];
+[self attachPostProcessor:processor];
+[self activate];
+
+@endcode
+ *
+ */
+- (__nonnull instancetype)activatedWithConfigResourceName:(NSString  * __nonnull)resourceName;
+
 
 /**
  *  Activates the assembly, explicitly setting the types for collaborating assemblies.
@@ -67,6 +88,17 @@ AnalyticsService* service = [assembly analyticsService];
  * references another assembly of type NetworkProvider, specifying a subclass TestNetworkProvider will override
  * the base type. If collaborating assemblies are backed by a protocol, they must be specified explicitly. 
  */
-- (instancetype)activateWithCollaboratingAssemblies:(NSArray*)assemblies;
+- (__nonnull instancetype)activatedWithCollaboratingAssemblies:(NSArray * __nullable)assemblies;
+
+- (__nonnull instancetype)activatedWithCollaboratingAssemblies:(NSArray *__nullable)assemblies postProcessors:(NSArray * __nullable)postProcessors;
+
+@end
+
+@interface TyphoonAssembly(Unavailable)
+
+- (__nonnull instancetype)activate __attribute__((unavailable("Use `activated` non-mutating version instead.")));;
+- (__nonnull instancetype)activateWithConfigResourceName:(NSString  * __nonnull)resourceName __attribute__((unavailable("Use `activatedWithConfigResourceName:` non-mutating version instead.")));
+- (__nonnull instancetype)activateWithCollaboratingAssemblies:(NSArray * __nullable)assemblies __attribute__((unavailable("Use `activatedWithCollaboratingAssemblies:` non-mutating version instead.")));;
+- (__nonnull instancetype)activateWithCollaboratingAssemblies:(NSArray *__nullable)assemblies postProcessors:(NSArray * __nullable)postProcessors __attribute__((unavailable("Use `activatedWithCollaboratingAssemblies:postProcessors:` non-mutating version instead.")));;
 
 @end

@@ -11,10 +11,11 @@
 
 
 #import "TyphoonReferenceDefinition.h"
+#import "TyphoonDefinition+Internal.h"
 #import "TyphoonDefinition+Infrastructure.h"
+#import "TyphoonDefinition+InstanceBuilder.h"
 #import "TyphoonRuntimeArguments.h"
 #import "TyphoonComponentFactory.h"
-#import "TyphoonDefinition+InstanceBuilder.h"
 
 //TODO: Merge TyphoonReferenceDefinition and TyphoonShortcutDefinition with keeping simple logic
 
@@ -40,6 +41,8 @@
     return refDefinition;
 }
 
+#pragma mark - Overriden methods
+
 - (id)targetForInitializerWithFactory:(TyphoonComponentFactory *)factory args:(TyphoonRuntimeArguments *)args
 {
     if (_referringKey) {
@@ -52,6 +55,16 @@
 - (TyphoonMethod *)initializer
 {
     return nil;
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    TyphoonShortcutDefinition *copy = [super copyWithZone:zone];
+    copy->_referringArgs = [_referringArgs copy];
+    copy->_referringKey = _referringKey;
+    return copy;
 }
 
 @end

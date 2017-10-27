@@ -13,6 +13,8 @@
 #import "TyphoonStartup.h"
 #import "TyphoonStoryboard.h"
 #import "TyphoonStoryboardProvider.h"
+#import "TyphoonComponentFactory+Storyboard.h"
+#import "TyphoonComponentsPool.h"
 
 #import <objc/runtime.h>
 
@@ -37,11 +39,15 @@
     id(*originalImp)(id, SEL, id, id) = (id (*)(id, SEL, id, id)) method_getImplementation(method);
     
     IMP adjustedImp = imp_implementationWithBlock(^id(id instance, NSString *name, NSBundle *bundle) {
-        [TyphoonStartup requireInitialFactory];
-        id initialFactory = [TyphoonStartup initialFactory];
-        [TyphoonStartup releaseInitialFactory];
-        if ([instance class] == [UIStoryboard class] && initialFactory && [storyboardNames containsObject:name]) {
-            return [TyphoonStoryboard storyboardWithName:name factory:initialFactory bundle:bundle];
+        id componentFactory = [TyphoonComponentFactory factoryForResolvingUI];
+
+        if ([instance class] == [UIStoryboard class] && componentFactory && [storyboardNames containsObject:name]) {
+            TyphoonStoryboard *storyboard = [TyphoonStoryboard storyboardWithName:name factory:componentFactory bundle:bundle];
+            @synchronized(self) {
+                id<TyphoonComponentsPool> storyboardPool = [componentFactory storyboardPool];
+                storyboardPool[name] = storyboard;
+            }
+            return storyboard;
         } else {
             return originalImp(instance, sel, name, bundle);
         }

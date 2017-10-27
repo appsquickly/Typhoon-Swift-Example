@@ -10,13 +10,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
-#import "TyphoonMethod.h"
 #import "TyphoonDefinition.h"
-#import "TyphoonMethod+InstanceBuilder.h"
-#import "TyphoonDefinition+InstanceBuilder.h"
+#import "TyphoonDefinition+Internal.h"
 #import "TyphoonDefinition+Infrastructure.h"
-
+#import "TyphoonDefinition+InstanceBuilder.h"
+#import "TyphoonMethod.h"
 #import "TyphoonMethod+InstanceBuilder.h"
 #import "TyphoonPropertyInjection.h"
 #import "TyphoonObjectWithCustomInjection.h"
@@ -24,10 +22,14 @@
 #import "TyphoonInjectionByType.h"
 #import "TyphoonInjectionByReference.h"
 #import "TyphoonInjectionByFactoryReference.h"
+#import "TyphoonInjectionByRuntimeArgument.h"
 #import "TyphoonInjections.h"
 #import "TyphoonFactoryDefinition.h"
 #import "TyphoonRuntimeArguments.h"
 #import "TyphoonInjectionDefinition.h"
+
+#import "OCLogTemplate.h"
+
 
 static NSString *TyphoonScopeToString(TyphoonScope scope)
 {
@@ -46,46 +48,196 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
 }
 
 
-@interface TyphoonDefinition ()<TyphoonObjectWithCustomInjection>
-@property (nonatomic, strong) TyphoonMethod *initializer;
-@property (nonatomic, strong) NSString *key;
-@property (nonatomic, strong) TyphoonRuntimeArguments *currentRuntimeArguments;
-@property (nonatomic, getter = isInitializerGenerated) BOOL initializerGenerated;
+@interface TyphoonDefinition () <TyphoonObjectWithCustomInjection>
+
 @end
+
 
 @implementation TyphoonDefinition
 {
-    BOOL _isScopeSetByUser;
+    TyphoonDefinition *_parent;
+    NSMutableSet *_injectedProperties;
+    NSMutableOrderedSet *_injectedMethods;
 }
-
-@synthesize key = _key;
-@synthesize initializerGenerated = _initializerGenerated;
-@synthesize currentRuntimeArguments = _currentRuntimeArguments;
 
 //-------------------------------------------------------------------------------------------
 #pragma mark: - Initialization
 //-------------------------------------------------------------------------------------------
 
-- (id)initWithClass:(Class)clazz key:(NSString *)key
+- (instancetype)init
 {
+    return [self initWithClass:Nil key:nil];
+}
+
+- (instancetype)initWithClass:(Class)clazz key:(NSString *)key
+{
+    if (clazz == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Property 'clazz' is required."];
+    }
+    
     self = [super init];
     if (self) {
         _type = clazz;
+        _key = key;
+        _scope = TyphoonScopeObjectGraph;
+        _autoInjectionVisibility = TyphoonAutoInjectVisibilityDefault;
+        
         _injectedProperties = [[NSMutableSet alloc] init];
         _injectedMethods = [[NSMutableOrderedSet alloc] init];
-        _key = [key copy];
-        _scope = TyphoonScopeObjectGraph;
-        self.autoInjectionVisibility = TyphoonAutoInjectVisibilityDefault;
+        
         [self validateRequiredParametersAreSet];
     }
     return self;
 }
 
-- (id)init
++ (instancetype)withClass:(Class)clazz key:(NSString *)key
 {
-    return [self initWithClass:nil key:nil];
+    return [[self alloc] initWithClass:clazz key:key];
 }
 
+//-------------------------------------------------------------------------------------------
+#pragma mark - Scope
+//-------------------------------------------------------------------------------------------
+
+@synthesize scope = _scope;
+
+- (TyphoonScope)scope
+{
+    if (_parent && !_scopeSetByUser) {
+        return _parent.scope;
+    }
+    else {
+        return _scope;
+    }
+}
+
+- (void)setScope:(TyphoonScope)scope
+{
+    _scope = scope;
+    _scopeSetByUser = YES;
+    
+    [self validateScope];
+}
+
+//-------------------------------------------------------------------------------------------
+#pragma mark - Namespacing
+//-------------------------------------------------------------------------------------------
+
+- (void)applyGlobalNamespace
+{
+    _space = [TyphoonDefinitionNamespace globalNamespace];
+}
+
+- (void)applyConcreteNamespace:(NSString *)key
+{
+    _space = [TyphoonDefinitionNamespace namespaceWithKey:key];
+}
+
+//-------------------------------------------------------------------------------------------
+#pragma mark - Injections
+//-------------------------------------------------------------------------------------------
+
+@synthesize initializer = _initializer;
+@synthesize beforeInjections = _beforeInjections;
+@synthesize afterInjections = _afterInjections;
+
+- (TyphoonMethod *)initializer
+{
+    if (!_initializer) {
+        TyphoonMethod *parentInitializer = _parent.initializer;
+        if (parentInitializer) {
+            return parentInitializer;
+        }
+        else {
+            _initializer = [[TyphoonMethod alloc] initWithSelector:@selector(init)];
+            _initializerGenerated = YES;
+        }
+    }
+    return _initializer;
+}
+
+- (BOOL)isInitializerGenerated
+{
+    [self initializer]; // call getter to generate initializer if needed
+    return _initializerGenerated;
+}
+
+- (TyphoonMethod *)beforeInjections
+{
+    if (!_parent || _beforeInjections) {
+        return _beforeInjections;
+    }
+    else {
+        return [_parent beforeInjections];
+    }
+}
+
+- (TyphoonMethod *)afterInjections
+{
+    if (!_parent || _afterInjections) {
+        return _afterInjections;
+    }
+    else {
+        return [_parent afterInjections];
+    }
+}
+
+- (NSSet *)injectedProperties
+{
+    if (!_parent) {
+        return [_injectedProperties mutableCopy];
+    }
+    
+    NSMutableSet *properties = (NSMutableSet *)[_parent injectedProperties];
+    
+    NSMutableSet *overriddenProperties = [NSMutableSet set];
+    
+    for (id<TyphoonPropertyInjection> parentProperty in properties) {
+        for (id <TyphoonPropertyInjection> childProperty in _injectedProperties) {
+            if ([[childProperty propertyName] isEqualToString:[parentProperty propertyName]]) {
+                [overriddenProperties addObject:parentProperty];
+            }
+        }
+    }
+    
+    [properties minusSet:overriddenProperties];
+    [properties unionSet:_injectedProperties];
+    
+    return properties;
+}
+
+- (NSOrderedSet *)injectedMethods
+{
+    if (!_parent) {
+        return [_injectedMethods mutableCopy];
+    }
+    
+    NSMutableOrderedSet *methods = (NSMutableOrderedSet *)[_parent injectedMethods];
+    
+    NSMutableSet *overriddenMethods = [NSMutableSet set];
+    for (TyphoonMethod *parentMethod in methods) {
+        for (TyphoonMethod *childMethod in _injectedMethods) {
+            if (parentMethod.selector == childMethod.selector) {
+                [overriddenMethods addObject:parentMethod];
+            }
+        }
+    }
+    
+    [methods minusSet:overriddenMethods];
+    [methods unionOrderedSet:_injectedMethods];
+    
+    return methods;
+}
+
+//-------------------------------------------------------------------------------------------
+#pragma mark - Parent
+//-------------------------------------------------------------------------------------------
+
+- (void)setParent:(id)parent
+{
+    _parent = parent;
+    [self validateParent];
+}
 
 //-------------------------------------------------------------------------------------------
 #pragma mark: - Class Methods
@@ -152,6 +304,10 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
     if (configuration) {
         configuration(definition);
     }
+    
+    if ([self isOldStyleStoryboardDefinitionWithFactory:factory]) {
+        LogInfo(@"*** Warning *** You are using TyphoonFactoryDefinition for ViewController injections. The preferred way are special TyphoonStoryboardDefinitions.");
+    }
 
     return definition;
 }
@@ -177,7 +333,13 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
 - (void)injectProperty:(SEL)selector with:(id)injection
 {
     injection = TyphoonMakeInjectionFromObjectIfNeeded(injection);
-    [injection setPropertyName:NSStringFromSelector(selector)];
+    NSString *propertyName = NSStringFromSelector(selector);
+    [injection setPropertyName:propertyName];
+    
+    if ([_injectedProperties containsObject:injection]) {
+        LogInfo(@"*** Warning *** The definition (key: %@, namespace: %@) contains duplicate injections for property '%@'. Is this intentional?", self.key, self.space.key, propertyName);
+    }
+    
     [_injectedProperties addObject:injection];
 }
 
@@ -231,7 +393,7 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
     [self performAfterInjections:sel parameters:nil];
 }
 
-- (void)performAfterInjections:(SEL)sel parameters:(void (^)(TyphoonMethod *param))parameterBlock
+- (void)performAfterInjections:(SEL)sel parameters:(void (^)(TyphoonMethod *params))parameterBlock
 {
     _afterInjections = [[TyphoonMethod alloc] initWithSelector:sel];
     if (parameterBlock) {
@@ -240,6 +402,127 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
 #if DEBUG
     [_afterInjections checkParametersCount];
 #endif
+}
+
+- (void)performAfterAllInjections:(SEL)sel
+{
+    _afterAllInjections = sel;
+}
+
+//-------------------------------------------------------------------------------------------
+#pragma mark: - TyphoonDefinition+Infrastructure methods
+//-------------------------------------------------------------------------------------------
+
+- (BOOL)hasRuntimeArgumentInjections
+{
+    __block BOOL hasInjections = NO;
+    [self enumerateInjectionsOfKind:[TyphoonInjectionByRuntimeArgument class] options:TyphoonInjectionsEnumerationOptionAll
+                         usingBlock:^(id injection, id *injectionToReplace, BOOL *stop) {
+        hasInjections = YES;
+        *stop = YES;
+    }];
+    return hasInjections;
+}
+
+- (BOOL)isCandidateForInjectedClass:(Class)clazz includeSubclasses:(BOOL)includeSubclasses
+{
+    BOOL result = NO;
+    if (self.autoInjectionVisibility & TyphoonAutoInjectVisibilityByClass) {
+        BOOL isSameClass = self.type == clazz;
+        BOOL isSubclass = includeSubclasses && [self.type isSubclassOfClass:clazz];
+        result = isSameClass || isSubclass;
+    }
+    return result;
+}
+
+- (BOOL)isCandidateForInjectedProtocol:(Protocol *)aProtocol
+{
+    BOOL result = NO;
+    if (self.autoInjectionVisibility & TyphoonAutoInjectVisibilityByProtocol) {
+        result = [self.type conformsToProtocol:aProtocol];
+    }
+    return result;
+}
+
+- (void)addInjectedProperty:(id <TyphoonPropertyInjection>)property
+{
+    [_injectedProperties addObject:property];
+}
+
+- (void)addInjectedPropertyIfNotExists:(id <TyphoonPropertyInjection>)property
+{
+    for (id<TyphoonPropertyInjection> injection in self.injectedProperties) {
+        if ([[injection propertyName] isEqualToString:[property propertyName]]) {
+            return;
+        }
+    }
+    
+    [_injectedProperties addObject:property];
+}
+
+- (void)replacePropertyInjection:(id<TyphoonPropertyInjection>)injection with:(id<TyphoonPropertyInjection>)injectionToReplace
+{
+    if ([_injectedProperties containsObject:injection]) {
+        [injectionToReplace setPropertyName:[injection propertyName]];
+        [_injectedProperties removeObject:injection];
+        [_injectedProperties addObject:injectionToReplace];
+    } else if ([_parent.injectedProperties containsObject:injection]) {
+//        [self addInjectedProperty:injectionToReplace];
+        [_parent replacePropertyInjection:injection with:injectionToReplace];
+    }
+}
+
+- (void)enumerateInjectionsOfKind:(Class)injectionClass options:(TyphoonInjectionsEnumerationOption)options
+                       usingBlock:(TyphoonInjectionsEnumerationBlock)block
+{
+    if (options & TyphoonInjectionsEnumerationOptionMethods) {
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[_initializer injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+            [self->_initializer replaceInjection:injection with:injectionToReplace];
+        }];
+
+        for (TyphoonMethod *method in self.injectedMethods) {
+            [self enumerateInjectionsOfKind:injectionClass onCollection:[method injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+                [method replaceInjection:injection with:injectionToReplace];
+            }];
+        }
+        
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[_beforeInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+            [self->_beforeInjections replaceInjection:injection with:injectionToReplace];
+        }];
+        
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[_afterInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+            [self->_afterInjections replaceInjection:injection with:injectionToReplace];
+        }];
+    }
+
+    if (options & TyphoonInjectionsEnumerationOptionProperties) {
+        [self enumerateInjectionsOfKind:injectionClass onCollection:self.injectedProperties withBlock:block
+                           replaceBlock:^(id injection, id injectionToReplace) {
+            [self replacePropertyInjection:injection with:injectionToReplace];
+        }];
+    }
+}
+
+- (void)enumerateInjectionsOfKind:(Class)injectionClass onCollection:(id<NSFastEnumeration>)collection
+                        withBlock:(TyphoonInjectionsEnumerationBlock)block
+                     replaceBlock:(void(^)(id injection, id injectionToReplace))replaceBlock
+{
+    for (id<TyphoonInjection> injection in collection) {
+        if ([injection isKindOfClass:injectionClass]) {
+            id injectionToReplace = nil;
+            BOOL stop = NO;
+            
+            block(injection, &injectionToReplace, &stop);
+            
+            if (injectionToReplace) {
+                replaceBlock(injection, injectionToReplace);
+            }
+            
+            if (stop) {
+                break;
+            }
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------
@@ -263,83 +546,35 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
 }
 
 //-------------------------------------------------------------------------------------------
-#pragma mark - Overridden Methods
-//-------------------------------------------------------------------------------------------
-
-- (TyphoonMethod *)initializer
-{
-    if (!_initializer) {
-        TyphoonMethod *parentInitializer = _parent.initializer;
-        if (parentInitializer) {
-            return parentInitializer;
-        }
-        else {
-            [self setInitializer:[[TyphoonMethod alloc] initWithSelector:@selector(init)]];
-            self.initializerGenerated = YES;
-        }
-    }
-    return _initializer;
-}
-
-- (BOOL)isInitializerGenerated
-{
-    [self initializer]; //call getter to generate initializer if needed
-    return _initializerGenerated;
-}
-
-- (TyphoonScope)scope
-{
-    if (_parent && !_isScopeSetByUser) {
-        return _parent.scope;
-    }
-    return _scope;
-}
-
-- (void)setScope:(TyphoonScope)scope
-{
-    _scope = scope;
-    _isScopeSetByUser = YES;
-    [self validateScope];
-}
-
-- (void)setParent:(id)parent
-{
-    _parent = parent;
-    if (![_parent isKindOfClass:[TyphoonDefinition class]]) {
-        [NSException raise:NSInvalidArgumentException
-            format:@"Only TyphoonDefinition object can be set as parent. But in method '%@' object of class %@ set as parent",
-                   self.key, [parent class]];
-    }
-}
-
-
-//-------------------------------------------------------------------------------------------
 #pragma mark - Utility Methods
 //-------------------------------------------------------------------------------------------
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"%@: class='%@', key='%@', scope='%@'", NSStringFromClass([self class]),
-                                      NSStringFromClass(_type), _key, TyphoonScopeToString(_scope)];
-}
-
 - (id)copyWithZone:(NSZone *)zone
 {
-    TyphoonDefinition *copy = [[TyphoonDefinition alloc] initWithClass:_type key:[_key copy]];
+    TyphoonDefinition *copy = [[[self class] allocWithZone:zone] initWithClass:_type key:[_key copy]];
+    copy->_scope = _scope;
+    copy->_scopeSetByUser = _scopeSetByUser;
+    copy->_autoInjectionVisibility = _autoInjectionVisibility;
+    copy->_space = _space;
     copy->_processed = _processed;
+    copy->_currentRuntimeArguments = [_currentRuntimeArguments copy];
     copy->_initializer = [_initializer copy];
+    copy->_initializerGenerated = _initializerGenerated;
     copy->_beforeInjections = [_beforeInjections copy];
     copy->_injectedProperties = [_injectedProperties mutableCopy];
     copy->_injectedMethods = [_injectedMethods mutableCopy];
     copy->_afterInjections = [_afterInjections copy];
-    copy->_scope = _scope;
     copy->_parent = _parent;
-    copy->_isScopeSetByUser = _isScopeSetByUser;
-    copy->_autoInjectionVisibility = _autoInjectionVisibility;
     copy->_abstract = _abstract;
-    copy->_initializerGenerated = _initializerGenerated;
-    copy->_currentRuntimeArguments = [_currentRuntimeArguments copy];
+    copy->_assembly = _assembly;
+    copy->_assemblySelector = _assemblySelector;
     return copy;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@: class='%@', key='%@', scope='%@'", NSStringFromClass([self class]),
+            NSStringFromClass(_type), _key, TyphoonScopeToString(_scope)];
 }
 
 //-------------------------------------------------------------------------------------------
@@ -355,24 +590,37 @@ static NSString *TyphoonScopeToString(TyphoonScope scope)
     }
 }
 
-
-//-------------------------------------------------------------------------------------------
-#pragma mark - Private Methods
-//-------------------------------------------------------------------------------------------
+- (void)validateParent
+{
+    if (![_parent isKindOfClass:[TyphoonDefinition class]]) {
+        [NSException raise:NSInvalidArgumentException
+            format:@"Only TyphoonDefinition object can be set as parent. But in method '%@' object of class %@ set as parent",
+                   self.key, [_parent class]];
+    }
+}
 
 - (void)validateRequiredParametersAreSet
 {
-    if (_type == nil) {
-        [NSException raise:NSInvalidArgumentException format:@"Property 'clazz' is required."];
-    }
-    
-    BOOL hasAppropriateSuper = [_type isSubclassOfClass:[NSObject class]] || [_type isSubclassOfClass:[NSProxy class]];
+    BOOL hasAppropriateSuper = [self.type isSubclassOfClass:[NSObject class]] || [self.type isSubclassOfClass:[NSProxy class]];
     if (!hasAppropriateSuper) {
         [NSException raise:NSInvalidArgumentException format:@"Subclass of NSProxy or NSObject is required."];
     }
 }
 
++ (BOOL)isOldStyleStoryboardDefinitionWithFactory:(id)factory
+{
+#if TARGET_OS_IPHONE
+    if ([factory isKindOfClass:[TyphoonDefinition class]]) {
+        Class factoryClass = ((TyphoonDefinition *)factory).type;
+        return [factoryClass isSubclassOfClass:[UIStoryboard class]];
+    }
+    
+    if ([factory isKindOfClass:[UIStoryboard class]]) {
+        return YES;
+    }
+#endif
+    
+    return NO;
+}
+
 @end
-
-
-

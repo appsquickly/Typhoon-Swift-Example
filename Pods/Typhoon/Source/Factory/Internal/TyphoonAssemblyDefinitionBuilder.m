@@ -13,22 +13,25 @@
 #import "TyphoonAssemblyDefinitionBuilder.h"
 #import "TyphoonAssembly.h"
 #import "OCLogTemplate.h"
+#import "TyphoonDefinition+Internal.h"
 #import "TyphoonDefinition+Infrastructure.h"
+#import "TyphoonBlockDefinition.h"
 #import "TyphoonAssembly+TyphoonAssemblyFriend.h"
 #import "TyphoonAssemblySelectorAdviser.h"
-#import <objc/message.h>
 #import "TyphoonCircularDependencyTerminator.h"
 #import "TyphoonSelector.h"
 #import "TyphoonInjections.h"
 #import "TyphoonUtils.h"
 #import "TyphoonRuntimeArguments.h"
 #import "TyphoonReferenceDefinition.h"
+#import "TyphoonBlockDefinitionController.h"
+#import "NSInvocation+TCFCustomImplementation.h"
 
 #import <objc/runtime.h>
+#import <objc/message.h>
 
+static id objc_msgSend_InjectionArguments(id target, id implTarget, SEL selector, NSMethodSignature *signature);
 static id InjectionForArgumentType(const char *argumentType, NSUInteger index);
-static id objc_msgSend_InjectionArguments(id target, SEL selector, NSMethodSignature *signature);
-static void AssertArgumentType(id target, SEL selector, const char *argumentType, NSUInteger index);
 
 @implementation TyphoonAssemblyDefinitionBuilder
 {
@@ -60,10 +63,14 @@ static void AssertArgumentType(id target, SEL selector, const char *argumentType
 
 - (void)populateCache
 {
-    [[self.assembly definitionSelectors] enumerateObjectsUsingBlock:^(TyphoonSelector *wrappedSEL, BOOL *stop) {
-        SEL selector = [wrappedSEL selector];
-        NSString *key = [TyphoonAssemblySelectorAdviser keyForAdvisedSEL:selector];
-        [self buildDefinitionForKey:key];
+    // Use the configuration route for potential TyphoonBlockDefinitions.
+    
+    [[TyphoonBlockDefinitionController currentController] useConfigurationRouteWithinBlock:^{
+        [[self.assembly definitionSelectors] enumerateObjectsUsingBlock:^(TyphoonSelector *wrappedSEL, BOOL *stop) {
+            SEL selector = [wrappedSEL selector];
+            NSString *key = [TyphoonAssemblySelectorAdviser keyForSEL:selector];
+            [self buildDefinitionForKey:key];
+        }];
     }];
 }
 
@@ -86,6 +93,11 @@ static void AssertArgumentType(id target, SEL selector, const char *argumentType
     if ([cached isKindOfClass:[TyphoonDefinition class]]) {
         /* Set current runtime args to know passed arguments when build definition */
         ((TyphoonDefinition *) cached).currentRuntimeArguments = args;
+        
+        BOOL shouldApplyConcreteNamespace = [((TyphoonDefinition *) cached) space] == nil;
+        if (shouldApplyConcreteNamespace) {
+            [((TyphoonDefinition *) cached) applyConcreteNamespace:NSStringFromClass([self.assembly class])];
+        }
     }
 
     LogTrace(@"Did finish building definition for key: '%@'", key);
@@ -94,6 +106,7 @@ static void AssertArgumentType(id target, SEL selector, const char *argumentType
 }
 
 #pragma mark - Circular Dependencies
+
 - (NSMutableArray *)resolveStackForKey:(NSString *)key
 {
     NSMutableArray *resolveStack = [_resolveStackForSelector objectForKey:key];
@@ -144,6 +157,7 @@ static void AssertArgumentType(id target, SEL selector, const char *argumentType
 }
 
 #pragma mark - Building
+
 - (TyphoonDefinition *)populateCacheWithDefinitionForKey:(NSString *)key
 {
     id d = [self cachedDefinitionForKey:key];
@@ -163,49 +177,62 @@ static void AssertArgumentType(id target, SEL selector, const char *argumentType
 
 - (id)definitionForKey:(NSString *)key
 {
-    // call the user's assembly method to get it.
-    SEL sel = [TyphoonAssemblySelectorAdviser advisedSELForKey:key class:[_assembly assemblyClassForKey:key]];
+    // Call the user's assembly method to get it.
+    
+    SEL sel = [self assemblySelectorForKey:key];
 
     NSMethodSignature *signature = [self.assembly methodSignatureForSelector:sel];
 
     id cached =
-        objc_msgSend_InjectionArguments(self.assembly, sel, signature); // the advisedSEL will call through to the original, unwrapped implementation because prepareForUse has been called, and all our definition methods have been swizzled.
+        objc_msgSend_InjectionArguments(self.assembly.accessor, self.assembly, sel, signature); // the advisedSEL will call through to the original, unwrapped implementation because prepareForUse has been called, and all our definition methods have been swizzled.
     // This method will likely call through to other definition methods on the assembly, which will go through the advising machinery because of this swizzling.
     // Therefore, the definitions a definition depends on will be fully constructed before they are needed to construct that definition.
+    
     return cached;
 }
 
-static id objc_msgSend_InjectionArguments(id target, SEL selector, NSMethodSignature *signature)
+- (SEL)assemblySelectorForKey:(NSString *)key
+{
+    return [TyphoonAssemblySelectorAdviser SELForKey:key class:[self.assembly assemblyClassForKey:key]];
+}
+
+static id objc_msgSend_InjectionArguments(id target, id implTarget, SEL selector, NSMethodSignature *signature)
 {
     if (signature.numberOfArguments > 2) {
-        void *result;
+
+        void *unsafeResult;
+        
+        IMP method = [((NSObject *)implTarget) methodForSelector:selector];
+
+        NSUInteger primitiveArgumentIndex = NSNotFound;
+        
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
         [invocation setSelector:selector];
+        [invocation setTarget:target];
         [invocation retainArguments];
+
         /* Fill invocation arguments with TyphoonInjectionWithRuntimeArgumentAtIndex injections */
         for (NSUInteger i = 0; i < signature.numberOfArguments - 2; i++) {
             const char *argumentType = [signature getArgumentTypeAtIndex:i + 2];
-            AssertArgumentType(target, selector, argumentType, i + 2);
-            id injection = InjectionForArgumentType(argumentType, i);
-            [invocation setArgument:&injection atIndex:(NSInteger)(i + 2)];
+            if (!IsPrimitiveArgumentType(argumentType)) {
+                id injection = InjectionForArgumentType(argumentType, i);
+                [invocation setArgument:&injection atIndex:(NSInteger)(i + 2)];
+            } else {
+                [NSException raise:NSInvalidArgumentException format:@"The method '%@' in assembly '%@', contains a runtime argument of primitive type (BOOL, int, CGFloat, etc) at index %@. Runtime arguments for TyphoonDefinitions can only be objects. Use TyphoonBlockDefinition, or wrappers like NSNumber or NSValue (they will be unwrapped into primitive value during injection) ", [TyphoonAssemblySelectorAdviser keyForSEL:selector], [target class], @(primitiveArgumentIndex)];
+            }
         }
-        [invocation invokeWithTarget:target];
-        [invocation getReturnValue:&result];
-        return (__bridge id) result;
+        [invocation invokeWithCustomImplementation:method];
+        [invocation getReturnValue:&unsafeResult];
+        
+        id result = (__bridge id) unsafeResult;
+        
+     
+        
+        return result;
     }
     else {
-        return ((id (*)(id, SEL))objc_msgSend)(target, selector);
-    }
-}
-
-static void AssertArgumentType(id target, SEL selector, const char *argumentType, NSUInteger index)
-{
-    BOOL isObject = CStringEquals(argumentType, "@");
-    BOOL isBlock = CStringEquals(argumentType, "@?");
-    BOOL isMetaClass = CStringEquals(argumentType, "#");
-
-    if (!isObject && !isBlock && !isMetaClass) {
-        [NSException raise:NSInvalidArgumentException format:@"The method '%@' in assembly '%@', contains a runtime argument of primitive type (BOOL, int, CGFloat, etc) at index %d. Runtime arguments can only be objects. Use wrappers like NSNumber or NSValue (they will be unwrapped into primitive value during injection) ", [TyphoonAssemblySelectorAdviser keyForAdvisedSEL:selector], [target class], (int)index - 2];
+        id(*impl)(id, SEL) = (id(*)(id, SEL))[((NSObject *)implTarget) methodForSelector:selector];
+        return impl(target, selector);
     }
 }
 
@@ -213,12 +240,19 @@ static id InjectionForArgumentType(const char *argumentType, NSUInteger index)
 {
     /** We are checking here, if argument type is block, then we have to wrap our injection into 'real' block,
     *   otherwise, during assignment runtime will try to call Block_copy and it will crash if object is not 'real' block */
-
+    
     if (CStringEquals(argumentType, "@?")) {
         return TyphoonInjectionWithRuntimeArgumentAtIndexWrappedIntoBlock(index);
     } else {
         return TyphoonInjectionWithRuntimeArgumentAtIndex(index);
     }
+}
+
+BOOL IsPrimitiveArgumentType(const char *argumentType)
+{
+    return (!CStringEquals(argumentType, "@") &&   // object
+            !CStringEquals(argumentType, "@?") &&  // block
+            !CStringEquals(argumentType, "#"));    // metaClass
 }
 
 - (TyphoonDefinition *)populateCacheWithDefinition:(TyphoonDefinition *)definition forKey:(NSString *)key
@@ -240,6 +274,11 @@ static id InjectionForArgumentType(const char *argumentType, NSUInteger index)
     
     if (result.processed && ![definition.key isEqualToString:key]) {
         result = [TyphoonShortcutDefinition definitionWithKey:key referringTo:definition];
+    }
+    
+    if (!result.processed) {
+        result.assembly = _assembly;
+        result.assemblySelector = [self assemblySelectorForKey:key];
     }
 
     result.processed = YES;

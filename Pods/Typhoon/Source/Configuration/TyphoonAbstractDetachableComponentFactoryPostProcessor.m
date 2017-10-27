@@ -11,7 +11,6 @@
 
 #import "TyphoonAbstractDetachableComponentFactoryPostProcessor.h"
 #import "TyphoonComponentFactory.h"
-#import "TyphoonDefinition.h"
 #import "TyphoonDefinition+Infrastructure.h"
 
 @implementation TyphoonComponentFactory (DetachableComponentFactoryPostProcessor)
@@ -58,7 +57,9 @@
 
 - (void)cacheDefinition:(TyphoonDefinition *)definition
 {
-    _rollbackDefinitions[[definition key]] = [definition copy];
+    if ([definition key]) {
+        _rollbackDefinitions[[definition key]] = [definition copy];
+    }
 }
 
 

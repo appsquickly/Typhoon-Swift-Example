@@ -10,6 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #import "NSInvocation+TCFInstanceBuilder.h"
+#import "TyphoonIntrospectionUtils.h"
+#import "TyphoonUtils.h"
 
 #if __has_feature(objc_arc)
 #error You have to disable ARC for this file
@@ -51,16 +53,57 @@ static BOOL typhoon_IsSelectorReturnsRetained(SEL selector) {
 - (id)typhoon_resultOfInvokingOn:(id)instanceOrClass NS_RETURNS_RETAINED
 {
     id returnValue = nil;
-
-    BOOL isReturnsRetained = typhoon_IsSelectorReturnsRetained([self selector]);
+    
     [self invokeWithTarget:instanceOrClass];
-    [self getReturnValue:&returnValue];
-    if (!isReturnsRetained) {
+    /* getReturnValue method call must be called inside this file, because ARC is turned off here.
+     * The reason to turn off ARC, because it doesn't work properly with NSInvocation return values and unknown selector.
+     * ARC calls retain/release, which works bad on class clusters (initial value might be autoreleased or released 
+     * inside initializer, then over-released by ARC and that lead crash. It also doesnt work well with primitives, so we need to
+     * solve it all here, in NON-ARC file */
+    returnValue = [self typhoon_getReturnValue];
+    
+#ifndef __clang_analyzer__
+    if (!typhoon_IsSelectorReturnsRetained([self selector])) {
         [returnValue retain]; /* Retain to take ownership on autoreleased object */
     }
-
+#endif
+    
     return returnValue;
 }
+
+- (id)typhoon_getReturnValue NS_RETURNS_RETAINED
+{
+    const char *type = [self.methodSignature methodReturnType];
+    
+    if (CStringEquals(type, "@") || // object
+        CStringEquals(type, "@?") || // block
+        CStringEquals(type, "#")) // metaclass
+    {
+        void *pointer = NULL;
+        
+        [self getReturnValue:&pointer];
+        
+        id returnValue = (id)pointer;
+        
+        if (IsBlock(type)) {
+            returnValue = [returnValue copy]; // Converting NSStackBlock to NSMallocBlock
+        }
+        return returnValue;
+    } else {
+        NSUInteger returnValueSize;
+        NSGetSizeAndAlignment(type, &returnValueSize, NULL);
+        
+        void *buffer = malloc(returnValueSize);
+        
+        [self getReturnValue:buffer];
+        
+        id returnValue = [[NSValue alloc] initWithBytes:buffer objCType:type];
+        
+        free(buffer);
+        return returnValue;
+    }
+}
+
 
 - (id)typhoon_resultOfInvokingOnInstance:(id)instance
 {

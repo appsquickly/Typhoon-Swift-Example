@@ -1,9 +1,8 @@
 platform :ios, '8.0'
 
-target :PocketForecast, :exclusive => true do
+target 'PocketForecast' do
     
-    pod 'Typhoon', :head
-    
+    pod 'Typhoon'
 
     pod 'ICLoader'
     pod 'NGAParallaxMotion'
@@ -15,10 +14,8 @@ end
 
 # Test Dependencies
 
-target :PocketForecastTests do
+target 'PocketForecastTests' do
     pod 'Expecta', '~> 0.2.1'
     pod 'OCHamcrest'
     pod 'OCMockito'
 end
-
-inhibit_all_warnings!
