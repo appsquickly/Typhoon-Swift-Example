@@ -10,19 +10,33 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#import "TyphoonDefinition+Config.h"
+#import "TyphoonLinkerCategoryBugFix.h"
+
+TYPHOON_LINK_CATEGORY(TyphoonDefinition_Infrastructure)
+
 #import "TyphoonDefinition+Infrastructure.h"
 #import "TyphoonConfigPostProcessor.h"
 #import "TyphoonResource.h"
-#import "TyphoonLinkerCategoryBugFix.h"
+#import "TyphoonMethod.h"
+#import "TyphoonMethod+InstanceBuilder.h"
+#import "TyphoonReferenceDefinition.h"
+#import "TyphoonIntrospectionUtils.h"
+#import "TyphoonRuntimeArguments.h"
 
-TYPHOON_LINK_CATEGORY(TyphoonDefinition_Config)
+@implementation TyphoonDefinition (Infrastructure)
 
-@implementation TyphoonDefinition (Config)
+@dynamic initializer, initializerGenerated, currentRuntimeArguments, key;
 
+//-------------------------------------------------------------------------------------------
 #pragma mark - Class Methods
 
-+ (instancetype)withConfigName:(NSString *)fileName {
++ (instancetype)withClass:(Class)clazz key:(NSString *)key
+{
+    return [[TyphoonDefinition alloc] initWithClass:clazz key:key];
+}
+
++ (instancetype)configDefinitionWithName:(NSString *)fileName
+{
     return [self withClass:[TyphoonConfigPostProcessor class] configuration:^(TyphoonDefinition *definition) {
         [definition injectMethod:@selector(useResourceWithName:) parameters:^(TyphoonMethod *method) {
             [method injectParameterWith:fileName];
@@ -31,7 +45,7 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Config)
     }];
 }
 
-+ (instancetype)withConfigName:(NSString *)fileName bundle:(NSBundle *)fileBundle {
++ (instancetype)configDefinitionWithName:(NSString *)fileName bundle:(NSBundle *)fileBundle {
     return [self withClass:[TyphoonConfigPostProcessor class] configuration:^(TyphoonDefinition *definition) {
         [definition injectMethod:@selector(useResourceWithName:bundle:) parameters:^(TyphoonMethod *method) {
             [method injectParameterWith:fileName];
@@ -41,7 +55,8 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Config)
     }];
 }
 
-+ (instancetype)withConfigPath:(NSString *)filePath {
++ (instancetype)configDefinitionWithPath:(NSString *)filePath
+{
     return [self withClass:[TyphoonConfigPostProcessor class] configuration:^(TyphoonDefinition *definition) {
         [definition injectMethod:@selector(useResourceAtPath:) parameters:^(TyphoonMethod *method) {
             [method injectParameterWith:filePath];
@@ -50,26 +65,36 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_Config)
     }];
 }
 
-#pragma mark - Deprecated methods
-
-+ (instancetype)configDefinitionWithName:(NSString *)fileName
+- (BOOL)isCandidateForInjectedClass:(Class)clazz includeSubclasses:(BOOL)includeSubclasses
 {
-    TyphoonDefinition *configDefinition = [self withConfigName:fileName];
-    [configDefinition applyGlobalNamespace];
-    return configDefinition;
+    BOOL result = NO;
+    if (self.autoInjectionVisibility & TyphoonAutoInjectVisibilityByClass) {
+        BOOL isSameClass = self.type == clazz;
+        BOOL isSubclass = includeSubclasses && [self.type isSubclassOfClass:clazz];
+        result = isSameClass || isSubclass;
+    }
+    return result;
 }
 
-+ (instancetype)configDefinitionWithName:(NSString *)fileName bundle:(NSBundle *)fileBundle {
-    TyphoonDefinition *configDefinition = [self withConfigName:fileName bundle:fileBundle];
-    [configDefinition applyGlobalNamespace];
-    return configDefinition;
+- (BOOL)isCandidateForInjectedProtocol:(Protocol *)aProtocol
+{
+    BOOL result = NO;
+    if (self.autoInjectionVisibility & TyphoonAutoInjectVisibilityByProtocol) {
+        result = [self.type conformsToProtocol:aProtocol];
+    }
+    return result;
+
 }
 
-+ (instancetype)configDefinitionWithPath:(NSString *)filePath
+
+- (void)setProcessed:(BOOL)processed
 {
-    TyphoonDefinition *configDefinition = [self withConfigPath:filePath];
-    [configDefinition applyGlobalNamespace];
-    return configDefinition;
+    _processed = processed;
+}
+
+- (BOOL)processed
+{
+    return _processed;
 }
 
 @end

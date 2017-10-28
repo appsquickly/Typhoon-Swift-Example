@@ -12,7 +12,7 @@
 
 #import "TyphoonLoadedView.h"
 #import "TyphoonViewHelpers.h"
-#import "UIView+TyphoonOutletTransfer.h"
+
 #import <objc/runtime.h>
 
 @implementation TyphoonLoadedView
@@ -24,7 +24,7 @@
 
 - (id)awakeAfterUsingCoder:(NSCoder *)aDecoder
 {
-    UIView *replacement = [TyphoonViewHelpers viewFromDefinition:[self typhoonKey] originalView:self];
+    id replacement = [TyphoonViewHelpers viewFromDefinition:[self typhoonKey] originalView:self];
     if (replacement != self) {
         /**
          * Coupling view loaded from Xib with replacement loaded from Typhoon
@@ -34,7 +34,6 @@
          * */
         objc_setAssociatedObject(replacement, "TyphoonXibPrototype", self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    replacement.typhoonNeedTransferOutlets = YES;
     return replacement;
 }
 

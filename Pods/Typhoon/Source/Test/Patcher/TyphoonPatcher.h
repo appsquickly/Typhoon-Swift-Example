@@ -16,7 +16,7 @@
 
 @class TyphoonDefinition;
 
-typedef id (^TyphoonPatchObjectCreationBlock)(void);
+typedef id (^TyphoonPatchObjectCreationBlock)();
 
 /**
 * @ingroup Test

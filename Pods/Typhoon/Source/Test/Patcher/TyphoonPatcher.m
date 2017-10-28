@@ -9,10 +9,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import "TyphoonPatcher.h"
 #import "TyphoonDefinition.h"
-#import "TyphoonDefinition+Infrastructure.h"
+#import "TyphoonPatcher.h"
 #import "TyphoonComponentFactory.h"
+#import "TyphoonDefinition+Infrastructure.h"
+#import "TyphoonRuntimeArguments.h"
 
 @interface TyphoonPatcherDefinition : TyphoonDefinition
 
@@ -31,11 +32,10 @@
         self.patchObjectBlock = patchObjectBlock;
         self.scope = definition.scope;
         self.autoInjectionVisibility = definition.autoInjectionVisibility;
+
     }
     return self;
 }
-
-#pragma mark - Overriden methods
 
 - (id)targetForInitializerWithFactory:(TyphoonComponentFactory *)factory args:(TyphoonRuntimeArguments *)args
 {
@@ -45,15 +45,6 @@
 - (id)initializer
 {
     return nil;
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    TyphoonPatcherDefinition *copy = [super copyWithZone:zone];
-    copy->_patchObjectBlock = _patchObjectBlock;
-    return copy;
 }
 
 @end

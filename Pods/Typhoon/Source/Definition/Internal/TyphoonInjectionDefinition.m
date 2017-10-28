@@ -9,15 +9,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#import "TyphoonInjectionDefinition.h"
 #import "TyphoonDefinition+Infrastructure.h"
+#import "TyphoonInjectionDefinition.h"
 
 
 @implementation TyphoonInjectionDefinition
 {
     id<TyphoonInjection> _injection;
 }
-
 - (instancetype)initWithInjection:(id<TyphoonInjection>)injection
 {
     self = [super initWithClass:[NSObject class] key:nil];
@@ -26,8 +25,6 @@
     }
     return self;
 }
-
-#pragma mark - Overriden methods
 
 - (TyphoonMethod *)initializer
 {
@@ -56,15 +53,6 @@
 - (BOOL)isCandidateForInjectedProtocol:(Protocol *)aProtocol
 {
     return NO;
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    TyphoonInjectionDefinition *copy = [super copyWithZone:zone];
-    copy->_injection = [_injection copyWithZone:zone];
-    return copy;
 }
 
 @end

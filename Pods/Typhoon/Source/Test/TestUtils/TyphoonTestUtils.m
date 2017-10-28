@@ -15,19 +15,19 @@
 
 @implementation TyphoonTestUtils
 
-+ (void)waitForCondition:(TyphoonAsynchConditionBlock)condition
++ (void)waitForCondition:(BOOL (^)())condition
 {
     [self waitForCondition:condition andPerformTests:^{
         //No assertions - wait for condition only.
     }];
 }
 
-+ (void)waitForCondition:(TyphoonAsynchConditionBlock)condition andPerformTests:(TyphoonTestAssertionsBlock)assertions
++ (void)waitForCondition:(BOOL (^)())condition andPerformTests:(void (^)())assertions
 {
     [self wait:7 secondsForCondition:condition andPerformTests:assertions];
 }
 
-+ (void)wait:(NSTimeInterval)seconds secondsForCondition:(TyphoonAsynchConditionBlock)condition andPerformTests:(TyphoonTestAssertionsBlock)assertions
++ (void)wait:(NSTimeInterval)seconds secondsForCondition:(BOOL (^)())condition andPerformTests:(void (^)())assertions
 {
     __block BOOL conditionMet = NO;
     for (float i = 0; i < seconds * 4; i = i + 0.1f) {

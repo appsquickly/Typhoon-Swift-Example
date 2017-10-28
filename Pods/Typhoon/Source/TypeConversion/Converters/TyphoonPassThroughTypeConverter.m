@@ -42,7 +42,7 @@
 
 - (id)convert:(NSString *)stringValue
 {
-    stringValue = [TyphoonTypeConversionUtils textWithoutTypeFromTextValue:stringValue];
+    stringValue = [TyphoonTypeConverterRegistry textWithoutTypeFromTextValue:stringValue];
     
     if (_isMutable) {
         return [NSMutableString stringWithString:stringValue];

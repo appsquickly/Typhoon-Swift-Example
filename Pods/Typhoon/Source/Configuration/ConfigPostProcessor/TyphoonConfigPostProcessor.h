@@ -14,7 +14,6 @@
 #import "TyphoonDefinitionPostProcessor.h"
 
 @protocol TyphoonResource;
-@class TyphoonDefinitionNamespace;
 
 /**
 * @ingroup Configuration
@@ -39,6 +38,7 @@
 */
 + (instancetype)forResourceAtPath:(NSString *)path;
 
+
 /**
 *  You can manage TyphoonConfigPostProcessor registry by mapping configuration classes for file extensions
 *  Configuration class instance must conforms TyphoonConfiguration protocol
@@ -48,8 +48,6 @@
 /** list of all supported path extensions (configuration types) */
 + (NSArray *)availableExtensions;
 
-/** Registers a namespace for this config post processor */
-- (void)registerNamespace:(TyphoonDefinitionNamespace *)space;
 
 /** Append resource found in main bundle by name */
 - (void)useResourceWithName:(NSString *)name;

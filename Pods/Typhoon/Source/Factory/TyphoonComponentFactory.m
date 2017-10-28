@@ -25,7 +25,6 @@
 #import "TyphoonWeakComponentsPool.h"
 #import "TyphoonFactoryAutoInjectionPostProcessor.h"
 #import "TyphoonStackElement.h"
-#import "TyphoonTypeConverterRegistry.h"
 
 @interface TyphoonDefinition (TyphoonComponentFactory)
 
@@ -37,7 +36,7 @@
 
 static TyphoonComponentFactory *defaultFactory;
 
-static TyphoonComponentFactory *uiResolvingFactory = nil;
+static TyphoonComponentFactory *xibResolvingFactory = nil;
 
 //-------------------------------------------------------------------------------------------
 #pragma mark - Class Methods
@@ -48,35 +47,19 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     return defaultFactory;
 }
 
-+ (instancetype)newFactoryForResolvingUI
++ (void)setFactoryForResolvingFromXibs:(TyphoonComponentFactory *)factory
 {
-    return [[self alloc] initFactoryForResolvingUI];
-}
-
-+ (void)setFactoryForResolvingUI:(TyphoonComponentFactory *)factory
-{
-    uiResolvingFactory = factory;
-}
-
-+ (TyphoonComponentFactory *)factoryForResolvingUI
-{
-    return uiResolvingFactory;
+    xibResolvingFactory = factory;
 }
 
 + (TyphoonComponentFactory *)factoryForResolvingFromXibs
 {
-    return uiResolvingFactory;
+    return xibResolvingFactory;
 }
 
 //-------------------------------------------------------------------------------------------
 #pragma mark - Initialization & Destruction
 //-------------------------------------------------------------------------------------------
-
-- (id)initFactoryForResolvingUI
-{
-    uiResolvingFactory = self;
-    return [self init];
-}
 
 - (id)init
 {
@@ -87,12 +70,11 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
         _weakSingletons = [TyphoonWeakComponentsPool new];
         _objectGraphSharedInstances = (id<TyphoonComponentsPool>)[[NSMutableDictionary alloc] init];
         _stack = [TyphoonCallStack stack];
-        _typeConverterRegistry = [[TyphoonTypeConverterRegistry alloc] init];
         _definitionPostProcessors = [[NSMutableArray alloc] init];
         _instancePostProcessors = [[NSMutableArray alloc] init];
-        [self attachDefinitionPostProcessor:[TyphoonParentReferenceHydratingPostProcessor new]];
+        [self attachPostProcessor:[TyphoonParentReferenceHydratingPostProcessor new]];
         [self attachAutoInjectionPostProcessorIfNeeded];
-        [self attachDefinitionPostProcessor:[TyphoonFactoryPropertyInjectionPostProcessor new]];
+        [self attachPostProcessor:[TyphoonFactoryPropertyInjectionPostProcessor new]];
     }
     return self;
 }
@@ -103,7 +85,7 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
 
     NSNumber *value = bundleInfoDictionary[@"TyphoonAutoInjectionEnabled"];
     if (!value || [value boolValue]) {
-        [self attachDefinitionPostProcessor:[TyphoonFactoryAutoInjectionPostProcessor new]];
+        [self attachPostProcessor:[TyphoonFactoryAutoInjectionPostProcessor new]];
     }
 }
 
@@ -223,10 +205,6 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     }
 }
 
-- (TyphoonTypeConverterRegistry *)typeConverterRegistry {
-    return _typeConverterRegistry;
-}
-
 - (NSArray *)registry
 {
     [self loadIfNeeded];
@@ -253,8 +231,10 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     }
 }
 
-- (void)attachDefinitionPostProcessor:(id<TyphoonDefinitionPostProcessor>)postProcessor {
-    LogTrace(@"Attaching definition post processor: %@", postProcessor);
+
+- (void)attachPostProcessor:(id<TyphoonDefinitionPostProcessor>)postProcessor
+{
+    LogTrace(@"Attaching post processor: %@", postProcessor);
     [_definitionPostProcessors addObject:postProcessor];
     if ([self isLoaded]) {
         LogDebug(@"Definitions registered, refreshing all singletons.");
@@ -262,15 +242,6 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     }
 }
 
-- (void)attachInstancePostProcessor:(id<TyphoonInstancePostProcessor>)postProcessor {
-    LogTrace(@"Attaching instance post processor: %@", postProcessor);
-    [_instancePostProcessors addObject:postProcessor];
-}
-
-- (void)attachTypeConverter:(id<TyphoonTypeConverter>)typeConverter {
-    LogTrace(@"Attaching type conveter: %@", typeConverter);
-    [_typeConverterRegistry registerTypeConverter:typeConverter];
-}
 
 - (void)inject:(id)instance
 {
@@ -476,12 +447,10 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     [_registry addObject:definition];
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (void)addInstancePostProcessor:(id<TyphoonInstancePostProcessor>)postProcessor
 {
-    [self attachInstancePostProcessor:postProcessor];
+    [_instancePostProcessors addObject:postProcessor];
 }
-#pragma clang diagnostic pop
+
 
 @end

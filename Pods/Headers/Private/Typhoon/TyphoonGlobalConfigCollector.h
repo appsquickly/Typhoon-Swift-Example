@@ -1,1 +1,0 @@
-../../../Typhoon/Source/Configuration/GlobalConfigResolver/TyphoonGlobalConfigCollector.h

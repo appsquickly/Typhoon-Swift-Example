@@ -25,6 +25,6 @@
 
 - (void)addDefinitionToRegistry:(TyphoonDefinition *)definition;
 
-- (void)addInstancePostProcessor:(id <TyphoonInstancePostProcessor>)postProcessor DEPRECATED_MSG_ATTRIBUTE("use attachInstancePostProcessor instead");
+- (void)addInstancePostProcessor:(id <TyphoonInstancePostProcessor>)postProcessor;
 
 @end

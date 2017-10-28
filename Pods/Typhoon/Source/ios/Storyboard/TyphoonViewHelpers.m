@@ -11,7 +11,6 @@
 
 #import "TyphoonViewHelpers.h"
 #import "TyphoonStoryboard.h"
-#import "NSLayoutConstraint+TyphoonOutletTransfer.h"
 #import "OCLogTemplate.h"
 
 @implementation TyphoonViewHelpers
@@ -21,9 +20,9 @@
     if ([[original subviews] count] > 0) {
         LogInfo(@"Warning: placeholder view contains (%d) subviews. They will be replaced by typhoon definition '%@'", (int)[[original subviews] count], definitionKey);
     }
-    TyphoonComponentFactory *currentFactory = [TyphoonComponentFactory factoryForResolvingUI];
+    TyphoonComponentFactory *currentFactory = [TyphoonComponentFactory factoryForResolvingFromXibs];
     if (!currentFactory) {
-        [NSException raise:NSInternalInconsistencyException format:@"Can't find Typhoon factory to resolve definition from xib. Check [TyphoonComponentFactory setFactoryForResolvingUI:] method."];
+        [NSException raise:NSInternalInconsistencyException format:@"Can't find Typhoon factory to resolve definition from xib. Check [TyphoonComponentFactory setFactoryForResolvingFromXibs:] method."];
     }
     id result = [currentFactory componentForKey:definitionKey];
     if (![result isKindOfClass:[UIView class]]) {
@@ -43,21 +42,8 @@
         BOOL replaceSecondItem = [constraint secondItem] == src;
         id firstItem = replaceFirstItem ? dst : constraint.firstItem;
         id secondItem = replaceSecondItem ? dst : constraint.secondItem;
-        NSLayoutConstraint *newConstraint = [NSLayoutConstraint constraintWithItem:firstItem
-                                                                         attribute:constraint.firstAttribute
-                                                                         relatedBy:constraint.relation
-                                                                            toItem:secondItem
-                                                                         attribute:constraint.secondAttribute
-                                                                        multiplier:constraint.multiplier
-                                                                          constant:constraint.constant];
-        newConstraint.priority = constraint.priority;
-        
-        NSString *typhoonTransferIdentifier = [[NSUUID UUID] UUIDString];
-        constraint.typhoonTransferIdentifier = typhoonTransferIdentifier;
-        newConstraint.typhoonTransferIdentifier = typhoonTransferIdentifier;
-        newConstraint.typhoonTransferConstraint = constraint;
-
-        [dst addConstraint:newConstraint];
+        NSLayoutConstraint *copy = [NSLayoutConstraint constraintWithItem:firstItem attribute:constraint.firstAttribute relatedBy:constraint.relation toItem:secondItem attribute:constraint.secondAttribute multiplier:constraint.multiplier constant:constraint.constant];
+        [dst addConstraint:copy];
     }
     
     dst.frame = src.frame;

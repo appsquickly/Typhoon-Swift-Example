@@ -23,7 +23,7 @@
 
 - (id)convert:(NSString *)stringValue
 {
-    stringValue = [TyphoonTypeConversionUtils textWithoutTypeFromTextValue:stringValue];
+    stringValue = [TyphoonTypeConverterRegistry textWithoutTypeFromTextValue:stringValue];
     __autoreleasing UIImage *image = [UIImage imageNamed:stringValue];
     return image;
 }

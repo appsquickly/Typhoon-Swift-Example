@@ -42,33 +42,27 @@
 - (void)typhoon_enumerateObjectsWithManualIteration:(TyphoonManualIterationBlock)block completion:(dispatch_block_t)completion
 {
     TyphoonNextSignal *signal = [[TyphoonNextSignal alloc] init];
-    
+
     NSEnumerator *objectsEnumerator = [self objectEnumerator];
     
-    __block __strong id strongSelf = self;
+    __weak __typeof (self) weakSelf = self;
     __weak __typeof (signal) weakSignal = signal;
 
     [signal setNextBlock:^{
-        BOOL enumeratorExhausted =
-            [strongSelf typhoon_doStepWithEnumerator:objectsEnumerator signal:weakSignal block:block completion:completion];
-        if (enumeratorExhausted) {
-            strongSelf = nil;
-        }
-        
+        [weakSelf typhoon_doStepWithEnumerator:objectsEnumerator signal:weakSignal block:block completion:completion];
     }];
+
 
     [self typhoon_doStepWithEnumerator:objectsEnumerator signal:signal block:block completion:completion];
 }
 
-- (BOOL)typhoon_doStepWithEnumerator:(NSEnumerator *)enumerator signal:(id<TyphoonIterator>)iterator block:(TyphoonManualIterationBlock)block completion:(dispatch_block_t)completion
+- (void)typhoon_doStepWithEnumerator:(NSEnumerator *)enumerator signal:(id<TyphoonIterator>)iterator block:(TyphoonManualIterationBlock)block completion:(dispatch_block_t)completion
 {
     id object = [enumerator nextObject];
     if (object) {
         block(object, iterator);
-        return NO;
     } else {
         completion();
-        return YES;
     }
 }
 

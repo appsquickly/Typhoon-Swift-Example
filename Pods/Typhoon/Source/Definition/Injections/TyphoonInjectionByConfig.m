@@ -27,10 +27,6 @@
     return self;
 }
 
-- (void)setConfiguredInjection:(id<TyphoonInjection>)configuredInjection {
-    _configuredInjection = configuredInjection;
-}
-
 - (id)copyWithZone:(NSZone *)zone
 {
     TyphoonInjectionByConfig *copied = [[TyphoonInjectionByConfig alloc] initWithConfigKey:self.configKey];

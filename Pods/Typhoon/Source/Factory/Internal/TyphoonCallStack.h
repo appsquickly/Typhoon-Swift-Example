@@ -28,6 +28,5 @@
 
 - (BOOL)isEmpty;
 
-- (void)notifyOnceWhenStackEmptyUsingBlock:(void(^)())onEmpty;
 
 @end

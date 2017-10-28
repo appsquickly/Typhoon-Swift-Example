@@ -12,8 +12,6 @@
 
 #import "TyphoonUIColorTypeConverter.h"
 
-#import "TyphoonColorConversionUtils.h"
-
 #import <UIKit/UIKit.h>
 
 
@@ -24,25 +22,66 @@
     return @"UIColor";
 }
 
-- (id)convert:(NSString *)stringValue
+- (UIColor *)colorFromRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue alpha:(CGFloat)alpha
 {
-    stringValue = [TyphoonTypeConversionUtils textWithoutTypeFromTextValue:stringValue];
-    
-    struct RGBA color;
-    
-    if ([stringValue hasPrefix:@"#"] || [stringValue hasPrefix:@"0x"]) {
-        color = [TyphoonColorConversionUtils colorFromHexString:stringValue];
-    }
-    else {
-        color = [TyphoonColorConversionUtils colorFromCssStyleString:stringValue];
-    }
-    
-    return [self colorFromRGBA:color];
+    return [UIColor colorWithRed:(CGFloat)(red / 255.0) green:(CGFloat)(green / 255.0) blue:(CGFloat)(blue / 255.0)
+        alpha:alpha];
 }
 
-- (UIColor *)colorFromRGBA:(struct RGBA)rgba
+- (UIColor *)colorFromHexString:(NSString *)hexString
 {
-    return [UIColor colorWithRed:rgba.red green:rgba.green blue:rgba.blue alpha:rgba.alpha];
+    hexString =
+        [[hexString stringByReplacingOccurrencesOfString:@"#" withString:@""] stringByReplacingOccurrencesOfString:@"0x" withString:@""];
+
+    unsigned int red, green, blue, alpha;
+    if ([hexString length] == 6) {
+        sscanf([hexString UTF8String], "%02X%02X%02X", &red, &green, &blue);
+        alpha = 255;
+    }
+    else if ([hexString length] == 8) {
+        sscanf([hexString UTF8String], "%02X%02X%02X%02X", &alpha, &red, &green, &blue);
+    }
+    else {
+        [NSException raise:NSInvalidArgumentException format:@"%@ requires a six or eight digit hex string.",
+                                                             NSStringFromClass([self class])];
+    }
+    return [self colorFromRed:red green:green blue:blue alpha:(CGFloat)(alpha / 255.0)];
+}
+
+- (UIColor *)colorFromCssStyleString:(NSString *)cssString
+{
+    NSArray *colorComponents = [cssString componentsSeparatedByString:@","];
+
+    unsigned int red, green, blue;
+    float alpha;
+    if ([colorComponents count] == 3) {
+        sscanf([cssString UTF8String], "%d,%d,%d", &red, &green, &blue);
+        alpha = 1.0;
+    }
+    else if ([colorComponents count] == 4) {
+        sscanf([cssString UTF8String], "%d,%d,%d,%f", &red, &green, &blue, &alpha);
+    }
+    else {
+        [NSException raise:NSInvalidArgumentException format:@"%@ requires css style format UIColor(r,g,b) or UIColor(r,g,b,a).",
+                                                             NSStringFromClass([self class])];
+    }
+    return [self colorFromRed:red green:green blue:blue alpha:alpha];
+}
+
+- (id)convert:(NSString *)stringValue
+{
+    stringValue = [TyphoonTypeConverterRegistry textWithoutTypeFromTextValue:stringValue];
+
+    UIColor *color = nil;
+
+    if ([stringValue hasPrefix:@"#"] || [stringValue hasPrefix:@"0x"]) {
+        color = [self colorFromHexString:stringValue];
+    }
+    else {
+        color = [self colorFromCssStyleString:stringValue];
+    }
+    
+    return color;
 }
 
 @end

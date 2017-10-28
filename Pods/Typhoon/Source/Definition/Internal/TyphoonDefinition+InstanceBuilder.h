@@ -10,6 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
+#import <Foundation/Foundation.h>
 #import "TyphoonDefinition.h"
 
 @protocol TyphoonPropertyInjection;
@@ -17,14 +18,32 @@
 @class TyphoonComponentFactory;
 @class TyphoonRuntimeArguments;
 
+typedef void(^TyphoonInjectionsEnumerationBlock)(id injection, id*injectionToReplace, BOOL*stop);
+
+typedef NS_OPTIONS(NSInteger, TyphoonInjectionsEnumerationOption) {
+    TyphoonInjectionsEnumerationOptionProperties = 1 << 0,
+    TyphoonInjectionsEnumerationOptionMethods = 1 << 2,
+    TyphoonInjectionsEnumerationOptionAll = TyphoonInjectionsEnumerationOptionProperties | TyphoonInjectionsEnumerationOptionMethods,
+};
 
 @interface TyphoonDefinition (InstanceBuilder)
 
-- (id)initializeInstanceWithArgs:(TyphoonRuntimeArguments *)args factory:(TyphoonComponentFactory *)factory;
+- (TyphoonMethod *)beforeInjections;
 
-- (void)doInjectionEventsOn:(id)instance withArgs:(TyphoonRuntimeArguments *)args factory:(TyphoonComponentFactory *)factory;
+- (NSSet *)injectedProperties;
 
-- (void)doAfterAllInjectionsOn:(id)instance;
+- (NSOrderedSet *)injectedMethods;
+
+- (TyphoonMethod *)afterInjections;
+
+- (void)enumerateInjectionsOfKind:(Class)injectionClass options:(TyphoonInjectionsEnumerationOption)options
+                       usingBlock:(TyphoonInjectionsEnumerationBlock)block;
+
+- (BOOL)hasRuntimeArgumentInjections;
+
+- (void)addInjectedProperty:(id <TyphoonPropertyInjection>)property;
+
+- (void)addInjectedPropertyIfNotExists:(id <TyphoonPropertyInjection>)property;
 
 - (id)targetForInitializerWithFactory:(TyphoonComponentFactory *)factory args:(TyphoonRuntimeArguments *)args;
 

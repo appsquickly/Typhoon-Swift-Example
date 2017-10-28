@@ -20,8 +20,6 @@
 
 - (NSUInteger)indexOfArgumentWithKind:(Class)clazz;
 
-- (NSUInteger)count;
-
 - (void)enumerateArgumentsUsingBlock:(void(^)(id argument, NSUInteger index, BOOL *stop))block;
 
 /** RuntimeArguments - arguments passed by user at runtime

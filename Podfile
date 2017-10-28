@@ -2,7 +2,7 @@ platform :ios, '8.0'
 
 target 'PocketForecast' do
     
-    pod 'Typhoon'
+    pod 'Typhoon', '3.3.3'
 
     pod 'ICLoader'
     pod 'NGAParallaxMotion'

@@ -21,100 +21,177 @@ TYPHOON_LINK_CATEGORY(TyphoonDefinition_InstanceBuilder)
 #import "TyphoonInjectionByRuntimeArgument.h"
 #import "TyphoonComponentFactory.h"
 #import "TyphoonRuntimeArguments.h"
-#import "TyphoonIntrospectionUtils.h"
-#import "NSObject+TyphoonIntrospectionUtils.h"
-#import "NSObject+PropertyInjection.h"
-#import "NSInvocation+TCFInstanceBuilder.h"
 
 @implementation TyphoonDefinition (InstanceBuilder)
 
-#pragma mark - Instance Builder
+#pragma mark - Base methods
 
-- (id)initializeInstanceWithArgs:(TyphoonRuntimeArguments *)args factory:(TyphoonComponentFactory *)factory
+- (void)enumerateInjectionsOfKind:(Class)injectionClass options:(TyphoonInjectionsEnumerationOption)options
+                       usingBlock:(TyphoonInjectionsEnumerationBlock)block
 {
-    __block id instance = [self targetForInitializerWithFactory:factory args:args];
-    if (self.initializer && instance) {
-        BOOL isClass = IsClass(instance);
+    if (options & TyphoonInjectionsEnumerationOptionMethods) {
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[self.initializer injectedParameters] withBlock:block
+                           replaceBlock:^(id injection, id injectionToReplace) {
+            [self.initializer replaceInjection:injection with:injectionToReplace];
 
-        TyphoonInjectionContext *context = [[TyphoonInjectionContext alloc] initWithFactory:factory args:args
-            raiseExceptionIfCircular:YES];
-        context.classUnderConstruction = isClass ? (Class)instance : [instance class];
-
-        [self.initializer createInvocationWithContext:context completion:^(NSInvocation *invocation) {
-            if (isClass && ![self.initializer isClassMethodOnClass:context.classUnderConstruction]) {
-                instance = [invocation typhoon_resultOfInvokingOnAllocationForClass:context.classUnderConstruction];
-            } else {
-                instance = [invocation typhoon_resultOfInvokingOnInstance:instance];
-            }
         }];
 
+        for (TyphoonMethod *method in [self injectedMethods]) {
+            [self enumerateInjectionsOfKind:injectionClass onCollection:[method injectedParameters] withBlock:block
+                               replaceBlock:^(id injection, id injectionToReplace) {
+                [method replaceInjection:injection with:injectionToReplace];
+            }];
+        }
+        
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[_afterInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+            [self->_afterInjections replaceInjection:injection with:injectionToReplace];
+        }];
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[_beforeInjections injectedParameters] withBlock:block replaceBlock:^(id injection, id injectionToReplace) {
+            [self->_beforeInjections replaceInjection:injection with:injectionToReplace];
+        }];
     }
-    return instance;
+
+    if (options & TyphoonInjectionsEnumerationOptionProperties) {
+        [self enumerateInjectionsOfKind:injectionClass onCollection:[self injectedProperties] withBlock:block
+                           replaceBlock:^(id injection, id injectionToReplace) {
+            [self replacePropertyInjection:injection with:injectionToReplace];
+        }];
+    }
 }
 
-- (void)doInjectionEventsOn:(id)instance withArgs:(TyphoonRuntimeArguments *)args factory:(TyphoonComponentFactory *)factory
+- (void)enumerateInjectionsOfKind:(Class)injectionClass onCollection:(id<NSFastEnumeration>)collection withBlock:(TyphoonInjectionsEnumerationBlock)block
+                     replaceBlock:(void(^)(id injection, id injectionToReplace))replaceBlock
 {
-    if (self.beforeInjections) {
-        [self doMethodInjection:self.beforeInjections onInstance:instance args:args factory:factory];
-    }
-    
-    for (id<TyphoonPropertyInjection> property in self.injectedProperties) {
-        [self doPropertyInjectionOn:instance property:property args:args factory:factory];
-    }
-    
-    for (TyphoonMethod *method in self.injectedMethods) {
-        [self doMethodInjection:method onInstance:instance args:args factory:factory];
-    }
-
-    if (self.afterInjections) {
-        [self doMethodInjection:self.afterInjections onInstance:instance args:args factory:factory];
+    for (id<TyphoonInjection>injection in collection) {
+        if ([injection isKindOfClass:injectionClass]) {
+            id injectionToReplace = nil;
+            BOOL stop = NO;
+            block(injection, &injectionToReplace, &stop);
+            if (injectionToReplace) {
+                replaceBlock(injection, injectionToReplace);
+            }
+            if (stop) {
+                break;
+            }
+        }
     }
 }
 
-- (void)doAfterAllInjectionsOn:(id)instance
+- (TyphoonMethod *)beforeInjections
 {
-    if (self.afterAllInjections && [instance respondsToSelector:self.afterAllInjections]) {
-        void(*afterInjectionsMethod)(id, SEL) = (void ( *)(id, SEL)) [instance methodForSelector:self.afterAllInjections];
-        afterInjectionsMethod(instance, self.afterAllInjections);
+    return _beforeInjections;
+}
+
+- (TyphoonMethod *)afterInjections
+{
+    return _afterInjections;
+}
+
+- (NSSet *)injectedProperties
+{
+    if (!self.parent) {
+        return [_injectedProperties mutableCopy];
+    }
+
+    NSMutableSet *properties = (NSMutableSet *)[self.parent injectedProperties];
+
+    NSMutableSet *overriddenProperties = [NSMutableSet set];
+
+    for (id<TyphoonPropertyInjection> parentProperty in properties) {
+        for (id <TyphoonPropertyInjection> childProperty in _injectedProperties) {
+            if ([[childProperty propertyName] isEqualToString:[parentProperty propertyName]]) {
+                [overriddenProperties addObject:parentProperty];
+            }
+        }
+    }
+
+    [properties minusSet:overriddenProperties];
+    [properties unionSet:_injectedProperties];
+
+    return properties;
+}
+
+- (NSOrderedSet *)injectedMethods
+{
+    if (!self.parent) {
+        return [_injectedMethods mutableCopy];
+    }
+    NSMutableOrderedSet *methods = (NSMutableOrderedSet *)[self.parent injectedMethods];
+
+    NSMutableSet *overriddenMethods = [NSMutableSet set];
+    for (TyphoonMethod *parentMethod in methods) {
+        for (TyphoonMethod *childMethod in _injectedMethods) {
+            if (parentMethod.selector == childMethod.selector) {
+                [overriddenMethods addObject:parentMethod];
+            }
+        }
+    }
+
+    [methods minusSet:overriddenMethods];
+    [methods unionOrderedSet:_injectedMethods];
+
+    return methods;
+}
+
+- (void)replacePropertyInjection:(id<TyphoonPropertyInjection>)injection with:(id<TyphoonPropertyInjection>)injectionToReplace
+{
+    if ([_injectedProperties containsObject:injection]) {
+        [injectionToReplace setPropertyName:[injection propertyName]];
+        [_injectedProperties removeObject:injection];
+        [_injectedProperties addObject:injectionToReplace];
+    } else if (self.parent) {
+        [self.parent replacePropertyInjection:injection with:injectionToReplace];
+    }
+}
+
+
+#pragma mark - Shorthands
+
+- (void)addInjectedProperty:(id <TyphoonPropertyInjection>)property
+{
+    [_injectedProperties addObject:property];
+}
+
+- (void)addInjectedPropertyIfNotExists:(id <TyphoonPropertyInjection>)property
+{
+    BOOL isExists = NO;
+    for (id<TyphoonPropertyInjection>p in _injectedProperties) {
+        if ([[p propertyName] isEqualToString:[property propertyName]]) {
+            isExists = YES;
+            break;
+        }
+    }
+    if (!isExists) {
+        [_injectedProperties addObject:property];
     }
 }
 
 - (id)targetForInitializerWithFactory:(TyphoonComponentFactory *)factory args:(TyphoonRuntimeArguments *)args
 {
-    return self.type;
+    return _type;
 }
 
-#pragma mark - Method Injection
-
-- (void)doMethodInjection:(TyphoonMethod *)method onInstance:(id)instance
-                     args:(TyphoonRuntimeArguments *)args factory:(TyphoonComponentFactory *)factory
+- (BOOL)matchesAutoInjectionByProtocol:(Protocol *)aProtocol
 {
-    if (instance == nil) {
-        return;
-    }
-    
-    TyphoonInjectionContext *context = [[TyphoonInjectionContext alloc] initWithFactory:factory args:args
-        raiseExceptionIfCircular:NO];
-    context.classUnderConstruction = [instance class];
-
-    [method createInvocationWithContext:context completion:^(NSInvocation *invocation) {
-        [invocation invokeWithTarget:instance];
-    }];
+    return NO;
 }
 
-#pragma mark - Property Injection
-
-- (void)doPropertyInjectionOn:(id)instance property:(id<TyphoonPropertyInjection>)property
-                         args:(TyphoonRuntimeArguments *)args factory:(TyphoonComponentFactory *)factory
+- (BOOL)matchesAutoInjectionByClass:(Class)aClass
 {
-    TyphoonInjectionContext *context = [[TyphoonInjectionContext alloc] initWithFactory:factory args:args
-        raiseExceptionIfCircular:NO];
-    context.destinationType = [instance typhoonTypeForPropertyNamed:property.propertyName];
-    context.classUnderConstruction = [instance class];
+    return NO;
+}
 
-    [property valueToInjectWithContext:context completion:^(id value) {
-        [instance typhoon_injectValue:value forPropertyName:property.propertyName];
+
+- (BOOL)hasRuntimeArgumentInjections
+{
+    __block BOOL hasInjections = NO;
+    [self enumerateInjectionsOfKind:[TyphoonInjectionByRuntimeArgument class] options:TyphoonInjectionsEnumerationOptionAll
+                         usingBlock:^(id injection, id *injectionToReplace, BOOL *stop) {
+        hasInjections = YES;
+        *stop = YES;
     }];
+    return hasInjections;
+
 }
 
 @end
