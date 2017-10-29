@@ -10,9 +10,9 @@ PODS:
   - OCMockito (1.4.0):
     - OCHamcrest (~> 4.0)
   - PaperFold (1.2)
-  - Typhoon (HEAD based on 3.3.3):
-    - Typhoon/no-arc (= HEAD based on 3.3.3)
-  - Typhoon/no-arc (HEAD based on 3.3.3)
+  - Typhoon (3.3.3):
+    - Typhoon/no-arc (= 3.3.3)
+  - Typhoon/no-arc (3.3.3)
 
 DEPENDENCIES:
   - Expecta (~> 0.2.1)
@@ -23,7 +23,7 @@ DEPENDENCIES:
   - OCLogTemplate
   - OCMockito
   - PaperFold (from `https://github.com/jasperblues/PaperFold-for-iOS.git`, tag `1.2-no-gesture-recognizers`)
-  - Typhoon (HEAD)
+  - Typhoon (= 3.3.3)
 
 EXTERNAL SOURCES:
   PaperFold:
@@ -47,4 +47,6 @@ SPEC CHECKSUMS:
   PaperFold: 7ebdf11028012a3e0f3906bd455054369ff79e4a
   Typhoon: df3d23f59dccc8eda3e6535e58afd160ae60567e
 
-COCOAPODS: 0.38.2
+PODFILE CHECKSUM: 7913b7ed19fbcf2cd4794c5cd6696daf45bc3e33
+
+COCOAPODS: 1.3.1

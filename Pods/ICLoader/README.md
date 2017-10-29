@@ -2,7 +2,7 @@ A simple frosty loader, similar to the one used in the <a href="https://github.c
 
 ![Weather Report](http://www.typhoonframework.org/images/portfolio/PocketForecast3.gif)
 
-# Setup
+#Setup
 
 ```Objective-C
 
@@ -14,7 +14,7 @@ A simple frosty loader, similar to the one used in the <a href="https://github.c
 [ICLoader setFontname:aFontName];
 ```
 
-# Usage
+#Usage
 
 ```Objective-C
 [ICLoader present];
@@ -26,7 +26,7 @@ A simple frosty loader, similar to the one used in the <a href="https://github.c
 
 ICLoader is presented in the root view controller's view. 
 
-# Installation
+#Installation
 
 Installation is via <a href="http://www.cocoapods.org/?q=ICLoader">CocoaPods</a>.
 

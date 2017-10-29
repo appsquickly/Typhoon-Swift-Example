@@ -20,15 +20,15 @@ public enum TemperatureUnits : Int {
 public class Temperature : NSObject, NSCoding {
     
     private var _temperatureInFahrenheit : NSDecimalNumber
-    private var _shortFormatter : NSNumberFormatter
-    private var _longFormatter : NSNumberFormatter
+    private var _shortFormatter : NumberFormatter
+    private var _longFormatter : NumberFormatter
 
     public class func defaultUnits() -> TemperatureUnits {
-        return TemperatureUnits(rawValue: NSUserDefaults.standardUserDefaults().integerForKey("pf.default.units"))!
+        return TemperatureUnits(rawValue: UserDefaults.standard.integer(forKey: "pf.default.units"))!
     }
 
     public class func setDefaultUnits(units : TemperatureUnits) {
-        NSUserDefaults.standardUserDefaults().setInteger(units.rawValue, forKey: "pf.default.units")
+        UserDefaults.standard.set(units.rawValue, forKey: "pf.default.units")
     }
     
 
@@ -36,11 +36,11 @@ public class Temperature : NSObject, NSCoding {
     public init(temperatureInFahrenheit : NSDecimalNumber) {
         _temperatureInFahrenheit = temperatureInFahrenheit;
         
-        _shortFormatter = NSNumberFormatter()
+        _shortFormatter = NumberFormatter()
         _shortFormatter.minimumFractionDigits = 0;
         _shortFormatter.maximumFractionDigits = 0;
         
-        _longFormatter = NSNumberFormatter()
+        _longFormatter = NumberFormatter()
         _longFormatter.minimumFractionDigits = 0
         _longFormatter.maximumFractionDigits = 1
         
@@ -52,14 +52,14 @@ public class Temperature : NSObject, NSCoding {
     
     public convenience init(celciusString : String) {
         let fahrenheit = NSDecimalNumber(string: celciusString)
-            .decimalNumberByMultiplyingBy(9)
-            .decimalNumberByDividingBy(5)
-            .decimalNumberByAdding(32)
+            .multiplying(by: 9)
+            .dividing(by: 5)
+            .adding(32)
         self.init(temperatureInFahrenheit : fahrenheit)
     }
     
     public required convenience init?(coder : NSCoder) {
-        let temp = coder.decodeObjectForKey("temperatureInFahrenheit") as! NSDecimalNumber
+        let temp = coder.decodeObject(forKey: "temperatureInFahrenheit") as! NSDecimalNumber
         self.init(temperatureInFahrenheit: temp)
         
     }
@@ -70,9 +70,9 @@ public class Temperature : NSObject, NSCoding {
     
     public func inCelcius() -> NSNumber {
         return _temperatureInFahrenheit
-            .decimalNumberBySubtracting(32)
-            .decimalNumberByMultiplyingBy(5)
-            .decimalNumberByDividingBy(9)
+            .subtracting(32)
+            .multiplying(by: 5)
+            .dividing(by: 9)
     }
     
     public func asShortStringInDefaultUnits() -> String {
@@ -94,20 +94,20 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public func asShortStringInFahrenheit() -> String {
-        return _shortFormatter.stringFromNumber(self.inFahrenheit())! + "°"
+        return _shortFormatter.string(from: self.inFahrenheit())! + "°"
     }
     
 
     public func asLongStringInFahrenheit() -> String {
-        return _longFormatter.stringFromNumber(self.inFahrenheit())! + "°"
+        return _longFormatter.string(from: self.inFahrenheit())! + "°"
     }
     
     public func asShortStringInCelsius() -> String {
-        return _shortFormatter.stringFromNumber(self.inCelcius())! + "°"
+        return _shortFormatter.string(from: self.inCelcius())! + "°"
     }
     
     public func asLongStringInCelsius() -> String {
-        return _longFormatter.stringFromNumber(self.inCelcius())! + "°"
+        return _longFormatter.string(from: self.inCelcius())! + "°"
     }
     
     public override var description: String {
@@ -115,8 +115,8 @@ public class Temperature : NSObject, NSCoding {
             self.asShortStringInCelsius()) as String
     }
     
-    public func encodeWithCoder(coder : NSCoder) {
-        coder.encodeObject(_temperatureInFahrenheit, forKey:"temperatureInFahrenheit");
+    public func encode(with coder: NSCoder) {
+        coder.encode(_temperatureInFahrenheit, forKey:"temperatureInFahrenheit");
     }
     
     

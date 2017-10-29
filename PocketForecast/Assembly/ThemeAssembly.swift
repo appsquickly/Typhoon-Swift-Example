@@ -19,7 +19,7 @@ public class ThemeAssembly : TyphoonAssembly {
      */
     public dynamic func currentTheme() -> AnyObject {
 
-        return TyphoonDefinition.withFactory(self.themeFactory(), selector: "sequentialTheme")
+        return TyphoonDefinition.withFactory(self.themeFactory(), selector: "sequentialTheme") as AnyObject
     }
 
     /**
@@ -30,18 +30,18 @@ public class ThemeAssembly : TyphoonAssembly {
         return TyphoonDefinition.withClass(ThemeFactory.self) {
             (definition) in
 
-            definition.useInitializer("initWithThemes:") {
+            definition!.useInitializer("initWithThemes:") {
                 (initializer) in
                 
-                initializer.injectParameterWith([
+                initializer!.injectParameter(with: [
                     self.cloudsOverTheCityTheme(),
                     self.lightsInTheRainTheme(),
                     self.beachTheme(),
                     self.sunsetTheme()
                     ])
             }
-            definition.scope = TyphoonScope.Singleton
-        }
+            definition!.scope = TyphoonScope.singleton
+        } as AnyObject
     }
 
 
@@ -49,11 +49,11 @@ public class ThemeAssembly : TyphoonAssembly {
         return TyphoonDefinition.withClass(Theme.self) {
             (definition) in
 
-                definition.injectProperty("backgroundResourceName", with:"bg3.png")
-                definition.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x641d23))
-                definition.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x641d23))
-                definition.injectProperty("controlTintColor", with:UIColor(hexRGB:0x7f9588))
-        }
+                definition!.injectProperty("backgroundResourceName", with:"bg3.png")
+                definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x641d23))
+                definition!.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x641d23))
+                definition!.injectProperty("controlTintColor", with:UIColor(hexRGB:0x7f9588))
+        } as AnyObject
     }
 
 
@@ -61,12 +61,11 @@ public class ThemeAssembly : TyphoonAssembly {
         return TyphoonDefinition.withClass(Theme.self) {
             (definition) in
 
-                definition.injectProperty("backgroundResourceName", with:"bg4.png")
-                definition.injectProperty("navigationBarColor", with:UIColor(hexRGB:0xeaa53d))
-                definition.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x722d49))
-                definition.injectProperty("controlTintColor", with:UIColor(hexRGB:0x722d49))
-        }
-
+                definition!.injectProperty("backgroundResourceName", with:"bg4.png")
+                definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0xeaa53d))
+                definition!.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x722d49))
+                definition!.injectProperty("controlTintColor", with:UIColor(hexRGB:0x722d49))
+        } as AnyObject
     }
 
 
@@ -74,23 +73,22 @@ public class ThemeAssembly : TyphoonAssembly {
         return TyphoonDefinition.withClass(Theme.self) {
             (definition) in
 
-                definition.injectProperty("backgroundResourceName", with:"bg5.png")
-                definition.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x37b1da))
-                definition.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x37b1da))
-                definition.injectProperty("controlTintColor", with:UIColor(hexRGB:0x0043a6))
-        }
-
+                definition!.injectProperty("backgroundResourceName", with:"bg5.png")
+                definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x37b1da))
+                definition!.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x37b1da))
+                definition!.injectProperty("controlTintColor", with:UIColor(hexRGB:0x0043a6))
+        } as AnyObject
     }
 
     public dynamic func sunsetTheme() -> AnyObject {
         return TyphoonDefinition.withClass(Theme.self) {
             (definition) in
 
-                definition.injectProperty("backgroundResourceName", with:"sunset.png")
-                definition.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x0a1d3b))
-                definition.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x0a1d3b))
-                definition.injectProperty("controlTintColor", with:UIColor(hexRGB:0x606970))
-        }
+                definition!.injectProperty("backgroundResourceName", with:"sunset.png")
+                definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x0a1d3b))
+                definition!.injectProperty("forecastTintColor", with:UIColor(hexRGB:0x0a1d3b))
+                definition!.injectProperty("controlTintColor", with:UIColor(hexRGB:0x606970))
+        } as AnyObject
     }
     
 }

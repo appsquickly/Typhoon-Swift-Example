@@ -28,11 +28,11 @@ public class CurrentConditions : NSObject, NSCoding {
     }
     
     public required init?(coder : NSCoder) {
-        self.summary = coder.decodeObjectForKey("summary") as? String
-        self.temperature = coder.decodeObjectForKey("temperature") as? Temperature
-        self.humidity = coder.decodeObjectForKey("humidity") as? String
-        self.wind = coder.decodeObjectForKey("wind") as? String
-        self.imageUri = coder.decodeObjectForKey("imageUri") as? String
+        self.summary = coder.decodeObject(forKey: "summary") as? String
+        self.temperature = coder.decodeObject(forKey: "temperature") as? Temperature
+        self.humidity = coder.decodeObject(forKey: "humidity") as? String
+        self.wind = coder.decodeObject(forKey: "wind") as? String
+        self.imageUri = coder.decodeObject(forKey: "imageUri") as? String
     }
     
     public func longSummary() -> String {
@@ -43,12 +43,12 @@ public class CurrentConditions : NSObject, NSCoding {
         return String(format: "Current Conditions: summary=%@, temperature=%@", self.summary!, self.temperature!)
     }
     
-    public func encodeWithCoder(coder : NSCoder) {
+    public func encode(with coder: NSCoder) {
         
-        coder.encodeObject(self.summary!, forKey:"summary")
-        coder.encodeObject(self.temperature!, forKey:"temperature")
-        coder.encodeObject(self.humidity!, forKey:"humidity")
-        coder.encodeObject(self.wind!, forKey:"wind")
-        coder.encodeObject(self.imageUri!, forKey:"imageUri")
+        coder.encode(self.summary!, forKey:"summary")
+        coder.encode(self.temperature!, forKey:"temperature")
+        coder.encode(self.humidity!, forKey:"humidity")
+        coder.encode(self.wind!, forKey:"wind")
+        coder.encode(self.imageUri!, forKey:"imageUri")
     }
 }

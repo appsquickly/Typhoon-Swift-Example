@@ -24,25 +24,24 @@ public class WeatherClientBasicImpl: NSObject, WeatherClient {
         }
     }
 
-    public func loadWeatherReportFor(city: String!, onSuccess successBlock: ((WeatherReport!) -> Void)!, onError errorBlock: ((String!) -> Void)!) {
+    public func loadWeatherReportFor(city: String!, onSuccess successBlock: ((WeatherReport) -> Void)!, onError errorBlock: ((String?) -> Void)!) {
 
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-            let url = self.queryURL(city)
-            let data : NSData! = NSData(contentsOfURL: url)!
+        DispatchQueue.global(priority: .high).async() {
+            let url = self.queryURL(city: city)
+            let data : Data! = try! Data(contentsOf: url)
             
-
-            let dictionary = (try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
+            let dictionary = (try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)) as! NSDictionary
 
             if let error = dictionary.parseError() {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async() {
                     errorBlock(error.rootCause())
                     return
                 }
             } else {
                 let weatherReport: WeatherReport = dictionary.toWeatherReport()
-                self.weatherReportDao!.saveReport(weatherReport)
-                dispatch_async(dispatch_get_main_queue()) {
+                self.weatherReportDao!.saveReport(weatherReport: weatherReport)
+                DispatchQueue.main.async() {
                     successBlock(weatherReport)
                     return
                 }
@@ -51,17 +50,15 @@ public class WeatherClientBasicImpl: NSObject, WeatherClient {
     }
 
 
-    private func queryURL(city: String) -> NSURL {
+    private func queryURL(city: String) -> URL {
 
         let serviceUrl: NSURL = self.serviceUrl!
-        let url: NSURL = serviceUrl.uq_URLByAppendingQueryDictionary([
+        return serviceUrl.uq_URL(byAppendingQueryDictionary: [
                 "q": city,
                 "format": "json",
                 "num_of_days": daysToRetrieve!.stringValue,
                 "key": apiKey!
         ])
-
-        return url
     }
 
 
