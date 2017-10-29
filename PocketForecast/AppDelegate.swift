@@ -19,9 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var cityDao: CityDao?
     var rootViewController: RootViewController?
     
-    private func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
-        
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
         ICLoader.setImageName("cloud_icon.png")
         ICLoader.setLabelFontName(UIFont.applicationFontOfSize(size: 10).fontName)
