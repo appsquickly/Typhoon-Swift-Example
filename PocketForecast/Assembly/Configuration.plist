@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>service.url</key>
-	<string>NSURL(http://api.worldweatheronline.com/free/v2/weather.ashx)</string>
+	<string>NSURL(http://api.worldweatheronline.com/premium/v1/weather.ashx)</string>
 	<key>api.key</key>
 	<string>$$YOUR_API_KEY_HERE$$</string>
 	<key>days.to.retrieve</key>
