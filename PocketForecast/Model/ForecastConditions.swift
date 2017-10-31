@@ -16,8 +16,8 @@ public class ForecastConditions : NSObject, NSCoding {
 	private(set) var date : Date?
     private(set) var low : Temperature?
 	private(set) var high : Temperature?
-	private(set) var summary : String?
-	private(set) var imageUri : String?
+	private(set) var summary : String
+	private(set) var imageUri : String
     
     public init(date : Date, low : Temperature?, high : Temperature?, summary : String, imageUri : String) {
         self.date = date
@@ -31,8 +31,8 @@ public class ForecastConditions : NSObject, NSCoding {
         self.date = coder.decodeObject(forKey: "date") as? Date
         self.low = coder.decodeObject(forKey: "low") as? Temperature
         self.high = coder.decodeObject(forKey: "high") as? Temperature
-        self.summary = coder.decodeObject(forKey: "summary") as? String
-        self.imageUri = coder.decodeObject(forKey: "imageUri") as? String
+        self.summary = coder.decodeObject(forKey: "summary") as! String
+        self.imageUri = coder.decodeObject(forKey: "imageUri") as! String
     }
     
     public func longDayOfTheWeek() -> String? {

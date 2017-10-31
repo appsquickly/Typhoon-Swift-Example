@@ -58,8 +58,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     public override func viewWillAppear(_ animated : Bool) {
         super.viewWillAppear(animated)
         self.refreshCitiesList()
-        let cityName : String? = cityDao.loadSelectedCity()
-        if let cityName = cityName, let cities = cities {
+        if let cityName = cityDao.loadSelectedCity(), let cities = cities {
             if let index = cities.index(of: cityName) {
                 let indexPath = IndexPath(row: index, section: 0)
                 self.citiesListTableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
@@ -72,8 +71,8 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if cities != nil {
-            return cities!.count
+        if let cities = cities {
+            return cities.count
         }
         return 0
     }
@@ -81,18 +80,20 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let reuseId = "Cities"
-        var cell : CityTableViewCell? = tableView.dequeueReusableCell(withIdentifier: reuseId) as? CityTableViewCell
-        if cell == nil {
+        let cell : CityTableViewCell
+        if let dequeued = tableView.dequeueReusableCell(withIdentifier: reuseId) as? CityTableViewCell {
+            cell = dequeued
+        } else {
             cell = CityTableViewCell(style: .default, reuseIdentifier: reuseId)
         }
-        cell!.selectionStyle = .gray
-        cell!.cityLabel.backgroundColor = .clear
-        cell!.cityLabel.font = UIFont.applicationFontOfSize(size: 16)
-        cell!.cityLabel.textColor = .darkGray
-        cell!.cityLabel.text = cities![indexPath.row]
-        cell!.accessoryType = .disclosureIndicator
+        cell.selectionStyle = .gray
+        cell.cityLabel.backgroundColor = .clear
+        cell.cityLabel.font = UIFont.applicationFontOfSize(size: 16)
+        cell.cityLabel.textColor = .darkGray
+        cell.cityLabel.text = cities![indexPath.row]
+        cell.accessoryType = .disclosureIndicator
         
-        return cell!
+        return cell
     }
   
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
