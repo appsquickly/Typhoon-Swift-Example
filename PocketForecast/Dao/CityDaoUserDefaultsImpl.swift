@@ -30,7 +30,7 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
         self.defaults = defaults
     }
     
-    public func listAllCities() -> [String]! {
+    public func listAllCities() -> [String] {
         
         var cities : Array? = self.defaults.array(forKey: self.citiesListKey)
         if cities == nil {
@@ -42,7 +42,7 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
         }
     }
     
-    public func saveCity(name: String!) {
+    public func saveCity(name: String) {
 
         let trimmedName = name.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
         
@@ -50,36 +50,29 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
         
         let cities: [String] = (savedCities != nil) ? savedCities as! [String] : defaultCities
         
-        var canAddCity = true
         for city in cities {
             if city.lowercased() == trimmedName.lowercased() {
-                canAddCity = false
+                return
             }
         }
-        if canAddCity {
-            self.defaults.set(cities + [trimmedName], forKey: self.citiesListKey)
-        }
+        
+        self.defaults.set(cities + [trimmedName], forKey: self.citiesListKey)
     }
     
-    public func deleteCity(name: String!) {
+    public func deleteCity(name: String) {
         
         let trimmedName = name.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
         var cities: [String] = self.defaults.array(forKey: self.citiesListKey) as! [String]
-        var cityToRemove : String?
-        for city in cities {
+        
+        for (index, city) in cities.enumerated() {
             if city.lowercased() == trimmedName.lowercased() {
-                cityToRemove = city
-            }
-        }
-        if cityToRemove != nil {
-            if let index = cities.index(of: cityToRemove!) {
                 self.defaults.set(cities.remove(at: index), forKey: self.citiesListKey)
             }
         }
 
     }
     
-    public func saveCurrentlySelectedCity(cityName: String!) {
+    public func saveCurrentlySelectedCity(cityName: String) {
         
         let trimmed = cityName.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
         if !trimmed.isEmpty {
@@ -95,7 +88,8 @@ public class CityDaoUserDefaultsImpl : NSObject, CityDao {
     }
     
     public func loadSelectedCity() -> String? {
-        return self.defaults.object(forKey: self.currentCityKey) as? String
+        
+        return self.defaults.string(forKey: self.currentCityKey)
     }
 
     
