@@ -79,18 +79,14 @@ public class Temperature : NSObject, NSCoding {
         if Temperature.defaultUnits() == TemperatureUnits.Celsius {
             return self.asShortStringInCelsius()
         }
-        else {
-            return self.asShortStringInFahrenheit()
-        }
+        return self.asShortStringInFahrenheit()
     }
     
     public func asLongStringInDefualtUnits() -> String {
         if Temperature.defaultUnits() == TemperatureUnits.Celsius {
             return self.asLongStringInCelsius()
         }
-        else {
-            return self.asLongStringInFahrenheit()
-        }
+        return self.asLongStringInFahrenheit()
     }
     
     public func asShortStringInFahrenheit() -> String {
@@ -111,8 +107,7 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public override var description: String {
-        return NSString(format: "Temperature: %@f [%@ celsius]", self.asShortStringInFahrenheit(),
-            self.asShortStringInCelsius()) as String
+        return "Temperature: \(self.asShortStringInFahrenheit())f [\(self.asShortStringInCelsius()) celsius]"
     }
     
     public func encode(with coder: NSCoder) {

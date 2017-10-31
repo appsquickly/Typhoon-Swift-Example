@@ -51,11 +51,11 @@ public class ForecastConditions : NSObject, NSCoding {
     }
     
     public func encode(with coder: NSCoder) {
-        coder.encode(self.date!, forKey:"date")
+        coder.encode(self.date, forKey:"date")
         coder.encode(self.low, forKey:"low")
         coder.encode(self.high, forKey:"high")
-        coder.encode(self.summary!, forKey:"summary")
-        coder.encode(self.imageUri!, forKey:"imageUri")
+        coder.encode(self.summary, forKey:"summary")
+        coder.encode(self.imageUri, forKey:"imageUri")
     }
     
 }
