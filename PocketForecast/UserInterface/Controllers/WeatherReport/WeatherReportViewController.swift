@@ -62,13 +62,13 @@ public class WeatherReportViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController!.isNavigationBarHidden = true
 
-        self.cityName = self.cityDao.loadSelectedCity()
-        if self.cityName != nil {
-            self.weatherReport = self.weatherReportDao.getReportForCityName(cityName: self.cityName)
-            if self.weatherReport != nil {
+        if let cityName = self.cityDao.loadSelectedCity() {
+            self.cityName = cityName
+            if let weatherReport = self.weatherReportDao.getReportForCityName(cityName: cityName) {
+                self.weatherReport = weatherReport
                 self.weatherReportView.weatherReport = self.weatherReport
             }
-            else if self.cityName != nil {
+            else  {
                 self.refreshData()
             }
         }

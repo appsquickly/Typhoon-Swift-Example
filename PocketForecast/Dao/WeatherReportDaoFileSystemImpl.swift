@@ -13,7 +13,7 @@ import Foundation
 
 public class WeatherReportDaoFileSystemImpl : NSObject, WeatherReportDao {
         
-    public func getReportForCityName(cityName: String!) -> WeatherReport? {
+    public func getReportForCityName(cityName: String) -> WeatherReport? {
         
         let filePath = self.filePathFor(cityName: cityName)
         let weatherReport : WeatherReport? = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? WeatherReport
@@ -28,9 +28,8 @@ public class WeatherReportDaoFileSystemImpl : NSObject, WeatherReportDao {
     
     private func filePathFor(cityName : String) -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0] 
-        let weatherReportKey = String(format: "weatherReport~>$%@", cityName)
-        let filePath = documentsDirectory + weatherReportKey
+        let documentsDirectory = paths[0]
+        let filePath = documentsDirectory + "weatherReport~>$\(cityName)"
         return filePath
     }
 }
