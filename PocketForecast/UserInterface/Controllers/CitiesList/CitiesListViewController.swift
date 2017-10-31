@@ -45,7 +45,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(CitiesListViewController.addCity))
         self.citiesListTableView.isEditing = true
         self.temperatureUnitsControl.addTarget(self, action: #selector(CitiesListViewController.saveTemperatureUnitPreference), for: .valueChanged)
-        if (Temperature.defaultUnits() == TemperatureUnits.Celsius) {
+        if Temperature.defaultUnits() == TemperatureUnits.Celsius {
             self.temperatureUnitsControl.selectedSegmentIndex = celciusSegmentIndex
         }
         else {
@@ -72,7 +72,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (cities != nil) {
+        if cities != nil {
             return cities!.count
         }
         return 0
@@ -82,7 +82,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
         
         let reuseId = "Cities"
         var cell : CityTableViewCell? = tableView.dequeueReusableCell(withIdentifier: reuseId) as? CityTableViewCell
-        if (cell == nil) {
+        if cell == nil {
             cell = CityTableViewCell(style: .default, reuseIdentifier: reuseId)
         }
         cell!.selectionStyle = .gray
@@ -111,7 +111,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
 
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
-        if (editingStyle == .delete) {
+        if editingStyle == .delete {
             let city = cities![indexPath.row]
             self.cityDao.deleteCity(name: city)
             self.refreshCitiesList()
@@ -130,7 +130,7 @@ public class CitiesListViewController : UIViewController, UITableViewDelegate, U
     }
     
     private dynamic func saveTemperatureUnitPreference() {
-        if (self.temperatureUnitsControl.selectedSegmentIndex == celciusSegmentIndex) {
+        if self.temperatureUnitsControl.selectedSegmentIndex == celciusSegmentIndex {
             Temperature.setDefaultUnits(units: TemperatureUnits.Celsius)
         }
         else {

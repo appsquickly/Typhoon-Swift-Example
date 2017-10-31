@@ -76,7 +76,7 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public func asShortStringInDefaultUnits() -> String {
-        if (Temperature.defaultUnits() == TemperatureUnits.Celsius) {
+        if Temperature.defaultUnits() == TemperatureUnits.Celsius {
             return self.asShortStringInCelsius()
         }
         else {
@@ -85,7 +85,7 @@ public class Temperature : NSObject, NSCoding {
     }
     
     public func asLongStringInDefualtUnits() -> String {
-        if (Temperature.defaultUnits() == TemperatureUnits.Celsius) {
+        if Temperature.defaultUnits() == TemperatureUnits.Celsius {
             return self.asLongStringInCelsius()
         }
         else {

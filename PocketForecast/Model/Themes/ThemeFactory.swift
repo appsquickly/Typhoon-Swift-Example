@@ -22,14 +22,14 @@ public class ThemeFactory : NSObject {
     }
     
     public func sequentialTheme() -> Theme {
-        if (_sequentialTheme == nil) {
+        if _sequentialTheme == nil {
             
             let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
             let documentsDirectory : NSString = paths[0] as NSString!
             let indexFileName = documentsDirectory.appendingPathComponent("PF_CURRENT_THEME_INDEX")
             var index = (try? NSString(contentsOfFile: indexFileName, encoding: String.Encoding.utf8.rawValue))?.integerValue
             
-            if (index == nil || index! > themes.count - 1) {
+            if index == nil || index! > themes.count - 1 {
                 index = 0
             }
             _sequentialTheme = themes[index!]

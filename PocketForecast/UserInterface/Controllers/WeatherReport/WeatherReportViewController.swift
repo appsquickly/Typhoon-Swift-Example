@@ -63,12 +63,12 @@ public class WeatherReportViewController: UIViewController {
         self.navigationController!.isNavigationBarHidden = true
 
         self.cityName = self.cityDao.loadSelectedCity()
-        if (self.cityName != nil) {
+        if self.cityName != nil {
             self.weatherReport = self.weatherReportDao.getReportForCityName(cityName: self.cityName)
-            if (self.weatherReport != nil) {
+            if self.weatherReport != nil {
                 self.weatherReportView.weatherReport = self.weatherReport
             }
-            else if (self.cityName != nil) {
+            else if self.cityName != nil {
                 self.refreshData()
             }
         }
@@ -77,7 +77,7 @@ public class WeatherReportViewController: UIViewController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (self.cityName != nil) {
+        if self.cityName != nil {
             
             let cityListButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.bookmarks, target: self, action: #selector(WeatherReportViewController.presentMenu))
             cityListButton.tintColor = .white

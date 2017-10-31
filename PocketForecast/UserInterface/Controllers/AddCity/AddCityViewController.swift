@@ -58,7 +58,7 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     }
         
     private dynamic func doneAdding(textField : UITextField) {
-        if (!self.nameOfCityToAdd.text!.isEmpty) {
+        if !self.nameOfCityToAdd.text!.isEmpty {
             self.validationMessage.text = "Validating city . ."
             self.validationMessage.isHidden = false
             self.nameOfCityToAdd.isEnabled = false

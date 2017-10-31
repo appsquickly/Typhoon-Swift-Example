@@ -68,10 +68,10 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
         
         lockQueue.sync() {
             
-            if (self.navigator == nil) {
+            if self.navigator == nil {
                 self.makeNavigationControllerWithRoot(root: controller)
             }
-            else if (replaceRoot) {
+            else if replaceRoot {
                 self.navigator.setViewControllers([controller], animated: true)
             }
             else {
@@ -90,7 +90,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     }
     
     public func showCitiesListController() {
-        if (self.sideViewState != SideViewState.Showing) {
+        if self.sideViewState != SideViewState.Showing {
             self.sideViewState = SideViewState.Showing
             self.citiesListController = UINavigationController(rootViewController: self.assembly.citiesListController() as! UIViewController)
             
@@ -104,7 +104,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     }
     
     public func dismissCitiesListController() {
-        if (self.sideViewState != SideViewState.Hidden) {
+        if self.sideViewState != SideViewState.Hidden {
             self.sideViewState = SideViewState.Hidden
             self.paperFoldView.setPaperFoldState(PaperFoldStateDefault)
             self.navigator!.topViewController!.viewWillAppear(true)
@@ -112,16 +112,16 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     }
 
     public func toggleSideViewController() {
-        if (self.sideViewState == SideViewState.Hidden) {
+        if self.sideViewState == SideViewState.Hidden {
             self.showCitiesListController()
         }
-        else if (self.sideViewState == SideViewState.Showing) {
+        else if self.sideViewState == SideViewState.Showing {
             self.dismissCitiesListController()
         }
     }
     
     public func showAddCitiesController() {
-        if (self.addCitiesController == nil) {
+        if self.addCitiesController == nil {
             self.navigator.topViewController!.view.isUserInteractionEnabled = false
             
             self.addCitiesController = UINavigationController(rootViewController: self.assembly.addCityViewController() as! UIViewController)            
@@ -138,7 +138,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
     }
     
     public func dismissAddCitiesController() {
-        if (self.addCitiesController != nil) {
+        if self.addCitiesController != nil {
             self.citiesListController?.viewWillAppear(true)
             UIView.transition(with: self.view, duration: 0.25, options: .curveEaseInOut, animations: {
                 

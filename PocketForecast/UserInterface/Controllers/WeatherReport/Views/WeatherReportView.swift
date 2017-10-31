@@ -29,7 +29,7 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
     public var weatherReport : WeatherReport? {
         willSet(weatherReport) {
             
-            if (weatherReport != nil) {
+            if weatherReport != nil {
                 self.tableView.isHidden = false
                 self.conditionsIcon.isHidden = false
                 self.temperatureLabelContainer.isHidden = false
@@ -113,11 +113,11 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
         
         let reuseIdentifier = "weatherForecast"
         var cell : ForecastTableViewCell? = self.tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as? ForecastTableViewCell
-        if (cell == nil) {
+        if cell == nil {
             cell = ForecastTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: reuseIdentifier)
         }
         
-        if (self.weatherReport != nil && self.weatherReport!.forecast.count > indexPath.row) {
+        if self.weatherReport != nil && self.weatherReport!.forecast.count > indexPath.row {
             let forecastConditions : ForecastConditions = self.weatherReport!.forecast[indexPath.row]
             cell!.dayLabel.text = forecastConditions.longDayOfTheWeek()
             cell!.descriptionLabel.text = forecastConditions.summary
@@ -244,27 +244,27 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
         var result: UIImage?
         if let imageUri = imageUri, imageUri.count > 0 {
             
-            if (imageUri.hasSuffix("sunny.png"))
+            if imageUri.hasSuffix("sunny.png")
             {
                 result = UIImage(named:"icon_sunny")
             }
-            else if (imageUri.hasSuffix("sunny_intervals.png"))
+            else if imageUri.hasSuffix("sunny_intervals.png")
             {
                 result =  UIImage(named:"icon_cloudy")
             }
-            else if (imageUri.hasSuffix("partly_cloudy.png"))
+            else if imageUri.hasSuffix("partly_cloudy.png")
             {
                 result =  UIImage(named:"icon_cloudy")
             }
-            else if (imageUri.hasSuffix("low_cloud.png"))
+            else if imageUri.hasSuffix("low_cloud.png")
             {
                 result =  UIImage(named:"icon_cloudy")
             }
-            else if (imageUri.hasSuffix("light_rain_showers.png"))
+            else if imageUri.hasSuffix("light_rain_showers.png")
             {
                 result =  UIImage(named:"icon_rainy")
             }
-            else if (imageUri.hasSuffix("heavy_rain_showers.png"))
+            else if imageUri.hasSuffix("heavy_rain_showers.png")
             {
                 result =  UIImage(named:"icon_rainy")
             }
