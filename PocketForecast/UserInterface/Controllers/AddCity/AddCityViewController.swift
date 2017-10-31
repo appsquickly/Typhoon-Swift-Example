@@ -65,13 +65,13 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
             self.spinner.startAnimating()
             
             self.weatherClient.loadWeatherReportFor(city: self.nameOfCityToAdd.text, onSuccess: {
-                (weatherReport) in
+                weatherReport in
                 
                 self.cityDao!.saveCity(name: weatherReport.cityDisplayName)
                 self.rootViewController.dismissAddCitiesController()
                 
                 }, onError: {
-                    (message) in
+                    message in
                     
                     self.spinner.stopAnimating()
                     self.nameOfCityToAdd.isEnabled = true

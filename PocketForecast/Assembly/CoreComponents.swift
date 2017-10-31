@@ -14,7 +14,7 @@ public class CoreComponents: TyphoonAssembly {
     
     public dynamic func weatherClient() -> AnyObject {
         return TyphoonDefinition.withClass(WeatherClientBasicImpl.self) {
-            (definition) in
+            definition in
             
             definition!.injectProperty("serviceUrl", with:TyphoonConfig("service.url"))
             definition!.injectProperty("apiKey", with:TyphoonConfig("api.key"))
@@ -30,10 +30,10 @@ public class CoreComponents: TyphoonAssembly {
     public dynamic func cityDao() -> AnyObject {
         
         return TyphoonDefinition.withClass(CityDaoUserDefaultsImpl.self) {
-            (definition) in
+            definition in
             
             definition!.useInitializer("initWithDefaults:") {
-                (initializer) in
+                initializer in
                 
                 initializer!.injectParameter(with: UserDefaults.standard)
             }

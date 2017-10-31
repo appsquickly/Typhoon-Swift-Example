@@ -145,7 +145,7 @@ public class RootViewController : UIViewController, PaperFoldViewDelegate {
                 self.addCitiesController!.view.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.SIDE_CONTROLLER_WIDTH, height: self.view.frame.size.height)
                 
             }, completion: {
-                (completed) in
+                completed in
                 
                 self.addCitiesController!.view.removeFromSuperview()
                 self.addCitiesController = nil

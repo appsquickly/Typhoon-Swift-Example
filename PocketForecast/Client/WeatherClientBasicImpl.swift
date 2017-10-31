@@ -54,10 +54,10 @@ public class WeatherClientBasicImpl: NSObject, WeatherClient {
 
         let serviceUrl: NSURL = self.serviceUrl!
         return serviceUrl.uq_URL(byAppendingQueryDictionary: [
-                "q": city,
-                "format": "json",
-                "num_of_days": daysToRetrieve!.stringValue,
-                "key": apiKey!
+            "q": city,
+            "format": "json",
+            "num_of_days": daysToRetrieve!.stringValue,
+            "key": apiKey!
         ])
     }
 

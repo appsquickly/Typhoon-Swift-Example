@@ -110,13 +110,13 @@ public class WeatherReportViewController: UIViewController {
         ICLoader.present()
         
         self.weatherClient.loadWeatherReportFor(city: self.cityName, onSuccess: {
-            (weatherReport) in
+            weatherReport in
             
             self.weatherReportView.weatherReport = weatherReport
             ICLoader.dismiss()
             
             }, onError: {
-                (message) in
+                message in
                 
                 ICLoader.dismiss()
                 print ("Error" + message!)
