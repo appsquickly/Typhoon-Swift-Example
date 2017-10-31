@@ -56,23 +56,23 @@ extension NSDictionary {
         let date = formatter.date(from: self.value(forKeyPath: "date") as! String)!
         
         var low: Temperature?
-        if self.value(forKeyPath: "tempMinF") != nil {
-            low = Temperature(fahrenheitString: self.value(forKey: "tempMinF") as! String)
+        if let temp = self.value(forKeyPath: "mintempF") {
+            low = Temperature(fahrenheitString: temp as! String)
         }
                 
         var high: Temperature?
-        if self.value(forKey: "tempMaxF") != nil {
-            high = Temperature(fahrenheitString: self.value(forKey: "tempMaxF") as! String)
+        if let temp = self.value(forKey: "maxtempF") {
+            high = Temperature(fahrenheitString: temp as! String)
         }
         
         var description = ""
-        if self.value(forKeyPath: "weatherDesc") != nil {
-          description = (self.value(forKeyPath: "weatherDesc") as! [NSDictionary])[0]["value"] as! String
+        if let desc = self.value(forKeyPath: "weatherDesc") {
+          description = (desc as! [NSDictionary])[0]["value"] as! String
         }
         
         var imageUri = ""
-        if self.value(forKeyPath: "weatherIconUrl") != nil {
-            imageUri = (self.value(forKeyPath: "weatherIconUrl") as! [NSDictionary])[0]["value"] as! String
+        if let iconUrl = self.value(forKeyPath: "weatherIconUrl") {
+            imageUri = (iconUrl as! [NSDictionary])[0]["value"] as! String
         }
         
         return ForecastConditions(date: date, low: low, high: high, summary: description, imageUri: imageUri)
