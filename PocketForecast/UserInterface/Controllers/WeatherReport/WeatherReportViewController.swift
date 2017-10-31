@@ -109,7 +109,7 @@ public class WeatherReportViewController: UIViewController {
     private dynamic func refreshData() {
         ICLoader.present()
         
-        self.weatherClient.loadWeatherReportFor(city: self.cityName, onSuccess: {
+        self.weatherClient.loadWeatherReportFor(city: self.cityName!, onSuccess: {
             weatherReport in
             
             self.weatherReportView.weatherReport = weatherReport
@@ -119,7 +119,7 @@ public class WeatherReportViewController: UIViewController {
                 message in
                 
                 ICLoader.dismiss()
-                print ("Error" + message!)
+                print ("Error" + message)
                 
                 
         })

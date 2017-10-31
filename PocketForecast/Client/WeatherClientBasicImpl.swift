@@ -24,7 +24,7 @@ public class WeatherClientBasicImpl: NSObject, WeatherClient {
         }
     }
 
-    public func loadWeatherReportFor(city: String!, onSuccess successBlock: ((WeatherReport) -> Void)!, onError errorBlock: ((String?) -> Void)!) {
+    public func loadWeatherReportFor(city: String!, onSuccess successBlock: @escaping ((WeatherReport) -> Void), onError errorBlock: @escaping ((String) -> Void)) {
 
 
         DispatchQueue.global(priority: .high).async() {

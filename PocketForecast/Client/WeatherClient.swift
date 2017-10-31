@@ -16,7 +16,7 @@ import Foundation
 */
 @objc public protocol WeatherClient {
     
-    func loadWeatherReportFor(city: String!, onSuccess successBlock: ((WeatherReport) -> Void)!, onError errorBlock: ((String?) -> Void)!)
+    func loadWeatherReportFor(city: String, onSuccess successBlock: @escaping ((WeatherReport) -> Void), onError errorBlock: @escaping ((String) -> Void))
     
     
     
