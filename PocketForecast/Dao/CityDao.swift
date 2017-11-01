@@ -20,24 +20,24 @@ import Foundation
     /**
     * Returns an array containing the names of all cities to report weather for.
     */
-    func listAllCities() -> [String]!
+    func listAllCities() -> [String]
     
     /**
     * Adds a new city to the list of cities to report weather for. If the city already exists in 
     * the list, it is ignored.
     */
-    func saveCity(name: String!)
+    func saveCity(name: String)
     
     /**
     * Removes the city with the specified name from the list of cities to report weather for. If 
     * the city doesn't exist in the list, it will be ignored.
     */
-    func deleteCity(name: String!)
+    func deleteCity(name: String)
     
     /**
     * Used to store the last page that the user visits.
     */
-    func saveCurrentlySelectedCity(cityName: String!)
+    func saveCurrentlySelectedCity(cityName: String)
     
     /**
     * Clears out the currently selected city.

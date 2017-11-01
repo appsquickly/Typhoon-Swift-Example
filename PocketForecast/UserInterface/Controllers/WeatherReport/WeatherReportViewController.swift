@@ -62,13 +62,13 @@ public class WeatherReportViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController!.isNavigationBarHidden = true
 
-        self.cityName = self.cityDao.loadSelectedCity()
-        if (self.cityName != nil) {
-            self.weatherReport = self.weatherReportDao.getReportForCityName(cityName: self.cityName)
-            if (self.weatherReport != nil) {
+        if let cityName = self.cityDao.loadSelectedCity() {
+            self.cityName = cityName
+            if let weatherReport = self.weatherReportDao.getReportForCityName(cityName: cityName) {
+                self.weatherReport = weatherReport
                 self.weatherReportView.weatherReport = self.weatherReport
             }
-            else if (self.cityName != nil) {
+            else  {
                 self.refreshData()
             }
         }
@@ -77,7 +77,7 @@ public class WeatherReportViewController: UIViewController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (self.cityName != nil) {
+        if self.cityName != nil {
             
             let cityListButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.bookmarks, target: self, action: #selector(WeatherReportViewController.presentMenu))
             cityListButton.tintColor = .white
@@ -109,17 +109,17 @@ public class WeatherReportViewController: UIViewController {
     private dynamic func refreshData() {
         ICLoader.present()
         
-        self.weatherClient.loadWeatherReportFor(city: self.cityName, onSuccess: {
-            (weatherReport) in
+        self.weatherClient.loadWeatherReportFor(city: self.cityName!, onSuccess: {
+            weatherReport in
             
             self.weatherReportView.weatherReport = weatherReport
             ICLoader.dismiss()
             
             }, onError: {
-                (message) in
+                message in
                 
                 ICLoader.dismiss()
-                print ("Error" + message!)
+                print ("Error" + message)
                 
                 
         })

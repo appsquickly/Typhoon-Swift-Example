@@ -28,10 +28,10 @@ public class ThemeAssembly : TyphoonAssembly {
     */
     public dynamic func themeFactory() -> AnyObject {
         return TyphoonDefinition.withClass(ThemeFactory.self) {
-            (definition) in
+            definition in
 
             definition!.useInitializer("initWithThemes:") {
-                (initializer) in
+                initializer in
                 
                 initializer!.injectParameter(with: [
                     self.cloudsOverTheCityTheme(),
@@ -47,7 +47,7 @@ public class ThemeAssembly : TyphoonAssembly {
 
     public dynamic func cloudsOverTheCityTheme() -> AnyObject {
         return TyphoonDefinition.withClass(Theme.self) {
-            (definition) in
+            definition in
 
                 definition!.injectProperty("backgroundResourceName", with:"bg3.png")
                 definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x641d23))
@@ -59,7 +59,7 @@ public class ThemeAssembly : TyphoonAssembly {
 
     public dynamic func lightsInTheRainTheme() -> AnyObject {
         return TyphoonDefinition.withClass(Theme.self) {
-            (definition) in
+            definition in
 
                 definition!.injectProperty("backgroundResourceName", with:"bg4.png")
                 definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0xeaa53d))
@@ -71,7 +71,7 @@ public class ThemeAssembly : TyphoonAssembly {
 
     public dynamic func beachTheme() -> AnyObject {
         return TyphoonDefinition.withClass(Theme.self) {
-            (definition) in
+            definition in
 
                 definition!.injectProperty("backgroundResourceName", with:"bg5.png")
                 definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x37b1da))
@@ -82,7 +82,7 @@ public class ThemeAssembly : TyphoonAssembly {
 
     public dynamic func sunsetTheme() -> AnyObject {
         return TyphoonDefinition.withClass(Theme.self) {
-            (definition) in
+            definition in
 
                 definition!.injectProperty("backgroundResourceName", with:"sunset.png")
                 definition!.injectProperty("navigationBarColor", with:UIColor(hexRGB:0x0a1d3b))

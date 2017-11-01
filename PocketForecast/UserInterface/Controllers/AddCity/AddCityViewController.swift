@@ -58,20 +58,20 @@ class AddCityViewController: UIViewController, UITextFieldDelegate, Themeable {
     }
         
     private dynamic func doneAdding(textField : UITextField) {
-        if (!self.nameOfCityToAdd.text!.isEmpty) {
+        if !self.nameOfCityToAdd.text!.isEmpty {
             self.validationMessage.text = "Validating city . ."
             self.validationMessage.isHidden = false
             self.nameOfCityToAdd.isEnabled = false
             self.spinner.startAnimating()
             
-            self.weatherClient.loadWeatherReportFor(city: self.nameOfCityToAdd.text, onSuccess: {
-                (weatherReport) in
+            self.weatherClient.loadWeatherReportFor(city: self.nameOfCityToAdd.text!, onSuccess: {
+                weatherReport in
                 
                 self.cityDao!.saveCity(name: weatherReport.cityDisplayName)
                 self.rootViewController.dismissAddCitiesController()
                 
                 }, onError: {
-                    (message) in
+                    message in
                     
                     self.spinner.stopAnimating()
                     self.nameOfCityToAdd.isEnabled = true

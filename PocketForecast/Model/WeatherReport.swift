@@ -19,16 +19,11 @@ public class WeatherReport : NSObject, NSCoding {
     public private(set) var forecast : Array<ForecastConditions>
     
     public var cityDisplayName : String {
-        var displayName : String
         let components : Array<String> = self.city.components(separatedBy: ",")
-        if (components.count > 1) {
-            displayName = components[0]
+        if components.count > 1 {
+            return components[0]
         }
-        else {
-            displayName = self.city.capitalized
-        }
-        
-        return displayName
+        return self.city.capitalized
     }
     
     

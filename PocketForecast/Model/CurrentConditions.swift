@@ -36,7 +36,7 @@ public class CurrentConditions : NSObject, NSCoding {
     }
     
     public func longSummary() -> String {
-        return String(format: "%@. %@.", self.summary!, self.wind!)
+        return "\(self.summary!). \(self.wind!)."
     }
     
     public override var description: String {
@@ -45,10 +45,10 @@ public class CurrentConditions : NSObject, NSCoding {
     
     public func encode(with coder: NSCoder) {
         
-        coder.encode(self.summary!, forKey:"summary")
-        coder.encode(self.temperature!, forKey:"temperature")
-        coder.encode(self.humidity!, forKey:"humidity")
-        coder.encode(self.wind!, forKey:"wind")
+        coder.encode(self.summary, forKey:"summary")
+        coder.encode(self.temperature, forKey:"temperature")
+        coder.encode(self.humidity, forKey:"humidity")
+        coder.encode(self.wind, forKey:"wind")
         coder.encode(self.imageUri!, forKey:"imageUri")
     }
 }

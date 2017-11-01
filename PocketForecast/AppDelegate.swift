@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
         
         let selectedCity : String! = cityDao!.loadSelectedCity()
-        if (selectedCity == nil) {
+        if selectedCity == nil {
             rootViewController?.showCitiesListController()
         }
         

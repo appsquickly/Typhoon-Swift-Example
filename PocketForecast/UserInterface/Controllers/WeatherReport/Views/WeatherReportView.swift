@@ -29,15 +29,15 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
     public var weatherReport : WeatherReport? {
         willSet(weatherReport) {
             
-            if (weatherReport != nil) {
+            if let weatherReport = weatherReport {
                 self.tableView.isHidden = false
                 self.conditionsIcon.isHidden = false
                 self.temperatureLabelContainer.isHidden = false
                 self.tableView.reloadData()
-                self.cityNameLabel.text = weatherReport!.cityDisplayName
-                self.temperatureLabel.text = weatherReport!.currentConditions.temperature!.asShortStringInDefaultUnits()
-                self.conditionsDescriptionLabel.text = weatherReport!.currentConditions.longSummary()
-                self.lastUpdateLabel.text = NSString(format: "Updated %@", weatherReport!.reportDateAsString()) as String
+                self.cityNameLabel.text = weatherReport.cityDisplayName
+                self.temperatureLabel.text = weatherReport.currentConditions.temperature!.asShortStringInDefaultUnits()
+                self.conditionsDescriptionLabel.text = weatherReport.currentConditions.longSummary()
+                self.lastUpdateLabel.text = "Updated \(weatherReport.reportDateAsString())"
 
             }
         }
@@ -112,28 +112,30 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let reuseIdentifier = "weatherForecast"
-        var cell : ForecastTableViewCell? = self.tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as? ForecastTableViewCell
-        if (cell == nil) {
+        var cell : ForecastTableViewCell
+        if let dequeueCell = self.tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as? ForecastTableViewCell {
+            cell = dequeueCell
+        } else {
             cell = ForecastTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: reuseIdentifier)
         }
         
-        if (self.weatherReport != nil && self.weatherReport!.forecast.count > indexPath.row) {
-            let forecastConditions : ForecastConditions = self.weatherReport!.forecast[indexPath.row]
-            cell!.dayLabel.text = forecastConditions.longDayOfTheWeek()
-            cell!.descriptionLabel.text = forecastConditions.summary
+        if let weatherReport = self.weatherReport, weatherReport.forecast.count > indexPath.row {
+            let forecastConditions : ForecastConditions = weatherReport.forecast[indexPath.row]
+            cell.dayLabel.text = forecastConditions.longDayOfTheWeek()
+            cell.descriptionLabel.text = forecastConditions.summary
             
-            if forecastConditions.low != nil {
-                cell!.lowTempLabel.text = forecastConditions.low!.asShortStringInDefaultUnits()
+            if let low = forecastConditions.low {
+                cell.lowTempLabel.text = low.asShortStringInDefaultUnits()
             }
             
-            if forecastConditions.high != nil {
-                cell!.highTempLabel.text = forecastConditions.high!.asShortStringInDefaultUnits()
+            if let high = forecastConditions.high {
+                cell.highTempLabel.text = high.asShortStringInDefaultUnits()
             }
             
-            cell!.conditionsIcon.image = self.uiImageForImageUri(imageUri: forecastConditions.imageUri)
-            cell!.backgroundView?.backgroundColor = self.colorForRow(row: indexPath.row)
+            cell.conditionsIcon.image = self.uiImageForImageUri(imageUri: forecastConditions.imageUri)
+            cell.backgroundView?.backgroundColor = self.colorForRow(row: indexPath.row)
         }
-        return cell!
+        return cell
     }
     
 
@@ -240,42 +242,23 @@ public class WeatherReportView : UIView, UITableViewDelegate, UITableViewDataSou
     }
     
     //TODO: Make this proper Swift
-    private func uiImageForImageUri(imageUri : String?) -> UIImage {
-        var result: UIImage?
-        if let imageUri = imageUri, imageUri.count > 0 {
+    private func uiImageForImageUri(imageUri : String) -> UIImage? {
+        if imageUri.count > 0 {
             
-            if (imageUri.hasSuffix("sunny.png"))
-            {
-                result = UIImage(named:"icon_sunny")
+            if imageUri.hasSuffix("sunny.png") {
+                return UIImage(named:"icon_sunny")
             }
-            else if (imageUri.hasSuffix("sunny_intervals.png"))
-            {
-                result =  UIImage(named:"icon_cloudy")
+            else if imageUri.hasSuffix("partly_cloudy.png") ||
+                    imageUri.hasSuffix("sunny_intervals.png") ||
+                    imageUri.hasSuffix("low_cloud.png") {
+                return UIImage(named:"icon_cloudy")
             }
-            else if (imageUri.hasSuffix("partly_cloudy.png"))
-            {
-                result =  UIImage(named:"icon_cloudy")
-            }
-            else if (imageUri.hasSuffix("low_cloud.png"))
-            {
-                result =  UIImage(named:"icon_cloudy")
-            }
-            else if (imageUri.hasSuffix("light_rain_showers.png"))
-            {
-                result =  UIImage(named:"icon_rainy")
-            }
-            else if (imageUri.hasSuffix("heavy_rain_showers.png"))
-            {
-                result =  UIImage(named:"icon_rainy")
+            else if imageUri.hasSuffix("light_rain_showers.png") ||
+                    imageUri.hasSuffix("heavy_rain_showers.png") {
+                return UIImage(named:"icon_rainy")
             }
         }
-        
-        if result == nil {
-            result = UIImage(named: "icon_sunny")
-        }
-        
-        return result!
-
+        return UIImage(named: "icon_sunny")
     }
         
 }
