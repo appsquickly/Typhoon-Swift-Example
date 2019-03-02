@@ -3,7 +3,7 @@ Pocket Forecast (Swift)
 
 An example application built with <a href ="http://typhoonframework.org/">Typhoon</a>.
 
-* Looking for an Objective-C sample application? We <a href="https://github.com/appsquickly/Typhoon-example">have one here</a>. 
+* Looking for an Objective-C sample application? We <a href="https://github.com/appsquickly/typhoon-example">have one here</a>. 
 
 ### Features: 
 
@@ -42,9 +42,9 @@ place of the old one. And you'd be able to reuse the existing test cases.
 
 
 ### The App 
-![Weather Report](http://appsquickly.github.io/Typhoon/images/portfolio/PocketForecast3.gif)
-![Weather Report](http://appsquickly.github.io/Typhoon/images/portfolio/pf-beach1.png)
-![Weather Report](http://appsquickly.github.io/Typhoon/images/portfolio/pf-lights1.png)
+![Weather Report](http://appsquickly.github.io/typhoon/images/portfolio/PocketForecast3.gif)
+![Weather Report](http://appsquickly.github.io/typhoon/images/portfolio/pf-beach1.png)
+![Weather Report](http://appsquickly.github.io/typhoon/images/portfolio/pf-lights1.png)
 
 ### I'm blown away!
 
