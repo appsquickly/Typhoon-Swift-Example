@@ -1,3 +1,11 @@
+# [Pilgrim](https://pilgrim.ph) is a pure Swift successor to Typhoon!!
+
+Typhoon uses the Objective-C runtime to collect metadata and instantiate objects. It powers thousands of Objective-C applications but it is not all that great for modern Swift. 
+
+**Pilgrim (https://github.com/appsquickly/pilgrim) is a pure Swift successor to Typhoon. It is easy to migrate your Typhoon apps to [Pilgrim](https://pilgrim.ph).**  There's a pilgrim sample app [here](https://github.com/appsquickly/pilgrim-starter). 
+
+----
+
 Pocket Forecast (Swift)
 ==========================
 
